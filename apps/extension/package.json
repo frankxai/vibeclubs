@@ -1,0 +1,36 @@
+{
+  "name": "@vibeclubs/extension",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Vibeclubs Chrome extension — vibe mixer, synced Pomodoro, session cards on any page.",
+  "license": "MIT",
+  "scripts": {
+    "dev": "plasmo dev",
+    "build": "plasmo build",
+    "package": "plasmo package",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "@vibeclubs/ai-witness": "workspace:*",
+    "@vibeclubs/pomodoro-sync": "workspace:*",
+    "@vibeclubs/session-card": "workspace:*",
+    "@vibeclubs/suno-bridge": "workspace:*",
+    "@vibeclubs/vibe-mix": "workspace:*",
+    "plasmo": "0.89.4",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.270",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.5.0"
+  },
+  "manifest": {
+    "name": "Vibeclubs",
+    "description": "Three-layer vibe mixer + synced Pomodoro + session cards on any page.",
+    "host_permissions": ["https://*/*", "http://*/*"],
+    "permissions": ["storage", "activeTab", "tabCapture"]
+  }
+}

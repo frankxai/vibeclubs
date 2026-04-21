@@ -1,0 +1,16 @@
+# Vibeclubs code owners
+# Every PR pings Frank until we add collaborators.
+
+*                               @frankxai
+
+# Vision + architecture — changes here are ADR-level
+/VISION.md                      @frankxai
+/ADR-*                          @frankxai
+/CLAUDE.md                      @frankxai
+/SPRINT-*                       @frankxai
+
+# Voice-sensitive surfaces (copy review required)
+/apps/web/app/page.tsx          @frankxai
+/apps/web/app/start/**          @frankxai
+/apps/web/components/nav.tsx    @frankxai
+/apps/web/components/footer.tsx @frankxai

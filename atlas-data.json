@@ -1,0 +1,37 @@
+{
+  "generated_at": "2026-04-21",
+  "generated_by": "brain-atlas-v2-live / ADR-OR-001 autonomous run",
+  "source": {
+    "linear_projects": "mcp list_projects unfiltered includeArchived:false",
+    "linear_urgent":   "mcp list_issues priority:1 state:started",
+    "atoms":           "Arcanea/wiki/05-Atoms grep frontmatter domain:",
+    "notion_schema":   "5 DBs carry Domain select — live 2026-04-21"
+  },
+  "totals": { "projects": 23, "urgent_p1": 9, "red_overdue": 3, "dark_lobes": 3, "atoms": 25 },
+  "today": "2026-04-21",
+  "domains": {
+    "creator":       { "atoms": 2, "projects": 6, "urgent": 4, "red_overdue": 3, "target": 12, "dark": false, "heat": 1.00 },
+    "business":      { "atoms": 2, "projects": 2, "urgent": 1, "red_overdue": 0, "target": 10, "dark": false, "heat": 0.55 },
+    "wealth":        { "atoms": 2, "projects": 0, "urgent": 0, "red_overdue": 0, "target":  8, "dark": true,  "heat": 0.00 },
+    "health":        { "atoms": 2, "projects": 0, "urgent": 0, "red_overdue": 0, "target":  8, "dark": true,  "heat": 0.00 },
+    "relationships": { "atoms": 2, "projects": 1, "urgent": 0, "red_overdue": 0, "target":  8, "dark": false, "heat": 0.35 },
+    "growth":        { "atoms": 2, "projects": 0, "urgent": 0, "red_overdue": 0, "target": 10, "dark": true,  "heat": 0.00 },
+    "agents":        { "atoms": 2, "projects": 3, "urgent": 3, "red_overdue": 0, "target": 14, "dark": false, "heat": 0.75 },
+    "memory":        { "atoms": 3, "projects": 1, "urgent": 0, "red_overdue": 0, "target": 16, "dark": false, "heat": 0.40 },
+    "prompts":       { "atoms": 2, "projects": 2, "urgent": 0, "red_overdue": 0, "target": 12, "dark": false, "heat": 0.45 },
+    "software":      { "atoms": 2, "projects": 4, "urgent": 0, "red_overdue": 0, "target": 14, "dark": false, "heat": 0.50 },
+    "purpose":       { "atoms": 2, "projects": 1, "urgent": 0, "red_overdue": 0, "target":  8, "dark": false, "heat": 0.35 },
+    "research":      { "atoms": 2, "projects": 3, "urgent": 0, "red_overdue": 0, "target": 10, "dark": false, "heat": 0.45 }
+  },
+  "red_overdue_issues": [
+    { "id": "ARC-86",  "domain": "creator", "due": "2026-04-05", "overdue_days": 16, "title": "Rename @frankxeth -> @frankx_ai on X",                 "url": "https://linear.app/arcanea/issue/ARC-86" },
+    { "id": "ARC-88",  "domain": "creator", "due": "2026-04-05", "overdue_days": 16, "title": "Post ACOS v10 + MCP Doctor threads from queue",       "url": "https://linear.app/arcanea/issue/ARC-88" },
+    { "id": "ARC-139", "domain": "creator", "due": "2026-04-18", "overdue_days":  3, "title": "GenCreator.ai deployment pipeline ready for go-live", "url": "https://linear.app/arcanea/issue/ARC-139" }
+  ],
+  "adr": {
+    "id": "ADR-OR-001", "path": "Arcanea/wiki/meta/ontology-reconciliation.md",
+    "status": "accepted", "accepted": "2026-04-21",
+    "cube": "Brand x Domain x Gate",
+    "decisions_locked": ["D1","D2","D3","D4","D5","D6","D7","D8-satisfied"]
+  }
+}

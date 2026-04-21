@@ -1,0 +1,274 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   Vibeclubs design tokens.
+
+   Dark-only. Amber is the brand accent. Violet is the depth accent.
+   Signal green signals "live / active / now." Everything else is
+   tuned for reading at 2 AM with lofi playing.
+
+   Token layers:
+     color-*        raw palette
+     surface-*      semantic layered surfaces
+     text-*         semantic type colors
+     border-*       semantic borders
+     radius-*       corners
+     shadow-*       elevation
+     ease-*         motion
+     font-*         families
+------------------------------------------------------------------- */
+
+@theme {
+  /* --- Palette ------------------------------------------------- */
+  --color-ink-950: #06060b;
+  --color-ink-900: #0a0a0f;
+  --color-ink-850: #0e0e16;
+  --color-ink-800: #14141f;
+  --color-ink-700: #1a1a28;
+  --color-ink-600: #262637;
+  --color-ink-500: #34344b;
+
+  --color-cream-50: #fafaf7;
+  --color-cream-100: #f7f1e5;
+  --color-cream-200: #e6dfc9;
+
+  --color-vibe-amber: #f59e0b;
+  --color-vibe-amber-soft: #fcd34d;
+  --color-vibe-amber-deep: #d97706;
+
+  --color-vibe-violet: #6b3fa0;
+  --color-vibe-violet-soft: #8b5cf6;
+  --color-vibe-violet-deep: #4c1d95;
+
+  --color-vibe-signal: #4fd18c;
+  --color-vibe-signal-soft: #86efac;
+
+  --color-vibe-danger: #ef4444;
+  --color-vibe-warning: #fb923c;
+
+  /* --- Semantic surfaces --------------------------------------- */
+  --color-bg-base: var(--color-ink-900);
+  --color-bg-elevated: var(--color-ink-850);
+  --color-surface-1: rgba(255, 255, 255, 0.02);
+  --color-surface-2: rgba(255, 255, 255, 0.04);
+  --color-surface-3: rgba(255, 255, 255, 0.06);
+  --color-surface-4: rgba(255, 255, 255, 0.08);
+
+  /* --- Semantic text ------------------------------------------- */
+  --color-text-primary: #fafafa;
+  --color-text-secondary: rgba(255, 255, 255, 0.7);
+  --color-text-tertiary: rgba(255, 255, 255, 0.5);
+  --color-text-quaternary: rgba(255, 255, 255, 0.4);
+  --color-text-muted: rgba(255, 255, 255, 0.3);
+  --color-text-on-accent: #0a0a0f;
+
+  /* --- Borders ------------------------------------------------- */
+  --color-border-subtle: rgba(255, 255, 255, 0.05);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-strong: rgba(255, 255, 255, 0.15);
+  --color-border-accent: rgba(245, 158, 11, 0.4);
+  --color-border-signal: rgba(79, 209, 140, 0.4);
+
+  /* --- Radius -------------------------------------------------- */
+  --radius-sm: 0.5rem; /* 8 */
+  --radius: 0.75rem; /* 12 */
+  --radius-lg: 1rem; /* 16 */
+  --radius-xl: 1.25rem; /* 20 */
+  --radius-2xl: 1.5rem; /* 24 */
+  --radius-3xl: 2rem; /* 32 */
+
+  /* --- Shadows / glow ------------------------------------------ */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.45);
+  --shadow-2: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-3: 0 12px 28px rgba(0, 0, 0, 0.4);
+  --shadow-4: 0 24px 48px rgba(0, 0, 0, 0.55);
+  --shadow-amber-glow: 0 0 40px rgba(245, 158, 11, 0.2);
+  --shadow-violet-glow: 0 0 48px rgba(107, 63, 160, 0.28);
+
+  /* --- Typography ---------------------------------------------- */
+  --font-display: 'Cal Sans', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+
+  /* Typographic scale — matches the 4-pt baseline */
+  --text-2xs: 0.6875rem; /* 11 */
+  --text-xs: 0.75rem; /* 12 */
+  --text-sm: 0.875rem; /* 14 */
+  --text-base: 1rem; /* 16 */
+  --text-md: 1.0625rem; /* 17 */
+  --text-lg: 1.125rem; /* 18 */
+  --text-xl: 1.25rem; /* 20 */
+  --text-2xl: 1.5rem; /* 24 */
+  --text-3xl: 1.875rem; /* 30 */
+  --text-4xl: 2.25rem; /* 36 */
+  --text-5xl: 3rem; /* 48 */
+  --text-6xl: 3.75rem; /* 60 */
+  --text-7xl: 4.5rem; /* 72 */
+  --text-8xl: 6rem; /* 96 */
+  --text-9xl: 7.5rem; /* 120 */
+
+  /* --- Motion -------------------------------------------------- */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.3, 1.5, 0.5, 1);
+
+  /* --- Container widths ---------------------------------------- */
+  --page-sm: 640px;
+  --page-md: 768px;
+  --page-lg: 1024px;
+  --page-xl: 1200px;
+  --page-2xl: 1400px;
+}
+
+/* ------------------------------------------------------------------
+   Base layer — a few hand-rolled primitives Tailwind doesn't ship.
+------------------------------------------------------------------- */
+
+html,
+body {
+  min-height: 100vh;
+  background: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-vibe-amber);
+  color: var(--color-text-on-accent);
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+/* Focus ring — one consistent treatment across the app */
+*:focus-visible {
+  outline: 2px solid var(--color-vibe-amber);
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}
+
+button,
+[role='button'] {
+  cursor: pointer;
+}
+
+/* Thin custom scrollbar — developer surfaces prefer this */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.18);
+  background-clip: padding-box;
+}
+
+/* The `.live-dot` is used everywhere as the brand presence indicator */
+.live-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--color-vibe-amber);
+  box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6);
+  animation: vc-pulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.live-dot.signal {
+  background: var(--color-vibe-signal);
+  box-shadow: 0 0 0 0 rgba(79, 209, 140, 0.6);
+}
+@keyframes vc-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+  }
+}
+
+/* Aurora gradient background primitive */
+.vc-aurora {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(800px 400px at 10% 0%, rgba(107, 63, 160, 0.22), transparent 60%),
+    radial-gradient(700px 400px at 90% 10%, rgba(245, 158, 11, 0.12), transparent 60%),
+    radial-gradient(900px 500px at 50% 100%, rgba(79, 209, 140, 0.08), transparent 60%);
+  filter: blur(8px);
+  opacity: 0.9;
+}
+
+/* Grain overlay — gives the dark palette texture like Vercel's site */
+.vc-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.95 0 0 0 0 0.95 0 0 0 0 0.95 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+}
+
+/* Utility for clamping prose width in articles */
+.vc-prose {
+  font-size: var(--text-md);
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+.vc-prose h2 {
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+.vc-prose h3 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+.vc-prose p {
+  margin-block: 1em;
+}
+.vc-prose strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+.vc-prose code {
+  color: var(--color-vibe-amber-soft);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.15em 0.4em;
+  border-radius: var(--radius-sm);
+  font-size: 0.95em;
+  font-family: var(--font-mono);
+}
+.vc-prose a {
+  color: var(--color-vibe-amber-soft);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.vc-prose ul,
+.vc-prose ol {
+  padding-left: 1.25rem;
+  margin-block: 1em;
+}
+.vc-prose li {
+  margin-block: 0.4em;
+}

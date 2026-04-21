@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Arcanea Brain Atlas — 3D</title>
+<meta name="description" content="Procedural 3D brain × 12 domain lobes × world tree spine × neural activity — the Arcanea organism, one legibility surface." />
+<meta name="color-scheme" content="dark" />
+<style>
+  :root{
+    --bg:#050510;
+    --bg-2:#0a0a1f;
+    --ink:#e4e4f4;
+    --ink-dim:#8a8aa8;
+    --teal:#00bcd4;
+    --blue:#0d47a1;
+    --gold:#ffd700;
+    --edge:rgba(255,255,255,0.08);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);
+    font-family:"Geist","Inter var",system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  #scene{position:fixed;inset:0}
+  canvas{display:block}
+
+  .ui{position:fixed;pointer-events:none;z-index:5}
+  .ui.top-left{top:18px;left:20px;max-width:360px}
+  .ui.top-right{top:18px;right:20px;text-align:right}
+  .ui.bottom-left{bottom:18px;left:20px;max-width:380px}
+  .ui.bottom-right{bottom:18px;right:20px;max-width:320px}
+  .ui .card{pointer-events:auto;background:rgba(10,10,25,0.55);backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);border:1px solid var(--edge);
+    border-radius:14px;padding:14px 16px;font-size:12.5px;line-height:1.55}
+  .ui h1{font-size:13px;font-weight:600;margin:0 0 2px;letter-spacing:0.01em}
+  .ui h1 .sub{font-weight:400;color:var(--ink-dim)}
+  .ui h2{font-size:11px;font-weight:500;margin:0 0 6px;color:var(--ink-dim);
+    text-transform:uppercase;letter-spacing:0.08em}
+  .ui p{margin:0 0 6px;color:var(--ink-dim)}
+  .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:11.5px}
+  .kv .k{color:var(--ink-dim)}
+  .kv .v{color:var(--ink);font-variant-numeric:tabular-nums}
+
+  .legend{display:grid;grid-template-columns:repeat(2,1fr);gap:4px 12px;font-size:11px;margin-top:6px}
+  .legend .row{display:flex;align-items:center;gap:6px}
+  .legend .dot{width:8px;height:8px;border-radius:50%;flex:none;box-shadow:0 0 6px currentColor}
+
+  .toggle-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .toggle{pointer-events:auto;background:rgba(255,255,255,0.04);border:1px solid var(--edge);
+    color:var(--ink);padding:5px 10px;border-radius:999px;font-size:11px;cursor:pointer;
+    font-family:inherit;transition:all .18s}
+  .toggle:hover{background:rgba(255,255,255,0.08)}
+  .toggle.active{background:rgba(0,188,212,0.18);border-color:rgba(0,188,212,0.5);color:#bef0fb}
+  .toggle.danger.active{background:rgba(244,63,94,0.18);border-color:rgba(244,63,94,0.5);color:#fecaca}
+
+  .focus-label{position:fixed;pointer-events:none;transform:translate(-50%,-120%);
+    background:rgba(10,10,25,0.7);backdrop-filter:blur(10px);border:1px solid var(--edge);
+    border-radius:8px;padding:6px 10px;font-size:11.5px;opacity:0;transition:opacity .2s;
+    white-space:nowrap;z-index:6;color:var(--ink)}
+
+  .hint{color:var(--ink-dim);font-size:10.5px;font-style:italic;margin-top:6px}
+  .pill{display:inline-block;padding:1px 7px;border-radius:999px;font-size:10px;
+    background:rgba(255,215,0,0.08);color:var(--gold);border:1px solid rgba(255,215,0,0.3);
+    margin-left:4px;vertical-align:1px}
+
+  .bar{height:4px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden;margin-top:3px}
+  .bar > span{display:block;height:100%;background:linear-gradient(90deg,var(--teal),#7dd3fc);border-radius:4px}
+
+  .noscript{padding:40px;color:var(--ink-dim);font-size:14px;text-align:center}
+</style>
+
+<script type="importmap">
+{
+  "imports":{
+    "three":"https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+    "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="scene"></div>
+
+<!-- Focus label (hovering domain name) -->
+<div id="focus-label" class="focus-label"></div>
+
+<!-- Top-left: identity + legend -->
+<div class="ui top-left">
+  <div class="card">
+    <h1>Arcanea Brain Atlas <span class="sub">— 3D</span></h1>
+    <p>One surface. Brain × 12 domains × world tree × neural activity. The whole organism, legible.</p>
+    <div class="kv">
+      <span class="k">Atoms</span><span class="v">34 / 200 cap</span>
+      <span class="k">Domains</span><span class="v">12 / 12</span>
+      <span class="k">Surfaces</span><span class="v">13 orbiting</span>
+      <span class="k">Council</span><span class="v">6 roles · active</span>
+      <span class="k">Sprint</span><span class="v">S17 · day 1</span>
+    </div>
+    <div class="toggle-row" id="layer-toggles">
+      <button class="toggle active" data-layer="brain">Brain</button>
+      <button class="toggle active" data-layer="lobes">Lobes</button>
+      <button class="toggle active" data-layer="neurons">Neurons</button>
+      <button class="toggle active" data-layer="tree">World Tree</button>
+      <button class="toggle active" data-layer="halo">Ecosystem</button>
+      <button class="toggle" data-layer="labels">Labels</button>
+      <button class="toggle danger" data-layer="wireframe">X-ray</button>
+    </div>
+  </div>
+</div>
+
+<!-- Top-right: camera controls + performance -->
+<div class="ui top-right">
+  <div class="card">
+    <h2>Camera</h2>
+    <div class="toggle-row" style="justify-content:flex-end">
+      <button class="toggle" data-view="front">Front</button>
+      <button class="toggle" data-view="side">Sagittal</button>
+      <button class="toggle" data-view="top">Axial</button>
+      <button class="toggle active" data-view="orbit">Orbit</button>
+    </div>
+    <div class="kv" style="margin-top:10px">
+      <span class="k">FPS</span><span class="v" id="fps">–</span>
+      <span class="k">Draw calls</span><span class="v" id="calls">–</span>
+      <span class="k">Neurons</span><span class="v">2,048</span>
+    </div>
+    <div class="hint">Scroll · zoom · drag · orbit · right-click · pan</div>
+  </div>
+</div>
+
+<!-- Bottom-left: 12-domain legend -->
+<div class="ui bottom-left">
+  <div class="card">
+    <h2>12 Domains</h2>
+    <div class="legend" id="domain-legend"></div>
+    <div class="hint">Click a lobe to isolate its atom count + Luminor</div>
+  </div>
+</div>
+
+<!-- Bottom-right: council + selection panel -->
+<div class="ui bottom-right">
+  <div class="card" id="detail-card">
+    <h2>Six-Role Council</h2>
+    <div class="legend">
+      <div class="row"><span class="dot" style="color:#f43f5e">●</span> Strategist · dlPFC</div>
+      <div class="row"><span class="dot" style="color:#60a5fa">●</span> Coach · ACC</div>
+      <div class="row"><span class="dot" style="color:#a78bfa">●</span> Counter-Coach · rPFC</div>
+      <div class="row"><span class="dot" style="color:#fbbf24">●</span> Sage · medial-PFC</div>
+      <div class="row"><span class="dot" style="color:#34d399">●</span> Maker · premotor</div>
+      <div class="row"><span class="dot" style="color:#67e8f9">●</span> Witness · TPJ</div>
+    </div>
+    <p class="hint">Regions pulse when their role runs. Counter-Coach spike today: ADR §Objections.</p>
+  </div>
+</div>
+
+<noscript><div class="noscript">3D scene requires JavaScript + WebGL2.</div></noscript>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls }      from 'three/addons/controls/OrbitControls.js';
+import { EffectComposer }     from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass }         from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass }    from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { ShaderPass }         from 'three/addons/postprocessing/ShaderPass.js';
+import { FilmPass }           from 'three/addons/postprocessing/FilmPass.js';
+import { OutputPass }         from 'three/addons/postprocessing/OutputPass.js';
+import { ImprovedNoise }      from 'three/addons/math/ImprovedNoise.js';
+
+// ───────────────────────────────────────────────────────────────────────────
+// CONFIG — canonical ontology lives here
+// ───────────────────────────────────────────────────────────────────────────
+const DOMAINS = [
+  { id: 1,  name:'Creator',        tag:'creator',       color:0xec4899, luminor:'Syntaxa',       region:'left-frontal',     atoms: 2, target: 12 },
+  { id: 2,  name:'Business',       tag:'business',      color:0xf59e0b, luminor:'Kinetix',       region:'dlPFC',            atoms: 2, target: 10 },
+  { id: 3,  name:'Wealth',         tag:'wealth',        color:0xffd700, luminor:'Numeros',       region:'vmPFC',            atoms: 2, target:  8 },
+  { id: 4,  name:'Health',         tag:'health',        color:0x10b981, luminor:'Vitalia',       region:'hypothalamus',     atoms: 2, target:  8 },
+  { id: 5,  name:'Relationships',  tag:'relationships', color:0xfb7185, luminor:'Harmonix',      region:'STS/TPJ',          atoms: 2, target:  8 },
+  { id: 6,  name:'Growth',         tag:'growth',        color:0xa78bfa, luminor:'Meridian',      region:'basal-ganglia',    atoms: 2, target: 10 },
+  { id: 7,  name:'Agents',         tag:'agents',        color:0x00bcd4, luminor:'Lumina',        region:'premotor/parietal',atoms: 2, target: 14 },
+  { id: 8,  name:'Memory',         tag:'memory',        color:0x818cf8, luminor:'Mnemosys',      region:'hippocampus',      atoms: 3, target: 16 },
+  { id: 9,  name:'Prompts',        tag:'prompts',       color:0x2dd4bf, luminor:'Syntaxa',       region:'Broca/Wernicke',   atoms: 2, target: 12 },
+  { id:10,  name:'Software',       tag:'software',      color:0x60a5fa, luminor:'Chronos',       region:'angular-gyrus',    atoms: 3, target: 14 },
+  { id:11,  name:'Purpose',        tag:'purpose',       color:0xa3e635, luminor:'Sophia',        region:'ACC',              atoms: 2, target:  8 },
+  { id:12,  name:'Research',       tag:'research',      color:0xd946ef, luminor:'Oracle',        region:'PFC+DMN',          atoms: 2, target: 10 }
+];
+
+// === ATLAS BOOTSTRAP — live cold-pull (ADR-OR-001 D5: no hardcoded counts) ===
+try {
+  const __r = await fetch('./atlas-data.json', { cache:'no-store' });
+  if (__r.ok) {
+    const atlas = await __r.json();
+    window.__atlasData = atlas;
+    DOMAINS.forEach(d => {
+      const L = atlas.domains && atlas.domains[d.tag];
+      if (L) { d.atoms = L.atoms; d.liveProjects = L.projects; d.liveUrgent = L.urgent;
+               d.liveRedOverdue = L.red_overdue; d.liveDark = L.dark; d.liveHeat = L.heat; }
+    });
+    console.log('[atlas] live cold-pull applied', atlas.totals, 'ADR', atlas.adr && atlas.adr.status);
+  }
+} catch(e) { console.warn('[atlas] live data unavailable, using baked defaults', e); }
+
+// 13 ecosystem surfaces — halo around the brain
+const SURFACES = [
+  'arcanea.ai','frankx.ai','starlight.systems','gencreator.ai','noosphere.arcanea.ai',
+  'vibeclubs.ai','atelier.arcanea','starlight-os','prompt-os','second-brain-v2',
+  'council.arcanea','library.arcanea','AMCAS.orchestrator'
+];
+
+// Six-Role Council → brain region anchor
+const COUNCIL = [
+  { name:'Strategist',    color:0xf43f5e, anchor:new THREE.Vector3(-1.0, 0.9,  1.2), size:0.22 },
+  { name:'Coach',         color:0x60a5fa, anchor:new THREE.Vector3( 0.0, 0.8,  1.3), size:0.20 },
+  { name:'Counter-Coach', color:0xa78bfa, anchor:new THREE.Vector3( 1.1, 0.9,  1.1), size:0.22 },
+  { name:'Sage',          color:0xfbbf24, anchor:new THREE.Vector3( 0.0, 1.2,  0.4), size:0.20 },
+  { name:'Maker',         color:0x34d399, anchor:new THREE.Vector3(-0.2, 0.6, -0.4), size:0.18 },
+  { name:'Witness',       color:0x67e8f9, anchor:new THREE.Vector3( 1.4, 0.1,  0.5), size:0.18 }
+];
+
+// ───────────────────────────────────────────────────────────────────────────
+// RENDERER + SCENE
+// ───────────────────────────────────────────────────────────────────────────
+const container = document.getElementById('scene');
+const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:false, powerPreference:'high-performance' });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+container.appendChild(renderer.domElement);
+
+const scene  = new THREE.Scene();
+scene.background = new THREE.Color(0x050510);
+scene.fog = new THREE.FogExp2(0x050510, 0.045);
+
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 100);
+camera.position.set(5.5, 2.2, 7.5);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+controls.minDistance = 3;
+controls.maxDistance = 16;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.45;   // ≈ 0.3 rad/s effective
+controls.target.set(0, 0.2, 0);
+
+// ───────────────────────────────────────────────────────────────────────────
+// LIGHTING — dramatic, hi-fi
+// ───────────────────────────────────────────────────────────────────────────
+scene.add(new THREE.AmbientLight(0x404060, 0.45));
+
+const keyLight = new THREE.PointLight(0x00bcd4, 2.2, 18, 1.8);
+keyLight.position.set(-4, 4, 4);
+scene.add(keyLight);
+
+const fillLight = new THREE.PointLight(0xffd700, 1.3, 14, 2.0);
+fillLight.position.set(4, 2, -3);
+scene.add(fillLight);
+
+const rimLight = new THREE.PointLight(0xd946ef, 1.5, 16, 2.0);
+rimLight.position.set(0, -3, -5);
+scene.add(rimLight);
+
+// ───────────────────────────────────────────────────────────────────────────
+// STARFIELD (fog-anchored)
+// ───────────────────────────────────────────────────────────────────────────
+(function stars(){
+  const N = 1800;
+  const g = new THREE.BufferGeometry();
+  const pos = new Float32Array(N*3);
+  const col = new Float32Array(N*3);
+  const c1 = new THREE.Color(0x00bcd4);
+  const c2 = new THREE.Color(0xffd700);
+  const c3 = new THREE.Color(0xd946ef);
+  for(let i=0;i<N;i++){
+    const r = 26 + Math.random()*18;
+    const t = Math.random()*Math.PI*2;
+    const p = Math.acos(2*Math.random()-1);
+    pos[i*3]   = r*Math.sin(p)*Math.cos(t);
+    pos[i*3+1] = r*Math.sin(p)*Math.sin(t)*0.4 + (Math.random()-0.5)*6;
+    pos[i*3+2] = r*Math.cos(p);
+    const pick = Math.random();
+    const c = pick < 0.5 ? c1 : (pick < 0.85 ? c2 : c3);
+    col[i*3]=c.r*0.7; col[i*3+1]=c.g*0.7; col[i*3+2]=c.b*0.7;
+  }
+  g.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  g.setAttribute('color',    new THREE.BufferAttribute(col,3));
+  const m = new THREE.PointsMaterial({ size:0.06, vertexColors:true, transparent:true,
+    opacity:0.9, sizeAttenuation:true, depthWrite:false });
+  scene.add(new THREE.Points(g, m));
+})();
+
+// ───────────────────────────────────────────────────────────────────────────
+// PROCEDURAL BRAIN — two hemispheres, sulci, noise-displaced sphere
+// ───────────────────────────────────────────────────────────────────────────
+const brainGroup = new THREE.Group();
+scene.add(brainGroup);
+
+const noise = new ImprovedNoise();
+
+function makeHemisphere(sign){
+  const g = new THREE.SphereGeometry(1.55, 96, 64);
+  const pos = g.attributes.position;
+  const tmp = new THREE.Vector3();
+  for(let i=0;i<pos.count;i++){
+    tmp.fromBufferAttribute(pos, i);
+    // offset the hemisphere center outward
+    const nx = tmp.x + sign*0.05;
+    // multi-octave noise for gyri/sulci
+    const n1 = noise.noise(nx*1.6,  tmp.y*1.6,  tmp.z*1.6)*0.18;
+    const n2 = noise.noise(nx*4.2,  tmp.y*4.2,  tmp.z*4.2)*0.06;
+    const n3 = noise.noise(nx*9.0,  tmp.y*9.0,  tmp.z*9.0)*0.025;
+    const n = n1 + n2 + n3;
+    // compress along the midline so hemispheres split cleanly
+    const midlineSquash = (sign>0 ? (tmp.x<0 ? 0.3 : 1) : (tmp.x>0 ? 0.3 : 1));
+    tmp.multiplyScalar(1 + n);
+    tmp.x += sign * 0.12 * midlineSquash;
+    // flatten underside slightly
+    if (tmp.y < -0.4) tmp.y *= 0.86;
+    pos.setXYZ(i, tmp.x, tmp.y, tmp.z);
+  }
+  g.computeVertexNormals();
+  return g;
+}
+
+const brainMat = new THREE.MeshPhysicalMaterial({
+  color: 0x6a2c70,
+  emissive: 0x2a1040,
+  emissiveIntensity: 0.25,
+  roughness: 0.55,
+  metalness: 0.15,
+  clearcoat: 0.4,
+  clearcoatRoughness: 0.6,
+  sheen: 0.4,
+  sheenColor: 0xff6ec7,
+  transmission: 0.0,
+  transparent: true,
+  opacity: 0.94
+});
+
+const brainMatWire = new THREE.MeshBasicMaterial({
+  color: 0x00bcd4, wireframe:true, transparent:true, opacity:0.12
+});
+
+const leftHemi  = new THREE.Mesh(makeHemisphere(-1), brainMat);
+const rightHemi = new THREE.Mesh(makeHemisphere(+1), brainMat);
+leftHemi.scale.set(0.85, 1, 1.1);
+rightHemi.scale.set(0.85, 1, 1.1);
+brainGroup.add(leftHemi, rightHemi);
+
+const leftWire  = new THREE.Mesh(leftHemi.geometry,  brainMatWire);
+const rightWire = new THREE.Mesh(rightHemi.geometry, brainMatWire);
+leftWire.scale.copy(leftHemi.scale);
+rightWire.scale.copy(rightHemi.scale);
+leftWire.visible = false; rightWire.visible = false;
+brainGroup.add(leftWire, rightWire);
+
+// Cerebellum (smaller sphere, lower-back)
+const cereb = new THREE.Mesh(
+  new THREE.SphereGeometry(0.55, 48, 32),
+  brainMat.clone()
+);
+cereb.material.emissive.setHex(0x442040);
+cereb.position.set(0, -0.55, -1.15);
+cereb.scale.set(1.2, 0.75, 0.9);
+brainGroup.add(cereb);
+
+// Brainstem (cylinder)
+const stem = new THREE.Mesh(
+  new THREE.CylinderGeometry(0.17, 0.24, 0.9, 32),
+  new THREE.MeshStandardMaterial({ color:0x4a1a4a, emissive:0x220818, roughness:0.8 })
+);
+stem.position.set(0, -1.2, -0.8);
+stem.rotation.x = Math.PI*0.08;
+brainGroup.add(stem);
+
+// ───────────────────────────────────────────────────────────────────────────
+// COUNCIL NODES — pulsing spheres at brain regions
+// ───────────────────────────────────────────────────────────────────────────
+const councilGroup = new THREE.Group();
+brainGroup.add(councilGroup);
+
+const councilNodes = COUNCIL.map(c=>{
+  const g = new THREE.SphereGeometry(c.size, 32, 24);
+  const m = new THREE.MeshBasicMaterial({ color:c.color, transparent:true, opacity:0.85 });
+  const mesh = new THREE.Mesh(g, m);
+  mesh.position.copy(c.anchor);
+  mesh.userData = { type:'council', ...c };
+  // halo ring
+  const ring = new THREE.Mesh(
+    new THREE.RingGeometry(c.size*1.3, c.size*1.5, 48),
+    new THREE.MeshBasicMaterial({ color:c.color, transparent:true, opacity:0.35, side:THREE.DoubleSide })
+  );
+  ring.lookAt(camera.position);
+  mesh.add(ring);
+  councilGroup.add(mesh);
+  return { mesh, ring, color:c.color, phase: Math.random()*Math.PI*2 };
+});
+
+// ───────────────────────────────────────────────────────────────────────────
+// 12 DOMAIN LOBES — orbit the brain as glowing icosahedra
+// ───────────────────────────────────────────────────────────────────────────
+const lobeGroup = new THREE.Group();
+scene.add(lobeGroup);
+
+const lobes = DOMAINS.map((d, i) => {
+  const angle = (i / DOMAINS.length) * Math.PI * 2 - Math.PI/2;
+  const r     = 3.6;
+  const y     = Math.sin(i * 0.7) * 0.6;
+  const size  = 0.22 + (d.atoms / 16) * 0.18; // grows with atom count
+
+  const group = new THREE.Group();
+  group.position.set(Math.cos(angle)*r, y, Math.sin(angle)*r);
+  group.userData = { type:'domain', ...d };
+
+  // core icosahedron
+  const core = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(size, 1),
+    new THREE.MeshPhysicalMaterial({
+      color: d.color, emissive: d.color, emissiveIntensity: 0.9,
+      roughness: 0.25, metalness: 0.4, clearcoat: 0.8
+    })
+  );
+  group.add(core);
+
+  // aura shell (larger, transparent)
+  const aura = new THREE.Mesh(
+    new THREE.SphereGeometry(size*2.2, 32, 24),
+    new THREE.MeshBasicMaterial({ color: d.color, transparent:true, opacity:0.08, depthWrite:false })
+  );
+  group.add(aura);
+
+  // thin ring (ownership)
+  const ring = new THREE.Mesh(
+    new THREE.RingGeometry(size*2.6, size*2.75, 64),
+    new THREE.MeshBasicMaterial({ color: d.color, transparent:true, opacity:0.5, side:THREE.DoubleSide })
+  );
+  ring.rotation.x = Math.PI/2 + (i*0.05);
+  group.add(ring);
+
+  // connection line back to brain center
+  const lineGeo = new THREE.BufferGeometry().setFromPoints([
+    group.position.clone(),
+    new THREE.Vector3(0, 0, 0)
+  ]);
+  const lineMat = new THREE.LineBasicMaterial({ color: d.color, transparent:true, opacity:0.22 });
+  const line = new THREE.Line(lineGeo, lineMat);
+  lobeGroup.add(line);
+
+  lobeGroup.add(group);
+  return { group, core, aura, ring, line, data: d, angle, baseY: y, size };
+});
+
+// === ATLAS OVERLAY — dark lobes render cold (ADR D4) · heat-mod auras · red pulses ===
+const __redPulses = [];
+lobes.forEach(L => {
+  const d = L.data;
+  if (d.liveDark === true) {
+    L.core.material.emissiveIntensity = 0.15;
+    L.core.material.opacity = 0.40; L.core.material.transparent = true;
+    L.aura.material.opacity  = 0.02;
+    L.ring.material.opacity  = 0.10;
+    L.line.material.opacity  = 0.05;
+  } else if (typeof d.liveHeat === 'number') {
+    L.core.material.emissiveIntensity = 0.45 + d.liveHeat * 1.0;
+    L.aura.material.opacity  = 0.06 + d.liveHeat * 0.18;
+    L.ring.material.opacity  = 0.28 + d.liveHeat * 0.45;
+    L.line.material.opacity  = 0.18 + d.liveHeat * 0.25;
+  }
+  if (d.liveRedOverdue && d.liveRedOverdue > 0) {
+    const pMat = new THREE.MeshBasicMaterial({ color:0xef4444, transparent:true, opacity:0.95, depthWrite:false });
+    const p = new THREE.Mesh(new THREE.SphereGeometry(L.size*0.42, 20, 14), pMat);
+    p.position.set(L.size*1.35, L.size*1.35, 0);
+    L.group.add(p);
+    __redPulses.push({ mesh:p, count:d.liveRedOverdue, phase: Math.random()*Math.PI*2 });
+  }
+});
+window.__redPulses = __redPulses;
+if (window.__atlasData) console.log('[atlas] overlay applied · red pulses:', __redPulses.length);
+
+// ───────────────────────────────────────────────────────────────────────────
+// NEURAL ACTIVITY — 2,048 animated line segments between brain surface points
+// ───────────────────────────────────────────────────────────────────────────
+const neuronCount = 2048;
+const neuronGeom  = new THREE.BufferGeometry();
+const neuronPos   = new Float32Array(neuronCount * 2 * 3);
+const neuronCol   = new Float32Array(neuronCount * 2 * 3);
+const neuronSeed  = new Float32Array(neuronCount);
+
+function randPointOnBrain(){
+  // random point inside brain bounding ellipsoid
+  const u = Math.random(), v = Math.random();
+  const theta = 2*Math.PI*u;
+  const phi   = Math.acos(2*v-1);
+  const r = 1.3 + Math.random()*0.25;
+  return new THREE.Vector3(
+    r*Math.sin(phi)*Math.cos(theta)*1.1,
+    r*Math.cos(phi)*0.95,
+    r*Math.sin(phi)*Math.sin(theta)*1.15
+  );
+}
+
+for(let i=0;i<neuronCount;i++){
+  const a = randPointOnBrain();
+  const b = randPointOnBrain();
+  neuronPos[i*6+0]=a.x; neuronPos[i*6+1]=a.y; neuronPos[i*6+2]=a.z;
+  neuronPos[i*6+3]=b.x; neuronPos[i*6+4]=b.y; neuronPos[i*6+5]=b.z;
+  // pick a color from teal → gold → magenta gradient by position
+  const t = (a.y + 1.5) / 3;
+  const c = t < 0.5
+    ? new THREE.Color().lerpColors(new THREE.Color(0x00bcd4), new THREE.Color(0xffd700), t*2)
+    : new THREE.Color().lerpColors(new THREE.Color(0xffd700), new THREE.Color(0xd946ef), (t-0.5)*2);
+  neuronCol[i*6+0]=c.r; neuronCol[i*6+1]=c.g; neuronCol[i*6+2]=c.b;
+  neuronCol[i*6+3]=c.r; neuronCol[i*6+4]=c.g; neuronCol[i*6+5]=c.b;
+  neuronSeed[i] = Math.random()*1000;
+}
+neuronGeom.setAttribute('position', new THREE.BufferAttribute(neuronPos, 3));
+neuronGeom.setAttribute('color',    new THREE.BufferAttribute(neuronCol, 3));
+
+const neuronMat = new THREE.LineBasicMaterial({
+  vertexColors:true, transparent:true, opacity:0.35, depthWrite:false, blending: THREE.AdditiveBlending
+});
+const neurons = new THREE.LineSegments(neuronGeom, neuronMat);
+brainGroup.add(neurons);
+
+// ───────────────────────────────────────────────────────────────────────────
+// WORLD TREE — Catmull-Rom spine from roots to canopy, brain sits at trunk
+// ───────────────────────────────────────────────────────────────────────────
+const treeGroup = new THREE.Group();
+scene.add(treeGroup);
+
+const treePoints = [
+  new THREE.Vector3( 0, -5.5, 0),  // deep roots
+  new THREE.Vector3( 0.3, -3.5, 0.2),
+  new THREE.Vector3(-0.1, -1.8, 0),
+  new THREE.Vector3( 0, 0, 0),     // HERE — now
+  new THREE.Vector3( 0.1, 1.8, 0.1),
+  new THREE.Vector3(-0.2, 3.8, 0),
+  new THREE.Vector3( 0, 6.5, 0)    // canopy / future
+];
+const spineCurve = new THREE.CatmullRomCurve3(treePoints, false, 'chordal', 0.4);
+const spineGeo = new THREE.TubeGeometry(spineCurve, 120, 0.07, 16, false);
+const spineMat = new THREE.MeshStandardMaterial({
+  color:0xffd700, emissive:0xffb800, emissiveIntensity:0.7,
+  roughness:0.3, metalness:0.7, transparent:true, opacity:0.75
+});
+treeGroup.add(new THREE.Mesh(spineGeo, spineMat));
+
+// branches: 24 smaller tubes radiating from each midpoint
+for(let i=0;i<24;i++){
+  const t = 0.2 + (i/23)*0.7;
+  const center = spineCurve.getPointAt(t);
+  const len = 0.6 + Math.random()*1.8;
+  const ang = (i/24)*Math.PI*2;
+  const dir = new THREE.Vector3(Math.cos(ang), 0.2+Math.random()*0.2, Math.sin(ang)).normalize();
+  const end = center.clone().add(dir.multiplyScalar(len));
+  const branchCurve = new THREE.CatmullRomCurve3([center, center.clone().lerp(end, 0.5).add(new THREE.Vector3(0,0.2,0)), end]);
+  const bGeo = new THREE.TubeGeometry(branchCurve, 20, 0.02, 8, false);
+  const bMat = new THREE.MeshStandardMaterial({
+    color:0xd4af37, emissive:0xa88820, emissiveIntensity:0.4,
+    transparent:true, opacity:0.5
+  });
+  treeGroup.add(new THREE.Mesh(bGeo, bMat));
+}
+
+// time markers along the spine
+const timeMarkers = [
+  { t:0.0, label:'roots · lineage' },
+  { t:0.35, label:'2026-04-21 · now' },
+  { t:0.7, label:'T+90 · canopy' },
+  { t:1.0, label:'stars · horizon' }
+];
+// (labels handled in HTML overlay pass; geometry just reserves the slots)
+timeMarkers.forEach(m=>{
+  const p = spineCurve.getPointAt(m.t);
+  const marker = new THREE.Mesh(
+    new THREE.SphereGeometry(0.08, 16, 12),
+    new THREE.MeshBasicMaterial({ color:0xffd700 })
+  );
+  marker.position.copy(p);
+  marker.userData = { type:'time', label:m.label };
+  treeGroup.add(marker);
+});
+
+// ───────────────────────────────────────────────────────────────────────────
+// ECOSYSTEM HALO — 13 surfaces on outer ellipse
+// ───────────────────────────────────────────────────────────────────────────
+const haloGroup = new THREE.Group();
+scene.add(haloGroup);
+
+const haloPoints = SURFACES.map((name, i) => {
+  const angle = (i / SURFACES.length) * Math.PI * 2;
+  const r     = 6.2;
+  const y     = Math.sin(i * 0.9 + 1) * 0.4 + 0.3;
+  return { name, pos: new THREE.Vector3(Math.cos(angle)*r, y, Math.sin(angle)*r) };
+});
+
+haloPoints.forEach((hp, i) => {
+  const node = new THREE.Mesh(
+    new THREE.SphereGeometry(0.09, 16, 12),
+    new THREE.MeshBasicMaterial({ color:0x00bcd4 })
+  );
+  node.position.copy(hp.pos);
+  node.userData = { type:'surface', name: hp.name };
+  haloGroup.add(node);
+
+  // halo ring segments connecting neighbors
+  const nxt = haloPoints[(i+1) % haloPoints.length];
+  const arcGeo = new THREE.BufferGeometry().setFromPoints([hp.pos, nxt.pos]);
+  haloGroup.add(new THREE.Line(arcGeo, new THREE.LineBasicMaterial({
+    color:0x00bcd4, transparent:true, opacity:0.25
+  })));
+});
+
+// ───────────────────────────────────────────────────────────────────────────
+// POST-PROCESSING — bloom + film grain + chromatic aberration
+// ───────────────────────────────────────────────────────────────────────────
+const composer = new EffectComposer(renderer);
+composer.setSize(window.innerWidth, window.innerHeight);
+composer.addPass(new RenderPass(scene, camera));
+
+const bloom = new UnrealBloomPass(
+  new THREE.Vector2(window.innerWidth, window.innerHeight),
+  0.95,  // strength
+  0.52,  // radius
+  0.38   // threshold
+);
+composer.addPass(bloom);
+
+// Chromatic aberration shader
+const ChromaShader = {
+  uniforms: {
+    tDiffuse: { value: null },
+    amount:   { value: 0.0015 }
+  },
+  vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader: `
+    uniform sampler2D tDiffuse; uniform float amount; varying vec2 vUv;
+    void main(){
+      vec2 dir = vUv - 0.5;
+      float r = texture2D(tDiffuse, vUv + dir*amount).r;
+      float g = texture2D(tDiffuse, vUv).g;
+      float b = texture2D(tDiffuse, vUv - dir*amount).b;
+      gl_FragColor = vec4(r, g, b, 1.0);
+    }
+  `
+};
+composer.addPass(new ShaderPass(ChromaShader));
+composer.addPass(new FilmPass(0.12, false));
+composer.addPass(new OutputPass());
+
+// ───────────────────────────────────────────────────────────────────────────
+// UI — legend, layer toggles, camera presets, hover/click
+// ───────────────────────────────────────────────────────────────────────────
+(function buildLegend(){
+  const el = document.getElementById('domain-legend');
+  DOMAINS.forEach(d=>{
+    const row = document.createElement('div');
+    row.className='row';
+    const hex = '#'+d.color.toString(16).padStart(6,'0');
+    row.innerHTML = `<span class="dot" style="color:${hex};background:${hex}"></span>
+      <span style="flex:1">${d.id}. ${d.name}</span>
+      <span style="color:var(--ink-dim);font-variant-numeric:tabular-nums">${d.atoms}</span>`;
+    el.appendChild(row);
+  });
+})();
+
+const layers = { brain:true, lobes:true, neurons:true, tree:true, halo:true, labels:false, wireframe:false };
+document.querySelectorAll('#layer-toggles .toggle').forEach(btn => {
+  btn.addEventListener('click', ()=>{
+    const k = btn.dataset.layer;
+    layers[k] = !layers[k];
+    btn.classList.toggle('active');
+    applyLayers();
+  });
+});
+
+function applyLayers(){
+  brainGroup.visible  = layers.brain || layers.neurons || layers.wireframe;
+  leftHemi.visible    = layers.brain && !layers.wireframe;
+  rightHemi.visible   = layers.brain && !layers.wireframe;
+  cereb.visible       = layers.brain && !layers.wireframe;
+  leftWire.visible    = layers.wireframe;
+  rightWire.visible   = layers.wireframe;
+  councilGroup.visible= layers.brain;
+  lobeGroup.visible   = layers.lobes;
+  neurons.visible     = layers.neurons;
+  treeGroup.visible   = layers.tree;
+  haloGroup.visible   = layers.halo;
+}
+
+// Camera presets
+const presets = {
+  front: { pos:new THREE.Vector3(0, 1.2, 8), target:new THREE.Vector3(0, 0.2, 0), rotate:false },
+  side : { pos:new THREE.Vector3(8, 0.8, 0), target:new THREE.Vector3(0, 0.2, 0), rotate:false },
+  top  : { pos:new THREE.Vector3(0.01, 9, 0.01), target:new THREE.Vector3(0, 0, 0), rotate:false },
+  orbit: { pos:new THREE.Vector3(5.5, 2.2, 7.5), target:new THREE.Vector3(0, 0.2, 0), rotate:true }
+};
+
+document.querySelectorAll('[data-view]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('[data-view]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const p = presets[btn.dataset.view];
+    animateCamera(p.pos, p.target, p.rotate);
+  });
+});
+
+let camAnim = null;
+function animateCamera(targetPos, targetTgt, rotate){
+  camAnim = {
+    fromP: camera.position.clone(),
+    toP:   targetPos.clone(),
+    fromT: controls.target.clone(),
+    toT:   targetTgt.clone(),
+    t:0, dur:900, rotate
+  };
+  controls.autoRotate = false;
+}
+
+// Hover/click
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+const focusLabel = document.getElementById('focus-label');
+const detailCard = document.getElementById('detail-card');
+
+renderer.domElement.addEventListener('mousemove', e=>{
+  mouse.x = (e.clientX / window.innerWidth)*2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight)*2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const hits = raycaster.intersectObjects([...lobeGroup.children, ...haloGroup.children, ...councilGroup.children], true);
+  const hit = hits.find(h => h.object.userData?.type || h.object.parent?.userData?.type);
+  if (hit){
+    const o = hit.object.userData?.type ? hit.object : hit.object.parent;
+    const v = o.position.clone().project(camera);
+    const x = (v.x * 0.5 + 0.5) * window.innerWidth;
+    const y = (-v.y * 0.5 + 0.5) * window.innerHeight;
+    focusLabel.style.left = x + 'px';
+    focusLabel.style.top  = y + 'px';
+    focusLabel.style.opacity = 1;
+    if (o.userData.type === 'domain'){
+      focusLabel.textContent = `§${o.userData.id} ${o.userData.name} · ${o.userData.luminor} · ${o.userData.atoms} atoms`;
+    } else if (o.userData.type === 'surface'){
+      focusLabel.textContent = o.userData.name;
+    } else if (o.userData.type === 'council'){
+      focusLabel.textContent = `${o.userData.name} · ${o.userData.anchor?.x !== undefined ? '' : ''}`;
+    }
+  } else {
+    focusLabel.style.opacity = 0;
+  }
+});
+
+renderer.domElement.addEventListener('click', e=>{
+  mouse.x = (e.clientX / window.innerWidth)*2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight)*2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const hits = raycaster.intersectObjects(lobeGroup.children, true);
+  const hit = hits.find(h => h.object.parent?.userData?.type === 'domain');
+  if (hit){
+    const d = hit.object.parent.userData;
+    const hex = '#'+d.color.toString(16).padStart(6,'0');
+    const pct = Math.min(100, Math.round(d.atoms / d.target * 100));
+    detailCard.innerHTML = `
+      <h2>Domain · §${d.id}</h2>
+      <h1 style="color:${hex};text-shadow:0 0 12px ${hex}40">${d.name}</h1>
+      <div class="kv" style="margin-top:8px">
+        <span class="k">Tag</span><span class="v">${d.tag}</span>
+        <span class="k">Luminor</span><span class="v">${d.luminor}</span>
+        <span class="k">Region</span><span class="v">${d.region}</span>
+        <span class="k">Atoms</span><span class="v">${d.atoms} / ${d.target}</span>
+      </div>
+      <div class="bar" style="margin-top:8px"><span style="width:${pct}%;background:${hex}"></span></div>
+      <p class="hint">Target is T+90 atom band. Below 2 atoms = /vault-atlas warns.</p>
+    `;
+  }
+});
+
+// ───────────────────────────────────────────────────────────────────────────
+// ANIMATION LOOP
+// ───────────────────────────────────────────────────────────────────────────
+const clock = new THREE.Clock();
+let frameCount = 0, fpsTime = performance.now();
+const fpsEl = document.getElementById('fps');
+const callsEl = document.getElementById('calls');
+
+function animate(){
+  const t  = clock.getElapsedTime();
+  const dt = clock.getDelta();
+
+  // Camera animation (preset lerp)
+  if (camAnim){
+    camAnim.t = Math.min(1, camAnim.t + dt*1000/camAnim.dur);
+    const e = 1 - Math.pow(1-camAnim.t, 3); // easeOutCubic
+    camera.position.lerpVectors(camAnim.fromP, camAnim.toP, e);
+    controls.target.lerpVectors(camAnim.fromT, camAnim.toT, e);
+    if (camAnim.t >= 1){ controls.autoRotate = camAnim.rotate; camAnim = null; }
+  }
+
+  // Brain subtle breathing
+  const breathe = 1 + Math.sin(t*0.6)*0.015;
+  leftHemi.scale.set(0.85*breathe, 1*breathe, 1.1*breathe);
+  rightHemi.scale.set(0.85*breathe, 1*breathe, 1.1*breathe);
+  leftWire.scale.copy(leftHemi.scale);
+  rightWire.scale.copy(rightHemi.scale);
+
+  // Council pulse
+  councilNodes.forEach((n, i)=>{
+    const p = 0.85 + Math.sin(t*1.8 + n.phase)*0.25;
+    n.mesh.scale.setScalar(p);
+    n.mesh.material.opacity = 0.7 + Math.sin(t*2.2 + n.phase)*0.2;
+    n.ring.lookAt(camera.position);
+  });
+
+  // Lobes orbit subtly + bob
+  lobes.forEach((L, i)=>{
+    const a = L.angle + t*0.05 + i*0.01;
+    const r = 3.6;
+    L.group.position.x = Math.cos(a)*r;
+    L.group.position.z = Math.sin(a)*r;
+    L.group.position.y = L.baseY + Math.sin(t*0.7 + i)*0.12;
+    L.group.rotation.y = t*0.3 + i;
+    L.core.rotation.x = t*0.6;
+    const pulse = 1 + Math.sin(t*1.5 + i)*0.08;
+    L.core.scale.setScalar(pulse);
+    L.ring.rotation.z += dt*0.1;
+    // update connecting line
+    const pts = L.line.geometry.attributes.position;
+    pts.setXYZ(0, L.group.position.x, L.group.position.y, L.group.position.z);
+    pts.needsUpdate = true;
+  });
+
+  // Red-overdue pulses (ADR-OR-001 — surface 3 RED creator issues)
+  if (window.__redPulses) {
+    window.__redPulses.forEach(p => {
+      const s = 1 + Math.sin(t*3.2 + p.phase)*0.35;
+      p.mesh.scale.setScalar(s);
+      p.mesh.material.opacity = 0.55 + Math.sin(t*3.2 + p.phase)*0.35;
+    });
+  }
+
+  // Neural activity — flicker opacity per-segment via shader-less trick:
+  // we modulate global opacity + do a slow position wobble on a subset
+  neuronMat.opacity = 0.22 + Math.sin(t*1.1)*0.12;
+  const wobPos = neurons.geometry.attributes.position;
+  // only update ~8% of segments per frame for performance
+  const start = (frameCount * 160) % neuronCount;
+  for (let i=0;i<160;i++){
+    const idx = (start + i) % neuronCount;
+    const s = neuronSeed[idx];
+    const dx = Math.sin(t*2 + s)*0.02;
+    const dy = Math.cos(t*1.7 + s*0.3)*0.02;
+    wobPos.array[idx*6+0] += dx;
+    wobPos.array[idx*6+1] += dy;
+    wobPos.array[idx*6+3] -= dx;
+    wobPos.array[idx*6+4] -= dy;
+  }
+  wobPos.needsUpdate = true;
+
+  // Halo gentle rotation
+  haloGroup.rotation.y = t*0.04;
+  treeGroup.rotation.y = Math.sin(t*0.2)*0.05;
+
+  // Light dance
+  keyLight.position.x = -4 + Math.sin(t*0.4)*1.5;
+  rimLight.position.y = -3 + Math.cos(t*0.3)*1.5;
+
+  controls.update();
+  composer.render();
+
+  frameCount++;
+  const now = performance.now();
+  if (now - fpsTime > 500){
+    fpsEl.textContent = Math.round(frameCount * 1000 / (now - fpsTime));
+    callsEl.textContent = renderer.info.render.calls;
+    frameCount = 0; fpsTime = now;
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ───────────────────────────────────────────────────────────────────────────
+// RESIZE
+// ───────────────────────────────────────────────────────────────────────────
+window.addEventListener('resize', ()=>{
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  composer.setSize(window.innerWidth, window.innerHeight);
+  bloom.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Keyboard — spacebar toggles autorotate, numbers jump to domain
+window.addEventListener('keydown', e=>{
+  if (e.code === 'Space'){ controls.autoRotate = !controls.autoRotate; }
+  if (e.code === 'KeyR'){ animateCamera(presets.orbit.pos, presets.orbit.target, true); }
+  const num = parseInt(e.key);
+  if (!isNaN(num) && num >= 1 && num <= 9 && lobes[num-1]){
+    const L = lobes[num-1];
+    const target = L.group.position.clone();
+    const dir = target.clone().normalize();
+    const camPos = target.clone().add(dir.multiplyScalar(2.5)).add(new THREE.Vector3(0, 0.5, 0));
+    animateCamera(camPos, target, false);
+  }
+});
+
+console.log('%c Arcanea Brain Atlas 3D ', 'background:#00bcd4;color:#050510;font-weight:bold;padding:4px 8px',
+  '\nNeurons:', neuronCount,
+  '\nDomains:', DOMAINS.length,
+  '\nSurfaces:', SURFACES.length);
+</script>
+</body>
+</html>
