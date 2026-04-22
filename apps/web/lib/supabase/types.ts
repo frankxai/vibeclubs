@@ -85,27 +85,43 @@ export interface ToolRecommendationRow {
 export interface Database {
   public: {
     Tables: {
-      users: { Row: UserRow; Insert: Partial<UserRow> & { id: string; email: string }; Update: Partial<UserRow> }
+      users: {
+        Row: UserRow
+        Insert: Partial<UserRow> & { id: string; email: string }
+        Update: Partial<UserRow>
+        Relationships: []
+      }
       clubs: {
         Row: ClubRow
-        Insert: Omit<ClubRow, 'id' | 'created_at' | 'updated_at' | 'tier' | 'is_active'> & Partial<ClubRow>
+        Insert: Omit<ClubRow, 'id' | 'created_at' | 'updated_at' | 'tier' | 'is_active'> &
+          Partial<ClubRow>
         Update: Partial<ClubRow>
+        Relationships: []
       }
       club_members: {
         Row: { club_id: string; user_id: string; role: MemberRole; joined_at: string }
         Insert: { club_id: string; user_id: string; role?: MemberRole }
         Update: Partial<{ role: MemberRole }>
+        Relationships: []
       }
       sessions: {
         Row: SessionRow
-        Insert: Omit<SessionRow, 'id' | 'started_at' | 'created_at' | 'metadata'> & Partial<SessionRow>
+        Insert: Omit<SessionRow, 'id' | 'started_at' | 'created_at' | 'metadata'> &
+          Partial<SessionRow>
         Update: Partial<SessionRow>
+        Relationships: []
       }
       tool_recommendations: {
         Row: ToolRecommendationRow
-        Insert: Omit<ToolRecommendationRow, 'id' | 'created_at' | 'is_featured'> & Partial<ToolRecommendationRow>
+        Insert: Omit<ToolRecommendationRow, 'id' | 'created_at' | 'is_featured'> &
+          Partial<ToolRecommendationRow>
         Update: Partial<ToolRecommendationRow>
+        Relationships: []
       }
     }
+    Views: Record<string, never>
+    Functions: Record<string, never>
+    Enums: Record<string, never>
+    CompositeTypes: Record<string, never>
   }
 }
