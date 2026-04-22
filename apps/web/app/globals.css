@@ -200,7 +200,7 @@ button,
   }
 }
 
-/* Aurora gradient background primitive */
+/* Aurora gradient background primitive (static) */
 .vc-aurora {
   position: absolute;
   inset: 0;
@@ -211,6 +211,183 @@ button,
     radial-gradient(900px 500px at 50% 100%, rgba(79, 209, 140, 0.08), transparent 60%);
   filter: blur(8px);
   opacity: 0.9;
+}
+
+/* Animated aurora — three drifting radial blobs */
+.vc-aurora-layer {
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  filter: blur(40px);
+  opacity: 0.85;
+  will-change: transform;
+}
+.vc-aurora-a {
+  background: radial-gradient(600px 360px at 20% 30%, rgba(139, 92, 246, 0.32), transparent 65%);
+  animation: vc-aurora-drift-a 34s ease-in-out infinite alternate;
+}
+.vc-aurora-b {
+  background: radial-gradient(620px 380px at 80% 20%, rgba(245, 158, 11, 0.22), transparent 65%);
+  animation: vc-aurora-drift-b 42s ease-in-out infinite alternate;
+}
+.vc-aurora-c {
+  background: radial-gradient(720px 420px at 50% 90%, rgba(79, 209, 140, 0.15), transparent 65%);
+  animation: vc-aurora-drift-c 48s ease-in-out infinite alternate;
+}
+@keyframes vc-aurora-drift-a {
+  0% {
+    transform: translate3d(-6%, -4%, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(8%, 6%, 0) scale(1.12);
+  }
+}
+@keyframes vc-aurora-drift-b {
+  0% {
+    transform: translate3d(6%, 2%, 0) scale(1.05);
+  }
+  100% {
+    transform: translate3d(-8%, 10%, 0) scale(0.98);
+  }
+}
+@keyframes vc-aurora-drift-c {
+  0% {
+    transform: translate3d(-4%, 10%, 0) scale(0.96);
+  }
+  100% {
+    transform: translate3d(10%, -4%, 0) scale(1.1);
+  }
+}
+
+/* Spark orb — CSS 3D-feel glow sphere for heroes */
+.vc-orb {
+  animation: vc-orb-pulse 8s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+.vc-orb-inner {
+  animation: vc-orb-pulse-inner 8s ease-in-out infinite;
+}
+@keyframes vc-orb-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+@keyframes vc-orb-pulse-inner {
+  0%,
+  100% {
+    transform: scale(0.95);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.85;
+  }
+}
+
+/* Conic gradient text — hero signature */
+.vc-gradient-text {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-size: 180% 180%;
+  animation: vc-gradient-drift 18s ease-in-out infinite;
+}
+.vc-gradient-text--warm {
+  background-image: conic-gradient(
+    from 220deg at 50% 50%,
+    #fcd34d,
+    #f59e0b,
+    #d97706,
+    #8b5cf6,
+    #fcd34d
+  );
+}
+.vc-gradient-text--cool {
+  background-image: conic-gradient(
+    from 220deg at 50% 50%,
+    #8b5cf6,
+    #6b3fa0,
+    #4fd18c,
+    #8b5cf6
+  );
+}
+.vc-gradient-text--signal {
+  background-image: conic-gradient(
+    from 220deg at 50% 50%,
+    #86efac,
+    #4fd18c,
+    #f59e0b,
+    #86efac
+  );
+}
+@keyframes vc-gradient-drift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Shimmer border — for primary CTAs on hover */
+.vc-shimmer-border {
+  position: relative;
+  isolation: isolate;
+}
+.vc-shimmer-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from 0deg,
+    rgba(252, 211, 77, 0.9),
+    rgba(139, 92, 246, 0.7),
+    rgba(79, 209, 140, 0.6),
+    rgba(252, 211, 77, 0.9)
+  );
+  -webkit-mask:
+    linear-gradient(#000, #000) content-box,
+    linear-gradient(#000, #000);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 240ms ease-out;
+  animation: vc-shimmer-spin 4s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+.vc-shimmer-border:hover::before,
+.vc-shimmer-border:focus-visible::before {
+  opacity: 1;
+}
+@keyframes vc-shimmer-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Respect reduced motion across every keyframe animation */
+@media (prefers-reduced-motion: reduce) {
+  .vc-aurora-a,
+  .vc-aurora-b,
+  .vc-aurora-c,
+  .vc-orb,
+  .vc-orb-inner,
+  .vc-gradient-text,
+  .vc-shimmer-border::before,
+  .live-dot {
+    animation: none !important;
+  }
 }
 
 /* Grain overlay — gives the dark palette texture like Vercel's site */
