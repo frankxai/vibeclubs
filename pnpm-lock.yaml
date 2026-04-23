@@ -90,6 +90,9 @@ importers:
       '@ai-sdk/anthropic':
         specifier: ^1.0.0
         version: 1.2.12(zod@3.25.76)
+      '@frankx/design-core':
+        specifier: workspace:*
+        version: link:../../packages/design-core
       '@radix-ui/react-dialog':
         specifier: ^1.1.1
         version: 1.1.15(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -207,6 +210,12 @@ importers:
         version: 2.1.9(@types/node@22.19.17)(jsdom@25.0.1)(less@4.6.4)(lightningcss@1.32.0)(sass@1.99.0)
 
   packages/ai-witness:
+    devDependencies:
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+
+  packages/design-core:
     devDependencies:
       typescript:
         specifier: ^5.5.0

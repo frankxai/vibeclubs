@@ -1,7 +1,16 @@
 @import 'tailwindcss';
+@import '@frankx/design-core/tokens.css';
+@import '@frankx/design-core/themes/vibeclubs.css';
 
 /* ------------------------------------------------------------------
    Vibeclubs design tokens.
+
+   The imports above bring the cross-brand tokens (via @frankx/design-core)
+   into :root. This @theme block below redeclares them so Tailwind 4
+   generates utility classes (bg-vibe-amber etc.). If you rename a token,
+   update both sides. Other brand sites consuming @frankx/design-core get
+   the var layer for free and add their own @theme bridge if they need
+   matching Tailwind utilities.
 
    Dark-only. Amber is the brand accent. Violet is the depth accent.
    Signal green signals "live / active / now." Everything else is

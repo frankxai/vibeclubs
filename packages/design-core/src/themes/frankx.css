@@ -1,0 +1,37 @@
+/*
+ * @frankx/design-core — frankx brand overlay
+ *
+ * Conscious-purple primary · tech-cyan secondary · music-orange accent ·
+ * growth-green success. Mirrors FrankX/BRAND_IDENTITY.md canonical palette.
+ */
+
+:root,
+:host {
+  /* --- Consciousness & spirituality --------------------------- */
+  --color-conscious-purple: #8b5cf6;
+  --color-conscious-deep: #6d28d9;
+  --color-conscious-light: #c4b5fd;
+
+  /* --- AI & technology ---------------------------------------- */
+  --color-tech-cyan: #06b6d4;
+  --color-tech-electric: #0891b2;
+  --color-tech-bright: #67e8f9;
+
+  /* --- Music & creativity ------------------------------------- */
+  --color-music-orange: #f97316;
+  --color-music-vibrant: #ea580c;
+  --color-music-warm: #fdba74;
+
+  /* --- Personal development / growth -------------------------- */
+  --color-growth-green: #10b981;
+  --color-growth-forest: #059669;
+  --color-growth-fresh: #6ee7b7;
+
+  /* --- Foundational ------------------------------------------- */
+  --color-deep-navy: #0f172a;
+  --color-midnight: #1e293b;
+  --color-cosmic-dark: #0f1629;
+  --color-cosmic-purple: #ab47c7;
+  --color-aurora-blue: #43bfe3;
+  --color-gold-accent: #f59e0b;
+}

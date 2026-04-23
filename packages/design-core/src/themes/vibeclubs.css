@@ -1,0 +1,39 @@
+/*
+ * @frankx/design-core — vibeclubs brand overlay
+ *
+ * Amber presence · violet depth · signal-green live. Pair with tokens.css +
+ * motion.css. Import order matters — this must come AFTER the base tokens.
+ */
+
+:root,
+:host {
+  /* --- Vibeclubs accents --------------------------------------- */
+  --color-vibe-amber: #f59e0b;
+  --color-vibe-amber-soft: #fcd34d;
+  --color-vibe-amber-deep: #d97706;
+
+  --color-vibe-violet: #6b3fa0;
+  --color-vibe-violet-soft: #8b5cf6;
+  --color-vibe-violet-deep: #4c1d95;
+
+  --color-vibe-signal: #4fd18c;
+  --color-vibe-signal-soft: #86efac;
+
+  --color-vibe-danger: #ef4444;
+  --color-vibe-warning: #fb923c;
+
+  /* --- Vibeclubs semantic borders ------------------------------ */
+  --color-border-accent: rgba(245, 158, 11, 0.4);
+  --color-border-signal: rgba(79, 209, 140, 0.4);
+
+  /* --- Vibeclubs glow shadows ---------------------------------- */
+  --shadow-amber-glow: 0 0 40px rgba(245, 158, 11, 0.2);
+  --shadow-violet-glow: 0 0 48px rgba(107, 63, 160, 0.28);
+
+  /* --- Phase colors (pomodoro state) --------------------------- */
+  --color-phase-idle: var(--color-vibe-amber);
+  --color-phase-focus: var(--color-vibe-signal);
+  --color-phase-break: var(--color-vibe-violet-soft);
+  --color-phase-ship: var(--color-vibe-amber-soft);
+  --color-phase-dance: #f472b6;
+}

@@ -3,6 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   typedRoutes: true,
   transpilePackages: [
+    '@frankx/design-core',
     '@vibeclubs/vibe-mix',
     '@vibeclubs/pomodoro-sync',
     '@vibeclubs/ai-witness',
