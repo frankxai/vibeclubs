@@ -19,7 +19,7 @@ type ShipDropProps = {
   secondsLeft?: number
   /** Crew handle of the current user, prefixes submitted drops. */
   handle?: string
-  /** Existing drops from other crew members (most recent first). */
+  /** Existing drops from other the crew (most recent first). */
   drops?: Drop[]
   /** Called when the user submits a drop. */
   onDrop?: (content: string) => void
@@ -28,7 +28,7 @@ type ShipDropProps = {
 
 /**
  * The ship-moment overlay — 60 seconds at the end of a focus cycle where
- * crew members drop a one-liner / link / emoji / screenshot summary of
+ * the crew drop a one-liner / link / emoji / screenshot summary of
  * what they just shipped. This is vibe mechanic #3 — the rhythm of share.
  *
  * Purely a UI shell right now; the transport layer (broadcasting drops

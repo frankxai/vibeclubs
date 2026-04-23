@@ -4,6 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Before anything else, read `VISION.md`.** It is the durable north star — philosophy, differentiators, vetoes, decision heuristics. Every scope-affecting decision must reconcile with it.
 
+Second file to read: **`docs/ops/README.md`**. It documents the ops harness — scripts, slash commands, Claude agents, CI workflows — so you can dispatch the right subagent / run the right script without asking.
+
 ## Commands
 
 pnpm workspaces, Turborepo, Node ≥ 20, pnpm ≥ 9.
@@ -20,11 +22,42 @@ pnpm test                         # turbo run test (not wired yet)
 pnpm format                       # prettier --write .
 pnpm format:check                 # prettier --check .
 
+# Ops harness — docs/ops/README.md
+pnpm audit:voice                  # scripts/voice-audit.mjs — voice-system scan
+pnpm audit:clubs                  # scripts/validate-clubs.mjs — frontmatter schema
+pnpm audit:all                    # both audits
+pnpm new:club                     # scripts/new-club.mjs — interactive club scaffold
+
 # Target a single workspace
 pnpm --filter @vibeclubs/web <cmd>
 pnpm --filter @vibeclubs/extension <cmd>
 pnpm --filter @vibeclubs/vibe-mix <cmd>
+pnpm --filter @frankx/design-core <cmd>
 ```
+
+## Ops harness — the short version
+
+| Slash command | What it does |
+|---|---|
+| `/vibe-check` | Full pre-flight — voice + clubs + format + typecheck + build |
+| `/club-add` | Interactive scaffold for a new `content/clubs/*.md` |
+| `/curate <slug>` | Dispatch the club-curator agent on a listing |
+| `/handover` | Write today's handover to `docs/ops/HANDOVER-<date>.md` |
+| `/ship` | Classic pre-ship runbook |
+| `/launch` | Full launch-day checklist |
+
+| Agent (dispatch via Agent tool) | When to use |
+|---|---|
+| `club-curator` | Any PR touching `content/clubs/*.md` |
+| `voice-auditor` | Any consumer copy change |
+| `vibe-mechanic-designer` | Brainstorming or reviewing a new mechanic |
+| `design-keeper` | UI / token / motion / 3D / design-core change |
+| `research-drafter` | Drafting an applied-research post |
+| `cohort-coordinator` | Planning a cohort format |
+| `ecosystem-planner` | Deciding which repo owns a new feature |
+| `session-recapper` | End-of-session handover doc |
+
+Specs at `.claude/agents/<name>.md`. CI workflows at `.github/workflows/`. Voice system canon at `.claude/skills/voice/SKILL.md` (auto-loads).
 
 Dev requires `apps/web/.env.local` populated per `apps/web/.env.example`. The site renders without Supabase configured (empty states), but `/start`, `/api/clubs`, `/api/sessions`, and `/api/witness` all require live credentials. See `ENVIRONMENT.md` for the full provisioning checklist.
 

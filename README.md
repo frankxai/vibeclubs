@@ -47,7 +47,7 @@ vibeclubs.ai/
 ├── ENVIRONMENT.md               What Frank needs to provision
 ├── SPRINT-1-PLAN.md             Apr 17 – May 14 2026 tickets
 ├── HANDOVER-SUPERSEDED.md       Prior Cowork handover, archived
-├── CLAUDE.md                    Claude Code operator guide
+├── CLAUDE.md                    Claude Code dev guide
 └── CONTRIBUTING.md              Code style + vetoes
 ```
 

@@ -185,7 +185,7 @@ The vibeclub doesn't replace your stack. It replaces the hour where you'd otherw
 One creator running the gencreator.ai research flywheel ships:
 
 - **1 source piece** per week (research, essay, lab report, or new stack entry)
-- **8 downstream outputs** per source (amplified by ACOS — post, YouTube, clips, X, LI, newsletter, community drop, library entry)
+- **8 downstream outputs** per source (amplified by ACOS — post, YouTube, clips, X, LI, newsletter, crew drop, library entry)
 - **3 vibeclubs a week** minimum — one for writing, one for shipping, one for making
 
 The vibeclubs are the metronome. The stack is the instrument. The output is what compounds.
@@ -202,7 +202,7 @@ One week of this produces more output than a month of reading more stack posts. 
 
 ### Read the full research
 
-The weekly applied-research reports on gencreator.ai/research benchmark specific stack recipes — which models for which tasks, what orchestration patterns actually save time, how cohort members built theirs. [gencreator.ai/research](https://gencreator.ai/research).
+The weekly applied-research reports on gencreator.ai/research benchmark specific stack recipes — which models for which tasks, what orchestration patterns actually save time, how past cohort grads built theirs. [gencreator.ai/research](https://gencreator.ai/research).
 `,
   },
 ]
