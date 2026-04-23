@@ -6,7 +6,8 @@ import { PLAYBOOK } from './playbook-data'
 
 export const metadata = {
   title: 'How it works',
-  description: 'Host, show up, ship. Four short reads to run your first vibeclub.',
+  description:
+    'Host, show up, ship. Short reads on running your first vibeclub, tuning the mixer, the recap, and turning a GenCreator stack into weekly output.',
 }
 
 export default function PlaybookIndex() {
@@ -20,8 +21,9 @@ export default function PlaybookIndex() {
             Host, show up, ship.
           </h1>
           <p className="text-lg text-white/60 mb-14 leading-relaxed">
-            Four short reads. Everything you need to host a vibeclub, tune the mixer, and understand
-            the recap. Free to read, free to fork, free to remix into your own scene.
+            Short reads. Everything you need to host a vibeclub, tune the mixer, read the recap, and
+            turn a GenCreator stack into weekly output. Free to read, free to fork, free to remix
+            into your own scene.
           </p>
           <ol className="space-y-2">
             {PLAYBOOK.map((p, i) => (
