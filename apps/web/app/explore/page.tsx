@@ -1,10 +1,12 @@
 import { Nav } from '@/components/nav'
 import { Footer } from '@/components/footer'
-import { ClubCard } from '@/components/club-card'
+import { ClubCard, type DirectoryClub } from '@/components/club-card'
 import { LinkButton } from '@/components/ui'
 import { Container, Eyebrow, Section, PageHeader } from '@/components/layout/container'
 import { EmptyState } from '@/components/patterns/empty-state'
+import { Reveal, Stagger, StaggerItem } from '@/components/motion'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { loadStaticClubs } from '@/lib/clubs/content'
 import type { ClubRow } from '@/lib/supabase/types'
 
 export const metadata = {
@@ -14,7 +16,7 @@ export const metadata = {
 }
 
 export default async function ExplorePage() {
-  const clubs = await loadClubs()
+  const clubs = await loadAllClubs()
   return (
     <main className="min-h-screen">
       <Nav />
@@ -26,13 +28,24 @@ export default async function ExplorePage() {
             subtitle={
               <>
                 Clubs hosting in the next week. Pick what matches your rhythm, your stack, your
-                timezone. No account to browse — sign in only when you&apos;re ready to host.
+                timezone. No account to browse — sign in only when you&apos;re ready to host, or
+                drop a markdown file to list an OSS club.
               </>
             }
             actions={
-              <LinkButton href="/start" variant="primary" size="lg">
-                Host your own →
-              </LinkButton>
+              <div className="flex flex-wrap gap-3">
+                <LinkButton href="/start" variant="primary" size="lg" className="vc-shimmer-border">
+                  Host your own →
+                </LinkButton>
+                <LinkButton
+                  href="https://github.com/frankxai/vibeclubs/tree/main/content/clubs"
+                  variant="outline"
+                  size="lg"
+                  external
+                >
+                  List via PR
+                </LinkButton>
+              </div>
             }
           />
           <div className="mt-14">
@@ -41,9 +54,9 @@ export default async function ExplorePage() {
                 title="Directory's warming up."
                 description={
                   <>
-                    Either Supabase isn&apos;t wired yet (see{' '}
-                    <code className="text-amber-300">ENVIRONMENT.md</code>) or you&apos;re the
-                    first. Host one and drag three friends in.
+                    Either you&apos;re the first, or `content/clubs/` is empty. Fork the repo and
+                    drop a <code className="text-amber-300">.md</code> file — your club lands on
+                    this page within a deploy.
                   </>
                 }
                 cta={
@@ -53,11 +66,15 @@ export default async function ExplorePage() {
                 }
               />
             ) : (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {clubs.map((club) => (
-                  <ClubCard key={club.id} club={club} />
-                ))}
-              </div>
+              <Stagger gap={0.06}>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {clubs.map((club) => (
+                    <StaggerItem key={`${club.source ?? 'supabase'}-${club.slug}`}>
+                      <ClubCard club={club} />
+                    </StaggerItem>
+                  ))}
+                </div>
+              </Stagger>
             )}
           </div>
         </Container>
@@ -67,7 +84,47 @@ export default async function ExplorePage() {
   )
 }
 
-async function loadClubs(): Promise<ClubRow[]> {
+async function loadAllClubs(): Promise<DirectoryClub[]> {
+  const staticClubs = loadStaticClubs()
+  const supabaseClubs = await loadSupabaseClubs()
+
+  // Merge, static winning on slug collision (OSS path is the canonical listing).
+  const seenSlugs = new Set(staticClubs.map((c) => c.slug))
+  const merged: DirectoryClub[] = [
+    ...staticClubs.map((c) => ({
+      slug: c.slug,
+      name: c.name,
+      description: c.description,
+      type: c.type,
+      platform: c.platform,
+      pomodoro_preset: c.preset,
+      featured: c.featured,
+      source: 'static' as const,
+    })),
+    ...supabaseClubs
+      .filter((c) => !seenSlugs.has(c.slug))
+      .map((c) => ({
+        slug: c.slug,
+        name: c.name,
+        description: c.description,
+        type: c.type,
+        platform: c.platform,
+        pomodoro_preset: c.pomodoro_preset,
+        featured: c.tier === 'featured',
+        source: 'supabase' as const,
+      })),
+  ]
+
+  // Featured first, then source (static before supabase), then alphabetical.
+  merged.sort((a, b) => {
+    if (a.featured !== b.featured) return a.featured ? -1 : 1
+    if (a.source !== b.source) return a.source === 'static' ? -1 : 1
+    return a.name.localeCompare(b.name)
+  })
+  return merged
+}
+
+async function loadSupabaseClubs(): Promise<ClubRow[]> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return []
   try {
     const supabase = await createSupabaseServerClient()

@@ -1,8 +1,24 @@
 import Link from 'next/link'
 import { Badge, PlatformPill, TypePill } from '@/components/ui'
-import type { ClubRow } from '@/lib/supabase/types'
+import type { ClubPlatform, ClubRow, ClubType, PomodoroPreset } from '@/lib/supabase/types'
 
-function prettyPreset(p: ClubRow['pomodoro_preset']) {
+/**
+ * Minimal shape a club needs to render in a card. Both Supabase rows and
+ * static MD-backed clubs satisfy this interface, letting the directory
+ * merge both sources without adapters per surface.
+ */
+export interface DirectoryClub {
+  slug: string
+  name: string
+  description: string | null
+  type: ClubType
+  platform: ClubPlatform
+  pomodoro_preset: PomodoroPreset
+  featured?: boolean
+  source?: 'static' | 'supabase'
+}
+
+function prettyPreset(p: PomodoroPreset) {
   switch (p) {
     case '25_5':
       return '25 / 5'
@@ -10,12 +26,31 @@ function prettyPreset(p: ClubRow['pomodoro_preset']) {
       return '50 / 10'
     case '90_20':
       return '90 / 20'
+    case 'vibe_coding_sprint':
+      return 'Sprint · 22 / 3'
+    case 'music_jam':
+      return 'Music jam · 90'
+    case 'dance_break':
+      return 'Dance break · 25 / 5'
+    case 'lightning':
+      return 'Lightning · 10 / 2'
     default:
       return 'Custom'
   }
 }
 
-export function ClubCard({ club, memberCount }: { club: ClubRow; memberCount?: number }) {
+export function ClubCard({
+  club,
+  memberCount,
+}: {
+  club: DirectoryClub | ClubRow
+  memberCount?: number
+}) {
+  const featured = 'featured' in club && club.featured === true
+  const tierFeatured = 'tier' in club && club.tier === 'featured'
+  const isFeatured = featured || tierFeatured
+  const source = 'source' in club ? club.source : undefined
+
   return (
     <Link
       href={`/club/${club.slug}`}
@@ -23,11 +58,18 @@ export function ClubCard({ club, memberCount }: { club: ClubRow; memberCount?: n
     >
       <div className="flex items-start justify-between gap-3 mb-4">
         <TypePill type={club.type} />
-        {club.tier === 'featured' && (
-          <Badge tone="amber" size="xs">
-            Featured
-          </Badge>
-        )}
+        <div className="flex items-center gap-2">
+          {source === 'static' && (
+            <Badge tone="outline" size="xs">
+              OSS
+            </Badge>
+          )}
+          {isFeatured && (
+            <Badge tone="amber" size="xs">
+              Featured
+            </Badge>
+          )}
+        </div>
       </div>
       <h3 className="text-lg font-semibold mb-1 leading-tight group-hover:text-amber-300 transition">
         {club.name}

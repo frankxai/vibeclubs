@@ -5,6 +5,8 @@ import { Footer } from '@/components/footer'
 import { ShareButton } from '@/components/share-button'
 import { Container, Eyebrow, Section } from '@/components/layout/container'
 import { Fact } from '@/components/patterns/stat-block'
+import { PulseBeat } from '@/components/motion'
+import { Reveal } from '@/components/motion'
 import {
   Badge,
   Card,
@@ -15,11 +17,38 @@ import {
   PlatformPill,
   TypePill,
 } from '@/components/ui'
+import { bpmForPreset } from '@vibeclubs/pomodoro-sync'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
-import type { ClubRow, SessionRow, ToolRecommendationRow } from '@/lib/supabase/types'
+import { findStaticClub } from '@/lib/clubs/content'
+import type {
+  ClubPlatform,
+  ClubType,
+  PomodoroPreset,
+  SessionRow,
+  ToolRecommendationRow,
+} from '@/lib/supabase/types'
 
 interface Params {
   params: Promise<{ slug: string }>
+}
+
+/**
+ * Unified club shape. Both static (OSS markdown) and hosted (Supabase) clubs
+ * get normalized to this so the render doesn't branch per source.
+ */
+interface Club {
+  slug: string
+  name: string
+  description: string
+  type: ClubType
+  platform: ClubPlatform
+  platform_url: string | null
+  pomodoro_preset: PomodoroPreset
+  ambient_preset: string
+  schedule: string
+  featured: boolean
+  host: string | null
+  source: 'static' | 'supabase'
 }
 
 export async function generateMetadata({ params }: Params) {
@@ -44,6 +73,7 @@ export default async function ClubPage({ params }: Params) {
 
   const site = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://vibeclubs.ai'
   const clubUrl = `${site}/club/${club.slug}`
+  const bpm = bpmForPreset(club.pomodoro_preset)
 
   // JSON-LD for rich results
   const jsonLd = {
@@ -51,7 +81,7 @@ export default async function ClubPage({ params }: Params) {
     '@type': 'Event',
     name: club.name,
     description: club.description ?? `A ${club.type} vibeclub on ${club.platform}`,
-    eventStatus: club.is_active ? 'EventScheduled' : 'EventCancelled',
+    eventStatus: 'EventScheduled',
     eventAttendanceMode: 'OnlineEventAttendanceMode',
     organizer: {
       '@type': 'Organization',
@@ -70,24 +100,38 @@ export default async function ClubPage({ params }: Params) {
       />
       <Section pad="md" className="pt-28">
         <Container width="lg" as="article">
-          <div className="flex items-start justify-between gap-6 flex-wrap">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-4 flex-wrap">
-                <TypePill type={club.type} />
-                <PlatformPill platform={club.platform} />
-                {club.tier === 'featured' && (
-                  <Badge tone="amber" size="xs">
-                    Featured
-                  </Badge>
+          <Reveal direction="up">
+            <div className="flex items-start justify-between gap-6 flex-wrap">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-4 flex-wrap">
+                  <TypePill type={club.type} />
+                  <PlatformPill platform={club.platform} />
+                  {club.featured && (
+                    <Badge tone="amber" size="xs">
+                      Featured
+                    </Badge>
+                  )}
+                  {club.source === 'static' && (
+                    <Badge tone="outline" size="xs">
+                      OSS listing
+                    </Badge>
+                  )}
+                  <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.22em] font-mono text-white/40 ml-2">
+                    <PulseBeat bpm={bpm} size={8} tone="signal" />
+                    {bpm} bpm
+                  </div>
+                </div>
+                <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-5 leading-[1.02]">
+                  {club.name}
+                </h1>
+                <p className="text-lg text-white/70 max-w-2xl leading-relaxed">{club.description}</p>
+                {club.host && (
+                  <p className="mt-4 text-sm text-white/45 font-mono">Hosted by {club.host}</p>
                 )}
               </div>
-              <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-5 leading-[1.02]">
-                {club.name}
-              </h1>
-              <p className="text-lg text-white/70 max-w-2xl leading-relaxed">{club.description}</p>
+              <JoinButton club={club} />
             </div>
-            <JoinButton club={club} />
-          </div>
+          </Reveal>
 
           <div className="grid md:grid-cols-3 gap-3 mt-12">
             <Fact label="Rhythm" value={prettyPreset(club.pomodoro_preset)} />
@@ -160,8 +204,8 @@ export default async function ClubPage({ params }: Params) {
               <li className="flex gap-4">
                 <span className="font-mono text-xs text-amber-400 pt-1 w-6">03</span>
                 <span>
-                  Click start. Everyone in the club on the extension hits the same pomodoro. Recap
-                  lands on your profile when you&apos;re done.
+                  Click start. Everyone in the club on the extension hits the same pomodoro at{' '}
+                  {bpm} BPM. Recap lands on your profile when you&apos;re done.
                 </span>
               </li>
             </ol>
@@ -178,7 +222,7 @@ export default async function ClubPage({ params }: Params) {
   )
 }
 
-function JoinButton({ club }: { club: ClubRow }) {
+function JoinButton({ club }: { club: Club }) {
   if (!club.platform_url) {
     return (
       <button
@@ -191,13 +235,19 @@ function JoinButton({ club }: { club: ClubRow }) {
     )
   }
   return (
-    <LinkButton href={club.platform_url} variant="primary" size="lg" external>
+    <LinkButton
+      href={club.platform_url}
+      variant="primary"
+      size="lg"
+      className="vc-shimmer-border"
+      external
+    >
       Join →
     </LinkButton>
   )
 }
 
-function prettyPreset(p: ClubRow['pomodoro_preset']) {
+function prettyPreset(p: PomodoroPreset) {
   switch (p) {
     case '25_5':
       return '25 / 5'
@@ -205,6 +255,14 @@ function prettyPreset(p: ClubRow['pomodoro_preset']) {
       return '50 / 10'
     case '90_20':
       return '90 / 20'
+    case 'vibe_coding_sprint':
+      return 'Sprint · 22 / 3 ship × 3 + 15 break'
+    case 'music_jam':
+      return 'Music jam · 45 + 5 dance + 40 + ship'
+    case 'dance_break':
+      return 'Dance break · 25 / 5'
+    case 'lightning':
+      return 'Lightning · 10 / 2 ship × 5'
     default:
       return 'Custom'
   }
@@ -215,37 +273,73 @@ function capitalize(s: string) {
 }
 
 async function loadClub(slug: string): Promise<{
-  club: ClubRow | null
+  club: Club | null
   sessions: SessionRow[]
   tools: ToolRecommendationRow[]
 }> {
+  // Static (OSS) path wins first — zero-backend clubs are canonical.
+  const staticClub = findStaticClub(slug)
+  if (staticClub) {
+    return {
+      club: {
+        slug: staticClub.slug,
+        name: staticClub.name,
+        description: staticClub.description,
+        type: staticClub.type,
+        platform: staticClub.platform,
+        platform_url: staticClub.platform_url ?? null,
+        pomodoro_preset: staticClub.preset,
+        ambient_preset: staticClub.ambient,
+        schedule: staticClub.schedule,
+        featured: staticClub.featured ?? false,
+        host: staticClub.host,
+        source: 'static',
+      },
+      sessions: [],
+      tools: [],
+    }
+  }
+
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
     return { club: null, sessions: [], tools: [] }
   }
   try {
     const supabase = await createSupabaseServerClient()
-    const { data: club } = await supabase
+    const { data: row } = await supabase
       .from('clubs')
       .select('*')
       .eq('slug', slug)
       .eq('is_active', true)
       .maybeSingle()
-    if (!club) return { club: null, sessions: [], tools: [] }
+    if (!row) return { club: null, sessions: [], tools: [] }
     const [{ data: sessions }, { data: tools }] = await Promise.all([
       supabase
         .from('sessions')
         .select('*')
-        .eq('club_id', club.id)
+        .eq('club_id', row.id)
         .order('started_at', { ascending: false })
         .limit(10),
       supabase
         .from('tool_recommendations')
         .select('*')
-        .eq('club_type', club.type)
+        .eq('club_type', row.type)
         .limit(6),
     ])
     return {
-      club: club as ClubRow,
+      club: {
+        slug: row.slug,
+        name: row.name,
+        description: row.description ?? '',
+        type: row.type,
+        platform: row.platform,
+        platform_url: row.platform_url,
+        pomodoro_preset: row.pomodoro_preset,
+        ambient_preset: row.ambient_preset,
+        schedule: row.schedule ?? '',
+        featured: row.tier === 'featured',
+        host: null,
+        source: 'supabase',
+      },
       sessions: (sessions ?? []) as SessionRow[],
       tools: (tools ?? []) as ToolRecommendationRow[],
     }
