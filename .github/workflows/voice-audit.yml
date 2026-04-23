@@ -1,0 +1,34 @@
+name: Voice audit
+
+on:
+  pull_request:
+    paths:
+      - 'apps/**'
+      - 'content/**'
+      - 'README.md'
+      - 'scripts/voice-audit.mjs'
+      - '.github/workflows/voice-audit.yml'
+  push:
+    branches: [main]
+
+concurrency:
+  group: voice-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: Scan consumer surfaces for forbidden vocabulary
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Run voice audit
+        run: node scripts/voice-audit.mjs
+      - name: Report result
+        if: failure()
+        run: |
+          echo "::error::Voice audit failed. See VISION.md §Voice and .claude/skills/voice/SKILL.md."
+          echo "::notice::Run 'pnpm audit:voice' locally to reproduce."

@@ -1,0 +1,34 @@
+name: Club validate
+
+on:
+  pull_request:
+    paths:
+      - 'content/clubs/**'
+      - 'scripts/validate-clubs.mjs'
+      - '.github/workflows/club-validate.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'content/clubs/**'
+
+concurrency:
+  group: club-validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate content/clubs/*.md frontmatter
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate clubs
+        run: node scripts/validate-clubs.mjs
+      - name: Report result
+        if: failure()
+        run: |
+          echo "::error::Club validation failed. See content/clubs/README.md for the frontmatter schema."
+          echo "::notice::Run 'pnpm audit:clubs' locally to reproduce."

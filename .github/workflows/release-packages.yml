@@ -1,0 +1,58 @@
+name: Release packages
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+      - '@frankx/design-core@*'
+      - '@vibeclubs/*@*'
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: 'Dry run (no publish)'
+        required: false
+        default: 'true'
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish @frankx/* and @vibeclubs/* to npm
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org'
+          cache: pnpm
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Build packages
+        run: pnpm --filter './packages/**' build
+      - name: Dry-run publish
+        if: github.event.inputs.dry-run == 'true'
+        run: pnpm --filter './packages/**' publish --dry-run --access public --no-git-checks
+      - name: Publish to npm
+        if: github.event.inputs.dry-run != 'true'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm --filter './packages/**' publish --access public --no-git-checks
+      - name: Summary
+        run: |
+          echo "## Release summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Packages in this workspace:" >> $GITHUB_STEP_SUMMARY
+          ls packages >> $GITHUB_STEP_SUMMARY
