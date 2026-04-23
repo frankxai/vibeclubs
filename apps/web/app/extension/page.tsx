@@ -13,6 +13,8 @@ import {
   LinkButton,
   TimerDisplay,
 } from '@/components/ui'
+import { Reveal } from '@/components/motion'
+import { VibeOrbDemo } from '@/components/three'
 
 export const metadata = {
   title: 'Install the extension',
@@ -27,56 +29,85 @@ export default function ExtensionPage() {
       <Section pad="md" className="pt-28">
         <Container width="xl">
           <div className="grid lg:grid-cols-[1.2fr_1fr] gap-16 items-start">
-            <div>
-              <Eyebrow>Chrome extension</Eyebrow>
-              <h1 className="text-4xl md:text-6xl font-bold tracking-tight mt-4 mb-5 leading-[1.02]">
-                Install the vibe.
-              </h1>
-              <p className="text-xl text-white/60 mb-10 leading-relaxed max-w-xl">
-                Overlay the mixer and timer on Meet, Discord, YouTube, or any tab where you&apos;re
-                locking in. This is where the vibeclub actually happens.
-              </p>
-              <div className="flex flex-wrap gap-3 mb-12">
-                <LinkButton
-                  href="https://chrome.google.com/webstore/detail/vibeclubs/placeholder"
-                  variant="primary"
-                  size="lg"
-                  external
-                >
-                  Install from Chrome Web Store
-                </LinkButton>
-                <LinkButton
-                  href="https://github.com/frankxai/vibeclubs/releases"
-                  variant="outline"
-                  size="lg"
-                  external
-                >
-                  Sideload latest
-                </LinkButton>
+            <Reveal direction="up">
+              <div>
+                <Eyebrow>Chrome extension</Eyebrow>
+                <h1 className="text-4xl md:text-6xl font-bold tracking-tight mt-4 mb-5 leading-[1.02]">
+                  Install the vibe.
+                </h1>
+                <p className="text-xl text-white/60 mb-10 leading-relaxed max-w-xl">
+                  Overlay the mixer and timer on Meet, Discord, YouTube, or any tab where
+                  you&apos;re locking in. This is where the vibeclub actually happens.
+                </p>
+                <div className="flex flex-wrap gap-3 mb-12">
+                  <LinkButton
+                    href="https://chrome.google.com/webstore/detail/vibeclubs/placeholder"
+                    variant="primary"
+                    size="lg"
+                    className="vc-shimmer-border"
+                    external
+                  >
+                    Install from Chrome Web Store
+                  </LinkButton>
+                  <LinkButton
+                    href="https://github.com/frankxai/vibeclubs/releases"
+                    variant="outline"
+                    size="lg"
+                    external
+                  >
+                    Sideload latest
+                  </LinkButton>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-white/50">
+                  <Badge tone="signal" dot size="xs">
+                    Manifest V3
+                  </Badge>
+                  <span className="text-white/30">·</span>
+                  <span>MIT · React 18 · Plasmo</span>
+                </div>
               </div>
-              <div className="flex items-center gap-3 text-sm text-white/50">
-                <Badge tone="signal" dot size="xs">
-                  Manifest V3
-                </Badge>
-                <span className="text-white/30">·</span>
-                <span>MIT · React 18 · Plasmo</span>
-              </div>
-            </div>
+            </Reveal>
 
             {/* Live preview of the overlay */}
-            <OverlayPreview />
+            <Reveal direction="left" delay={0.15}>
+              <OverlayPreview />
+            </Reveal>
           </div>
+        </Container>
+      </Section>
+
+      {/* THE VIBE, VISUALIZED — R3F signature moment */}
+      <Section pad="lg" border>
+        <Container width="xl">
+          <Reveal>
+            <div className="text-center mb-14">
+              <Eyebrow className="inline-flex">The vibe, visualized</Eyebrow>
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight mt-4 max-w-3xl mx-auto">
+                Three layers. One sphere. Drag the faders.
+              </h2>
+              <p className="text-white/55 max-w-2xl mx-auto mt-5 text-lg leading-relaxed">
+                A custom WebGL shader paints each fader as a color band on the orb. This is the
+                same three-layer mix the extension runs — amber ambient, violet music, signal-green
+                page audio — previewed here so you can feel the knobs before you install.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal direction="up" delay={0.15}>
+            <VibeOrbDemo className="mt-6" />
+          </Reveal>
         </Container>
       </Section>
 
       <Section pad="lg" border>
         <Container width="xl">
-          <div className="text-center mb-14">
-            <Eyebrow className="inline-flex">What it adds</Eyebrow>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight mt-4">
-              Four things. Nothing else.
-            </h2>
-          </div>
+          <Reveal>
+            <div className="text-center mb-14">
+              <Eyebrow className="inline-flex">What it adds</Eyebrow>
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight mt-4">
+                Four things. Nothing else.
+              </h2>
+            </div>
+          </Reveal>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             <Card pad="md" interactive>
               <CardEyebrow>Mixer</CardEyebrow>
@@ -104,7 +135,8 @@ export default function ExtensionPage() {
                 Auto-notes.
               </CardTitle>
               <CardBody>
-                Session ends, Claude writes a two-liner, card lands on your profile. Shareable to X.
+                Session ends, Claude writes a two-liner, card lands on your profile. Shareable to
+                X.
               </CardBody>
             </Card>
             <Card pad="md" interactive>

@@ -19,6 +19,7 @@ import { TierCard } from '@/components/patterns/tier-card'
 import { SessionCardPreview } from '@/components/patterns/session-card-preview'
 import { AnimatedAurora } from '@/components/patterns/animated-aurora'
 import { SparkOrb } from '@/components/patterns/spark-orb'
+import { LaunchMark } from '@/components/patterns/launch-mark'
 import { Reveal, Stagger, StaggerItem, GradientText } from '@/components/motion'
 import { CLUB_TEMPLATES } from '@/lib/club-templates'
 
@@ -430,6 +431,9 @@ export default function Page() {
       <Section pad="lg" border>
         <Container width="md" className="text-center">
           <Reveal direction="scale">
+            <div className="flex justify-center mb-8">
+              <LaunchMark size={96} className="drop-shadow-[0_0_32px_rgba(245,158,11,0.35)]" />
+            </div>
             <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
               Lock in. Ship. Post the card.
             </h2>

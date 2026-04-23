@@ -5,6 +5,8 @@ import { Avatar, LinkButton } from '@/components/ui'
 import { Container, Eyebrow, Section } from '@/components/layout/container'
 import { StatBlock } from '@/components/patterns/stat-block'
 import { SessionCardPreview } from '@/components/patterns/session-card-preview'
+import { Reveal, Stagger, StaggerItem } from '@/components/motion'
+import { SessionCard3DLazy } from '@/components/three'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import type { SessionRow, UserRow } from '@/lib/supabase/types'
 
@@ -25,29 +27,73 @@ export default async function UserPage({ params }: Params) {
   const totalFocus = sessions.reduce((sum, s) => sum + s.focus_minutes, 0)
   const totalCycles = sessions.reduce((sum, s) => sum + s.pomodoro_cycles, 0)
 
+  const latest = sessions[0]
+
   return (
     <main className="min-h-screen">
       <Nav />
       <Section pad="md" className="pt-28">
-        <Container width="lg">
-          <div className="flex items-center gap-6 mb-12">
-            <Avatar src={user.avatar_url} name={user.display_name ?? handle} size="xl" />
-            <div className="min-w-0">
-              <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
-                {user.display_name ?? handle}
-              </h1>
-              <div className="text-white/50 font-mono text-sm">@{user.handle ?? handle}</div>
-              {user.bio && <p className="text-white/70 mt-3 max-w-xl">{user.bio}</p>}
+        <Container width="xl">
+          <div className="grid lg:grid-cols-[1.1fr_1fr] gap-14 items-center mb-16">
+            <Reveal direction="up">
+              <div>
+                <div className="flex items-center gap-6 mb-6">
+                  <Avatar src={user.avatar_url} name={user.display_name ?? handle} size="xl" />
+                  <div className="min-w-0">
+                    <h1 className="text-3xl md:text-5xl font-bold tracking-tight">
+                      {user.display_name ?? handle}
+                    </h1>
+                    <div className="text-white/50 font-mono text-sm">@{user.handle ?? handle}</div>
+                  </div>
+                </div>
+                {user.bio && (
+                  <p className="text-white/70 max-w-xl leading-relaxed text-lg">{user.bio}</p>
+                )}
+              </div>
+            </Reveal>
+            <Reveal direction="left" delay={0.15}>
+              <div className="relative">
+                <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#0e0e16] to-[#0a0a0f] p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="text-[10px] uppercase tracking-[0.22em] font-mono text-white/45">
+                      latest vibeclub
+                    </div>
+                    <div className="text-[10px] uppercase tracking-[0.18em] font-mono text-white/40">
+                      drag · tap to flip
+                    </div>
+                  </div>
+                  <SessionCard3DLazy className="w-full aspect-[2/1.1]" />
+                  {latest && (
+                    <div className="flex items-center justify-between mt-5 text-xs text-white/55 font-mono">
+                      <span>
+                        {latest.focus_minutes}min · {latest.pomodoro_cycles} cycle
+                        {latest.pomodoro_cycles === 1 ? '' : 's'}
+                      </span>
+                      <span>{new Date(latest.started_at).toLocaleDateString()}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </Reveal>
+          </div>
+
+          <Stagger gap={0.08}>
+            <div className="grid grid-cols-3 gap-3 mb-16">
+              <StaggerItem>
+                <StatBlock value={sessions.length.toString()} label="Sessions" />
+              </StaggerItem>
+              <StaggerItem>
+                <StatBlock value={totalFocus.toString()} label="Minutes shipped" tone="signal" />
+              </StaggerItem>
+              <StaggerItem>
+                <StatBlock value={totalCycles.toString()} label="Cycles" tone="violet" />
+              </StaggerItem>
             </div>
-          </div>
+          </Stagger>
 
-          <div className="grid grid-cols-3 gap-3 mb-16">
-            <StatBlock value={sessions.length.toString()} label="Sessions" />
-            <StatBlock value={totalFocus.toString()} label="Minutes shipped" tone="signal" />
-            <StatBlock value={totalCycles.toString()} label="Cycles" tone="violet" />
-          </div>
-
-          <Eyebrow className="mb-4">Recent vibeclubs</Eyebrow>
+          <Reveal>
+            <Eyebrow className="mb-4">Recent vibeclubs</Eyebrow>
+          </Reveal>
           {sessions.length === 0 ? (
             <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-10 text-center">
               <p className="text-white/50 text-sm mb-5">
@@ -58,19 +104,22 @@ export default async function UserPage({ params }: Params) {
               </LinkButton>
             </div>
           ) : (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {sessions.map((s) => (
-                <SessionCardPreview
-                  key={s.id}
-                  clubName={'vibeclub'}
-                  handle={`@${user.handle ?? handle}`}
-                  minutes={s.focus_minutes}
-                  cycles={s.pomodoro_cycles}
-                  platform={(s.platform_used ?? 'Discord') as string}
-                  date={new Date(s.started_at).toLocaleDateString()}
-                />
-              ))}
-            </div>
+            <Stagger gap={0.06}>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {sessions.map((s) => (
+                  <StaggerItem key={s.id}>
+                    <SessionCardPreview
+                      clubName={'vibeclub'}
+                      handle={`@${user.handle ?? handle}`}
+                      minutes={s.focus_minutes}
+                      cycles={s.pomodoro_cycles}
+                      platform={(s.platform_used ?? 'Discord') as string}
+                      date={new Date(s.started_at).toLocaleDateString()}
+                    />
+                  </StaggerItem>
+                ))}
+              </div>
+            </Stagger>
           )}
         </Container>
       </Section>

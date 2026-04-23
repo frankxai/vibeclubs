@@ -3,6 +3,8 @@ import { Nav } from '@/components/nav'
 import { Footer } from '@/components/footer'
 import { Container, Eyebrow, Section } from '@/components/layout/container'
 import { Card, CardBody, CardEyebrow, CardTitle, CodeBlock, LinkButton } from '@/components/ui'
+import { Reveal, Stagger, StaggerItem } from '@/components/motion'
+import { DevelopersNetworkLazy } from '@/components/three'
 
 export const metadata = {
   title: 'Developers',
@@ -44,36 +46,57 @@ export default function DevelopersPage() {
       <Nav />
       <Section pad="md" className="pt-28">
         <Container width="xl">
-          <Eyebrow>Developers</Eyebrow>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight mt-4 mb-5 leading-[1.02]">
-            Fork the vibe.
-          </h1>
-          <p className="text-xl text-white/60 max-w-2xl leading-relaxed mb-12">
-            Every capability in the extension ships as a framework-agnostic npm package. MIT. Drop
-            them into Electron, Raycast, Tauri, your own site. Nothing requires vibeclubs.ai.
-          </p>
+          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-16 items-center">
+            <Reveal direction="up">
+              <div>
+                <Eyebrow>Developers</Eyebrow>
+                <h1 className="text-4xl md:text-6xl font-bold tracking-tight mt-4 mb-5 leading-[1.02]">
+                  Fork the vibe.
+                </h1>
+                <p className="text-xl text-white/60 max-w-2xl leading-relaxed mb-8">
+                  Every capability in the extension ships as a framework-agnostic npm package. MIT.
+                  Drop them into Electron, Raycast, Tauri, your own site. Nothing requires
+                  vibeclubs.ai.
+                </p>
+                <div className="flex items-center gap-3 text-xs font-mono text-white/45">
+                  <span>{PACKAGES.length} packages</span>
+                  <span className="text-white/20">·</span>
+                  <span>MIT</span>
+                  <span className="text-white/20">·</span>
+                  <span>zero lock-in</span>
+                </div>
+              </div>
+            </Reveal>
+            <Reveal direction="left" delay={0.2}>
+              <DevelopersNetworkLazy className="w-full aspect-square" />
+            </Reveal>
+          </div>
         </Container>
       </Section>
 
       <Section pad="sm">
         <Container width="xl">
-          <div className="grid md:grid-cols-2 gap-4">
-            {PACKAGES.map((p) => (
-              <Card key={p.name} pad="lg" interactive>
-                <CardEyebrow className="font-mono text-amber-300">{p.name}</CardEyebrow>
-                <CardBody className="mb-5 text-white/70 leading-relaxed">{p.desc}</CardBody>
-                <div className="rounded-xl bg-black/40 border border-white/5 px-3 py-2 font-mono text-xs text-white/60 mb-4 overflow-x-auto">
-                  {p.entry}
-                </div>
-                <a
-                  href={`https://www.npmjs.com/package/${p.name}`}
-                  className="text-xs font-mono text-white/40 hover:text-amber-300 transition"
-                >
-                  npm →
-                </a>
-              </Card>
-            ))}
-          </div>
+          <Stagger gap={0.08}>
+            <div className="grid md:grid-cols-2 gap-4">
+              {PACKAGES.map((p) => (
+                <StaggerItem key={p.name}>
+                  <Card pad="lg" interactive className="h-full">
+                    <CardEyebrow className="font-mono text-amber-300">{p.name}</CardEyebrow>
+                    <CardBody className="mb-5 text-white/70 leading-relaxed">{p.desc}</CardBody>
+                    <div className="rounded-xl bg-black/40 border border-white/5 px-3 py-2 font-mono text-xs text-white/60 mb-4 overflow-x-auto">
+                      {p.entry}
+                    </div>
+                    <a
+                      href={`https://www.npmjs.com/package/${p.name}`}
+                      className="text-xs font-mono text-white/40 hover:text-amber-300 transition"
+                    >
+                      npm →
+                    </a>
+                  </Card>
+                </StaggerItem>
+              ))}
+            </div>
+          </Stagger>
         </Container>
       </Section>
 

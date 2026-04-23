@@ -376,6 +376,81 @@ button,
   }
 }
 
+/* Launch mark — orbital animation */
+.vc-launch-mark--animated .vc-mark-orbit {
+  animation: vc-mark-orbit-spin 14s linear infinite;
+}
+.vc-launch-mark--animated .vc-mark-core {
+  animation: vc-mark-core-pulse 3.6s ease-in-out infinite;
+  transform-origin: center;
+}
+.vc-launch-mark--animated .vc-mark-core-inner {
+  animation: vc-mark-core-pulse 3.6s ease-in-out infinite reverse;
+  transform-origin: center;
+}
+@keyframes vc-mark-orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes vc-mark-core-pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* Interactive range input styled as a horizontal fader */
+.vc-fader-range {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 8px;
+  background: linear-gradient(
+    to right,
+    var(--accent, #fcd34d) 0%,
+    var(--accent, #fcd34d) var(--fill, 50%),
+    rgba(255, 255, 255, 0.1) var(--fill, 50%),
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+  transition: box-shadow 160ms ease-out;
+}
+.vc-fader-range:hover {
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.04);
+}
+.vc-fader-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--accent, #fcd34d);
+  border: 3px solid #0a0a0f;
+  box-shadow: 0 0 12px var(--accent, #fcd34d);
+  cursor: grab;
+  transition: transform 120ms ease-out;
+}
+.vc-fader-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--accent, #fcd34d);
+  border: 3px solid #0a0a0f;
+  box-shadow: 0 0 12px var(--accent, #fcd34d);
+  cursor: grab;
+}
+.vc-fader-range:active::-webkit-slider-thumb {
+  cursor: grabbing;
+  transform: scale(1.1);
+}
+
 /* Respect reduced motion across every keyframe animation */
 @media (prefers-reduced-motion: reduce) {
   .vc-aurora-a,
@@ -385,7 +460,10 @@ button,
   .vc-orb-inner,
   .vc-gradient-text,
   .vc-shimmer-border::before,
-  .live-dot {
+  .live-dot,
+  .vc-launch-mark--animated .vc-mark-orbit,
+  .vc-launch-mark--animated .vc-mark-core,
+  .vc-launch-mark--animated .vc-mark-core-inner {
     animation: none !important;
   }
 }
