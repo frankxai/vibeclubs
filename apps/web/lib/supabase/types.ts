@@ -13,7 +13,15 @@ export type ClubType =
 
 export type ClubPlatform = 'meet' | 'discord' | 'zoom' | 'in_person' | 'other'
 
-export type PomodoroPreset = '25_5' | '50_10' | '90_20' | 'custom'
+export type PomodoroPreset =
+  | '25_5'
+  | '50_10'
+  | '90_20'
+  | 'custom'
+  | 'vibe_coding_sprint'
+  | 'music_jam'
+  | 'dance_break'
+  | 'lightning'
 
 export type UserTier = 'free' | 'builder' | 'opener'
 

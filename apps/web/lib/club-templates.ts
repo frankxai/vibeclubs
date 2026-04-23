@@ -107,6 +107,62 @@ export const CLUB_TEMPLATES: ClubTemplate[] = [
         'Silent co-study. 25/5 pomodoros, four rounds. Nature ambient. Cameras optional but presence required.',
     },
   },
+  {
+    id: 'vibe-coding-sprint',
+    label: 'Vibe coding sprint',
+    emoji: '⚡',
+    tagline: 'Three 22-min blocks with ship checkpoints',
+    defaults: {
+      type: 'coding',
+      platform: 'discord',
+      pomodoro_preset: 'vibe_coding_sprint',
+      ambient_preset: 'lofi',
+      description:
+        'Sprint mode for vibe coders. Three 22-min focus blocks with a 60-second ship moment after each. Post a commit, a screenshot, or the emoji that describes what you just shipped. Stakes are visible — miss three drops in a row and you drop off the card.',
+    },
+  },
+  {
+    id: 'music-jam',
+    label: 'Music jam',
+    emoji: '♬',
+    tagline: '90-min with a mid-session dance break',
+    defaults: {
+      type: 'music',
+      platform: 'discord',
+      pomodoro_preset: 'music_jam',
+      ambient_preset: 'space',
+      description:
+        'Suno producers, beatmakers, Ableton ninjas. 45-min build + 5-min dance break at 128 BPM + 40-min final push + 60-second ship. Mixer music fader auto-boosts during the dance. Ship one track per session.',
+    },
+  },
+  {
+    id: 'dance-break',
+    label: 'Dance break',
+    emoji: '◉',
+    tagline: 'Alternating 25-min focus + 5-min dance',
+    defaults: {
+      type: 'music',
+      platform: 'discord',
+      pomodoro_preset: 'dance_break',
+      ambient_preset: 'lofi',
+      description:
+        'For creators who body-vibe. 25-min focus, 5-min dance break at 128 BPM. Shared rhythm lattice pulses to the beat on every extension. Optional "I\'m dancing" toggle — crew sees a soft shimmer on the shared page.',
+    },
+  },
+  {
+    id: 'lightning',
+    label: 'Lightning ship',
+    emoji: '⋆',
+    tagline: 'Five 10-min bursts with ship checkpoints',
+    defaults: {
+      type: 'writing',
+      platform: 'meet',
+      pomodoro_preset: 'lightning',
+      ambient_preset: 'cafe',
+      description:
+        'Fast outputs for designers and writers. Five 10-min bursts with a 2-min ship moment after each. Meant for timed outputs — headline drafts, thumbnails, cover options. One page per burst.',
+    },
+  },
 ]
 
 export function findTemplate(id: string | null | undefined): ClubTemplate | undefined {

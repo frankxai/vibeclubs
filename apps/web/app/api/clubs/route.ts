@@ -14,7 +14,16 @@ const ClubInput = z.object({
   platform: z.enum(['meet', 'discord', 'zoom', 'in_person', 'other']),
   platform_url: z.string().url().optional().or(z.literal('')),
   schedule: z.string().max(120).optional().default(''),
-  pomodoro_preset: z.enum(['25_5', '50_10', '90_20', 'custom']),
+  pomodoro_preset: z.enum([
+    '25_5',
+    '50_10',
+    '90_20',
+    'custom',
+    'vibe_coding_sprint',
+    'music_jam',
+    'dance_break',
+    'lightning',
+  ]),
   ambient_preset: z.string().max(30).default('lofi'),
 })
 

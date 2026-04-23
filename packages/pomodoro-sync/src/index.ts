@@ -14,19 +14,37 @@
  * This is deliberately NOT a presence-based design — Supabase presence is
  * heavier than broadcast and we don't need membership semantics, just timer
  * sync.
+ *
+ * Vibe mechanics (2026-04-23):
+ *   - BPM is a first-class field on state. Drives shared beat visuals across
+ *     surfaces. Defaults from preset; overridable per config.
+ *   - Phases extended beyond focus/break to include `ship` (60s share-back
+ *     moment at end of focus) and `dance` (movement break for music clubs).
+ *   - New presets: `vibe_coding_sprint`, `music_jam`, `dance_break`,
+ *     `lightning` — each a choreographed sequence of phases. See
+ *     `docs/strategy/vibe-mechanics.md` for the design rationale.
  */
 
 import type { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js'
 
-export type Phase = 'idle' | 'focus' | 'break'
+export type Phase = 'idle' | 'focus' | 'break' | 'ship' | 'dance'
 
-export type Preset = '25_5' | '50_10' | '90_20' | 'custom'
+export type Preset =
+  | '25_5'
+  | '50_10'
+  | '90_20'
+  | 'custom'
+  | 'vibe_coding_sprint'
+  | 'music_jam'
+  | 'dance_break'
+  | 'lightning'
 
 export interface PomodoroConfig {
   clubId: string
   preset: Preset
   custom?: { focus: number; break: number } // minutes
   cyclesBeforeLongBreak?: number
+  bpm?: number
   supabase?: SupabaseClient
   identity?: string
 }
@@ -37,9 +55,10 @@ export interface PomodoroState {
   startedAt: number | null // epoch ms
   durationMs: number
   hostId: string | null
+  bpm: number
 }
 
-type EventName = 'tick' | 'phase' | 'complete' | 'synced'
+type EventName = 'tick' | 'phase' | 'complete' | 'ship' | 'dance' | 'synced'
 type Listener<T = unknown> = (payload: T) => void
 
 export interface Pomodoro {
@@ -51,20 +70,85 @@ export interface Pomodoro {
   dispose(): void
 }
 
-const PRESET_MINUTES: Record<Preset, { focus: number; break: number }> = {
-  '25_5': { focus: 25, break: 5 },
-  '50_10': { focus: 50, break: 10 },
-  '90_20': { focus: 90, break: 20 },
-  custom: { focus: 25, break: 5 },
+/**
+ * Phase sequences per preset. Each array describes one cycle of the preset;
+ * the machine loops it. Values in seconds so we can express 60s ship moments
+ * cleanly. Durations outside this table come from `custom` config.
+ */
+const PRESET_SEQUENCES: Record<Preset, Array<{ phase: Phase; durationSec: number }>> = {
+  '25_5': [
+    { phase: 'focus', durationSec: 25 * 60 },
+    { phase: 'break', durationSec: 5 * 60 },
+  ],
+  '50_10': [
+    { phase: 'focus', durationSec: 50 * 60 },
+    { phase: 'break', durationSec: 10 * 60 },
+  ],
+  '90_20': [
+    { phase: 'focus', durationSec: 90 * 60 },
+    { phase: 'break', durationSec: 20 * 60 },
+  ],
+  // Sprint — three focus+ship cycles, then one long break. High stakes.
+  vibe_coding_sprint: [
+    { phase: 'focus', durationSec: 22 * 60 },
+    { phase: 'ship', durationSec: 60 },
+    { phase: 'focus', durationSec: 22 * 60 },
+    { phase: 'ship', durationSec: 60 },
+    { phase: 'focus', durationSec: 22 * 60 },
+    { phase: 'ship', durationSec: 60 },
+    { phase: 'break', durationSec: 15 * 60 },
+  ],
+  // Music jam — 90 minutes, a single dance break in the middle, then a long tail.
+  music_jam: [
+    { phase: 'focus', durationSec: 45 * 60 },
+    { phase: 'dance', durationSec: 5 * 60 },
+    { phase: 'focus', durationSec: 40 * 60 },
+    { phase: 'ship', durationSec: 60 },
+  ],
+  // Dance break — alternating focus + dance, for music-producer crews.
+  dance_break: [
+    { phase: 'focus', durationSec: 25 * 60 },
+    { phase: 'dance', durationSec: 5 * 60 },
+  ],
+  // Lightning — fast outputs, 5 × (10 focus + 2 ship), total ~60 min.
+  lightning: [
+    { phase: 'focus', durationSec: 10 * 60 },
+    { phase: 'ship', durationSec: 2 * 60 },
+  ],
+  custom: [
+    { phase: 'focus', durationSec: 25 * 60 },
+    { phase: 'break', durationSec: 5 * 60 },
+  ],
+}
+
+/**
+ * Default BPM per preset. Surfaces that render shared beat visuals read this
+ * from the state. Callers can override via `config.bpm`.
+ */
+const PRESET_BPM: Record<Preset, number> = {
+  '25_5': 95,
+  '50_10': 95,
+  '90_20': 100,
+  vibe_coding_sprint: 120,
+  music_jam: 108,
+  dance_break: 128,
+  lightning: 118,
+  custom: 95,
 }
 
 export function createPomodoro(config: PomodoroConfig): Pomodoro {
   const identity = config.identity ?? crypto.randomUUID()
   const listeners = new Map<EventName, Set<Listener>>()
-  const durations = {
-    focus: ((config.custom?.focus ?? PRESET_MINUTES[config.preset].focus) * 60_000) | 0,
-    break: ((config.custom?.break ?? PRESET_MINUTES[config.preset].break) * 60_000) | 0,
-  }
+
+  // Build the phase sequence for this preset, substituting custom minutes
+  // when the preset is 'custom'.
+  const sequence =
+    config.preset === 'custom' && config.custom
+      ? [
+          { phase: 'focus' as const, durationSec: config.custom.focus * 60 },
+          { phase: 'break' as const, durationSec: config.custom.break * 60 },
+        ]
+      : PRESET_SEQUENCES[config.preset]
 
   const state: PomodoroState = {
     phase: 'idle',
@@ -72,7 +156,11 @@ export function createPomodoro(config: PomodoroConfig): Pomodoro {
     startedAt: null,
     durationMs: 0,
     hostId: null,
+    bpm: config.bpm ?? PRESET_BPM[config.preset],
   }
+
+  // Pointer into `sequence`. Advances after each phase completes.
+  let seqIndex = 0
 
   let ticker: ReturnType<typeof setInterval> | null = null
   let channel: RealtimeChannel | null = null
@@ -89,20 +177,27 @@ export function createPomodoro(config: PomodoroConfig): Pomodoro {
   }
 
   function advancePhase() {
+    // A focus completion is a cycle increment for session-card stats.
     if (state.phase === 'focus') {
       emit<number>('complete', state.cycle + 1)
       state.cycle += 1
-      enterPhase('break', durations.break)
-    } else if (state.phase === 'break') {
-      enterPhase('focus', durations.focus)
     }
+
+    // Fire typed events for special phases so UI surfaces can open overlays.
+    if (state.phase === 'ship') emit('ship', state.cycle)
+    if (state.phase === 'dance') emit('dance', state.cycle)
+
+    seqIndex = (seqIndex + 1) % sequence.length
+    const next = sequence[seqIndex]
+    if (!next) return
+    enterPhase(next.phase, next.durationSec * 1000)
   }
 
   function enterPhase(phase: Phase, durationMs: number) {
     state.phase = phase
     state.durationMs = durationMs
     state.startedAt = Date.now()
-    emit('phase', { phase, cycle: state.cycle, durationMs })
+    emit('phase', { phase, cycle: state.cycle, durationMs, bpm: state.bpm })
     broadcast('state', state)
   }
 
@@ -145,7 +240,10 @@ export function createPomodoro(config: PomodoroConfig): Pomodoro {
     start() {
       if (state.phase !== 'idle') return
       state.hostId = identity
-      enterPhase('focus', durations.focus)
+      seqIndex = 0
+      const first = sequence[0]
+      if (!first) return
+      enterPhase(first.phase, first.durationSec * 1000)
       ticker = setInterval(tick, 1000)
     },
 
@@ -163,6 +261,7 @@ export function createPomodoro(config: PomodoroConfig): Pomodoro {
       state.cycle = 0
       state.startedAt = null
       state.durationMs = 0
+      seqIndex = 0
       broadcast('state', state)
     },
 
@@ -178,4 +277,20 @@ export function createPomodoro(config: PomodoroConfig): Pomodoro {
       if (channel && config.supabase) void config.supabase.removeChannel(channel)
     },
   }
+}
+
+/**
+ * Public helper — lets consumers read the default BPM of a preset without
+ * instantiating the machine. Used by session-card and suno-bridge.
+ */
+export function bpmForPreset(preset: Preset): number {
+  return PRESET_BPM[preset]
+}
+
+/**
+ * Public helper — expose the phase sequence for a preset so UIs can render
+ * the full cycle structure before starting.
+ */
+export function sequenceForPreset(preset: Preset): Array<{ phase: Phase; durationSec: number }> {
+  return [...PRESET_SEQUENCES[preset]]
 }
