@@ -43,8 +43,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid recap event' }, { status: 400 })
   }
 
+  // Mock mode — when no API key is configured we still return a usable recap
+  // so launch demos and CI smoke tests don't 503. The mock is deterministic from
+  // the event payload so it reads as "real" but never costs a token.
   if (!process.env.ANTHROPIC_API_KEY) {
-    return NextResponse.json({ error: 'Recap not configured' }, { status: 503 })
+    const text = mockRecap(parsed.data)
+    return new Response(text, {
+      headers: { 'Content-Type': 'text/plain; charset=utf-8', 'X-Recap-Mode': 'mock' },
+    })
   }
 
   const { system, user } = witnessPrompt(parsed.data)
@@ -63,4 +69,32 @@ export async function POST(request: NextRequest) {
   })
 
   return result.toTextStreamResponse()
+}
+
+/**
+ * Deterministic stand-in for the live Claude recap. Each event type maps to a
+ * one-line acknowledgement that obeys the same "never interrupt, never coach"
+ * rule as the witness prompt. Used when ANTHROPIC_API_KEY is unset.
+ */
+function mockRecap(event: z.infer<typeof Event>): string {
+  const club = event.club_name ?? event.club_id ?? 'the vibeclub'
+  const cycle = event.cycle_number ?? 0
+  switch (event.type) {
+    case 'session_start':
+      return `Locked in. ${club} is on the clock.`
+    case 'pomodoro_start':
+      return `Focus block ${cycle || 1} live.`
+    case 'pomodoro_complete':
+      return `Cycle ${cycle} shipped. Stretch.`
+    case 'pomodoro_break_start':
+      return `Break. Stand up.`
+    case 'pomodoro_break_complete':
+      return `Back in. One more cycle.`
+    case 'session_end':
+      return `Session done. Card on its way to your profile.`
+    case 'milestone':
+      return `That's a marker. Keep going.`
+    default:
+      return `Noted.`
+  }
 }

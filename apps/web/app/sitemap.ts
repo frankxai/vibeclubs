@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { PLAYBOOK } from './playbook/playbook-data'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { loadStaticClubs } from '@/lib/clubs/content'
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://vibeclubs.ai'
 
@@ -25,12 +26,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }))
 
-  const clubRoutes: MetadataRoute.Sitemap = await loadClubRoutes()
+  // Static (markdown) clubs always ship in the sitemap — they're the canonical
+  // listing path per ADR-002. Hosted (Supabase) clubs layer on top, deduped on
+  // slug collision (static wins, mirroring /explore).
+  const staticClubRoutes: MetadataRoute.Sitemap = loadStaticClubs().map((c) => ({
+    url: `${SITE}/club/${c.slug}`,
+    lastModified: now,
+    priority: c.featured ? 0.85 : 0.8,
+  }))
 
-  return [...staticRoutes, ...playbookRoutes, ...clubRoutes]
+  const staticSlugs = new Set(staticClubRoutes.map((r) => r.url))
+  const supabaseClubRoutes = (await loadSupabaseClubRoutes()).filter((r) => !staticSlugs.has(r.url))
+
+  return [...staticRoutes, ...playbookRoutes, ...staticClubRoutes, ...supabaseClubRoutes]
 }
 
-async function loadClubRoutes(): Promise<MetadataRoute.Sitemap> {
+async function loadSupabaseClubRoutes(): Promise<MetadataRoute.Sitemap> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return []
   try {
     const supabase = await createSupabaseServerClient()

@@ -40,6 +40,9 @@ export default function VibeOverlay() {
   const [timerMs, setTimerMs] = useState(0)
   const [state, setState] = useState<PomodoroState | null>(null)
   const [recap, setRecap] = useState<string>('')
+  const [shipText, setShipText] = useState<string>('')
+  const [shipFlash, setShipFlash] = useState<boolean>(false)
+  const [danceFlash, setDanceFlash] = useState<boolean>(false)
 
   // Load config from extension storage
   useEffect(() => {
@@ -104,6 +107,21 @@ export default function VibeOverlay() {
         })
         .catch(() => null)
       if (resp?.text) setRecap(resp.text)
+    })
+    p.on<number>('ship', () => {
+      // 60-second share-back moment. Auto-uncollapse + amber flash.
+      setCollapsed(false)
+      setView('timer')
+      setShipText('')
+      setShipFlash(true)
+      setTimeout(() => setShipFlash(false), 1200)
+    })
+    p.on<number>('dance', () => {
+      // Movement break. Open the overlay so the BPM pulse + nudge are visible.
+      setCollapsed(false)
+      setView('timer')
+      setDanceFlash(true)
+      setTimeout(() => setDanceFlash(false), 1200)
     })
     setPomo(p)
   }
@@ -170,21 +188,52 @@ export default function VibeOverlay() {
       </nav>
 
       {view === 'timer' && (
-        <section className="vc-section">
-          <div className={`vc-timer vc-timer-${state?.phase ?? 'idle'}`}>{mmss || '25:00'}</div>
-          <div className="vc-phase">
-            {state?.phase ?? 'idle'} {state && <span className="vc-cycle">· cycle {state.cycle + 1}</span>}
-          </div>
-          <div className="vc-primary-controls">
-            <button onClick={() => pomo?.start()}>Start</button>
-            <button onClick={() => pomo?.pause()}>Pause</button>
-            <button onClick={() => pomo?.reset()}>End</button>
-          </div>
-          {recap && (
-            <div className="vc-recap">
-              <div className="vc-recap-label">Recap</div>
-              <div className="vc-recap-text">{recap}</div>
-            </div>
+        <section
+          className={`vc-section ${shipFlash ? 'vc-flash-ship' : ''} ${danceFlash ? 'vc-flash-dance' : ''}`}
+        >
+          {state?.phase === 'ship' ? (
+            <ShipMoment
+              mmss={mmss}
+              cycle={state.cycle}
+              text={shipText}
+              onChange={setShipText}
+              onLog={() => {
+                if (!shipText.trim()) return
+                void chrome.runtime
+                  .sendMessage({
+                    type: 'recap:event',
+                    event: {
+                      type: 'ship',
+                      club_id: clubSlug,
+                      cycle_number: state.cycle,
+                      text: shipText.trim(),
+                    },
+                  })
+                  .catch(() => null)
+                setShipText('')
+              }}
+            />
+          ) : state?.phase === 'dance' ? (
+            <DanceBreak mmss={mmss} cycle={state.cycle} bpm={state.bpm} />
+          ) : (
+            <>
+              <div className={`vc-timer vc-timer-${state?.phase ?? 'idle'}`}>{mmss || '25:00'}</div>
+              <div className="vc-phase">
+                {state?.phase ?? 'idle'}{' '}
+                {state && <span className="vc-cycle">· cycle {state.cycle + 1}</span>}
+              </div>
+              <div className="vc-primary-controls">
+                <button onClick={() => pomo?.start()}>Start</button>
+                <button onClick={() => pomo?.pause()}>Pause</button>
+                <button onClick={() => pomo?.reset()}>End</button>
+              </div>
+              {recap && (
+                <div className="vc-recap">
+                  <div className="vc-recap-label">Recap</div>
+                  <div className="vc-recap-text">{recap}</div>
+                </div>
+              )}
+            </>
           )}
         </section>
       )}
@@ -281,4 +330,81 @@ function formatTime(ms: number): string {
   const mm = Math.floor(total / 60)
   const ss = total % 60
   return `${mm.toString().padStart(2, '0')}:${ss.toString().padStart(2, '0')}`
+}
+
+/**
+ * Ship moment — a 60-second share-back beat at end of focus. The crew types
+ * one line about what they shipped. No dropdown, no markdown — just text +
+ * Enter. Posted as a witness event so the recap can credit it.
+ */
+function ShipMoment({
+  mmss,
+  cycle,
+  text,
+  onChange,
+  onLog,
+}: {
+  mmss: string
+  cycle: number
+  text: string
+  onChange: (s: string) => void
+  onLog: () => void
+}) {
+  return (
+    <div className="vc-ship">
+      <div className="vc-ship-header">
+        <span className="vc-ship-icon" aria-hidden>
+          ✦
+        </span>
+        <span className="vc-ship-label">ship moment</span>
+        <span className="vc-ship-time">{mmss || '01:00'}</span>
+      </div>
+      <div className="vc-ship-prompt">What did you ship in cycle {cycle}?</div>
+      <textarea
+        className="vc-ship-input"
+        value={text}
+        rows={2}
+        maxLength={140}
+        autoFocus
+        placeholder="One line. Anything. The thing you locked in for."
+        onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault()
+            onLog()
+          }
+        }}
+      />
+      <div className="vc-ship-foot">
+        <span className="vc-ship-count">{text.length}/140</span>
+        <button className="vc-ship-button" onClick={onLog} disabled={!text.trim()}>
+          Log it · ↵
+        </button>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Dance break — a movement break for music + producer crews. BPM-synced
+ * pulse uses the state.bpm value broadcast from pomodoro-sync. No tracking,
+ * no logging — pure permission to move.
+ */
+function DanceBreak({ mmss, cycle, bpm }: { mmss: string; cycle: number; bpm: number }) {
+  const beatMs = Math.max(200, Math.round(60_000 / Math.max(40, Math.min(200, bpm))))
+  return (
+    <div className="vc-dance" style={{ ['--vc-beat-ms' as string]: `${beatMs}ms` }}>
+      <div className="vc-dance-header">
+        <span className="vc-dance-label">dance break</span>
+        <span className="vc-dance-bpm">{bpm} bpm</span>
+      </div>
+      <div className="vc-dance-pulse" aria-hidden>
+        <div className="vc-dance-ring" />
+        <div className="vc-dance-ring vc-dance-ring-2" />
+        <div className="vc-dance-ring vc-dance-ring-3" />
+      </div>
+      <div className="vc-dance-time">{mmss || '05:00'}</div>
+      <div className="vc-dance-nudge">stand up · move · cycle {cycle}</div>
+    </div>
+  )
 }

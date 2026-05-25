@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Nav } from '@/components/nav'
 import { Footer } from '@/components/footer'
+import { ClubCard, type DirectoryClub } from '@/components/club-card'
 import {
   Badge,
   Button,
@@ -22,6 +23,34 @@ import { SparkOrb } from '@/components/patterns/spark-orb'
 import { LaunchMark } from '@/components/patterns/launch-mark'
 import { Reveal, Stagger, StaggerItem, GradientText } from '@/components/motion'
 import { CLUB_TEMPLATES } from '@/lib/club-templates'
+import { loadStaticClubs } from '@/lib/clubs/content'
+
+const FAQ = [
+  {
+    q: 'What is a vibeclub?',
+    a: 'A format for vibing together. You + your crew + a shared soundtrack. Lock in for 90 minutes, ship the thing, post the recap card. Host it on Meet, Discord, Zoom, or wherever you already work.',
+  },
+  {
+    q: 'Do I need an account to host one?',
+    a: 'No. Drop a markdown file into content/clubs/ via a PR — your vibeclub goes live after merge. The hosted /start path with auth is the alternative if you want private listings or real-time presence.',
+  },
+  {
+    q: 'Is the Chrome extension required?',
+    a: 'No. The extension overlays ambient music + a synced pomodoro onto whatever call you are on. The format works without it. Read the playbook, host a vibeclub tonight, install the extension when you want the runtime.',
+  },
+  {
+    q: 'Which platforms does it work on?',
+    a: 'All of them. Meet, Discord, Zoom, in-person, even a café with everyone on Wi-Fi. Vibeclubs is format, not platform — it overlays whatever you already use.',
+  },
+  {
+    q: 'What is the AI recap?',
+    a: 'Claude watches the focus blocks. Never interrupts. Writes a short recap when the timer stops — minutes, cycles, what your crew shipped. Opt-in per club, off by default. Lands on your profile card.',
+  },
+  {
+    q: 'Is it free?',
+    a: 'Hosting unlimited vibeclubs is free forever. The extension is free. The OSS packages are MIT. Pro is $12/mo for Suno music gen, full Claude recaps, and a featured directory listing. Pro ships in Sprint 2.',
+  },
+]
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -51,10 +80,30 @@ const jsonLd = {
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
       aggregateRating: undefined,
     },
+    {
+      '@type': 'FAQPage',
+      '@id': 'https://vibeclubs.ai/#faq',
+      mainEntity: FAQ.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    },
   ],
 }
 
-export default function Page() {
+export default async function Page() {
+  const staticClubs = loadStaticClubs()
+  const liveTonight: DirectoryClub[] = staticClubs.slice(0, 3).map((c) => ({
+    slug: c.slug,
+    name: c.name,
+    description: c.description,
+    type: c.type,
+    platform: c.platform,
+    pomodoro_preset: c.preset,
+    featured: c.featured,
+    source: 'static' as const,
+  }))
   return (
     <main className="min-h-screen">
       <script
@@ -66,11 +115,7 @@ export default function Page() {
       {/* HERO */}
       <div className="relative overflow-hidden">
         <AnimatedAurora />
-        <SparkOrb
-          size={760}
-          hue="dual"
-          className="left-[-12%] top-[6%] opacity-70 md:opacity-90"
-        />
+        <SparkOrb size={760} hue="dual" className="left-[-12%] top-[6%] opacity-70 md:opacity-90" />
         <SparkOrb
           size={420}
           hue="violet"
@@ -88,7 +133,7 @@ export default function Page() {
                 </div>
               </StaggerItem>
               <StaggerItem>
-                <h1 className="text-6xl md:text-8xl font-bold tracking-tight leading-[0.92] mb-8">
+                <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold tracking-tight leading-[0.92] mb-8">
                   Host a
                   <br />
                   <GradientText tone="warm">vibeclub.</GradientText>
@@ -191,6 +236,71 @@ export default function Page() {
           </div>
         </Container>
       </Section>
+
+      {/* TRUST STRIP */}
+      <Section pad="sm" border>
+        <Container width="xl">
+          <Reveal direction="up">
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-xs text-white/60 font-mono">
+              <span className="inline-flex items-center gap-2">
+                <span className="size-1.5 rounded-full bg-amber-400/80" />
+                MIT licensed
+              </span>
+              <span className="opacity-30">·</span>
+              <span>open source on GitHub</span>
+              <span className="opacity-30">·</span>
+              <span>built in public</span>
+              <span className="opacity-30">·</span>
+              <a
+                href="https://github.com/frankxai/vibeclubs"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="hover:text-white/80 transition border-b border-white/15 hover:border-white/40"
+              >
+                ⭐ star the repo
+              </a>
+            </div>
+          </Reveal>
+        </Container>
+      </Section>
+
+      {/* LIVE TONIGHT — markdown directory rail */}
+      {liveTonight.length > 0 && (
+        <Section pad="lg" border>
+          <Container width="xl">
+            <Reveal>
+              <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
+                <div>
+                  <Eyebrow tone="signal" className="inline-flex">
+                    <span className="inline-flex items-center gap-2">
+                      <span className="size-1.5 rounded-full bg-[#4FD18C] animate-pulse" />
+                      Listed tonight
+                    </span>
+                  </Eyebrow>
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mt-3">
+                    Drop into a vibeclub.
+                  </h2>
+                  <p className="text-white/50 mt-3 max-w-lg">
+                    Public clubs from the markdown directory. No account needed to browse.
+                  </p>
+                </div>
+                <LinkButton href="/explore" variant="outline" size="lg">
+                  See all {staticClubs.length}+ →
+                </LinkButton>
+              </div>
+            </Reveal>
+            <Stagger gap={0.06}>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {liveTonight.map((club) => (
+                  <StaggerItem key={club.slug}>
+                    <ClubCard club={club} />
+                  </StaggerItem>
+                ))}
+              </div>
+            </Stagger>
+          </Container>
+        </Section>
+      )}
 
       {/* HOW */}
       <Section pad="lg" border>
@@ -427,6 +537,40 @@ export default function Page() {
         </Container>
       </Section>
 
+      {/* FAQ */}
+      <Section pad="lg" border>
+        <Container width="lg">
+          <Reveal>
+            <div className="text-center mb-14">
+              <Eyebrow className="inline-flex">FAQ</Eyebrow>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mt-4">
+                Common questions.
+              </h2>
+            </div>
+          </Reveal>
+          <Stagger gap={0.05} amount={0.1}>
+            <div className="grid md:grid-cols-2 gap-4">
+              {FAQ.map((item) => (
+                <StaggerItem key={item.q}>
+                  <details className="group rounded-2xl border border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04] transition p-5 open:border-amber-400/30 open:bg-white/[0.04]">
+                    <summary className="cursor-pointer list-none flex items-center justify-between gap-4 font-semibold text-white/90 group-open:text-amber-300 transition">
+                      <span>{item.q}</span>
+                      <span
+                        aria-hidden
+                        className="text-white/40 group-open:rotate-45 transition-transform text-lg leading-none"
+                      >
+                        +
+                      </span>
+                    </summary>
+                    <p className="mt-3 text-sm text-white/60 leading-relaxed">{item.a}</p>
+                  </details>
+                </StaggerItem>
+              ))}
+            </div>
+          </Stagger>
+        </Container>
+      </Section>
+
       {/* FINAL CTA */}
       <Section pad="lg" border>
         <Container width="md" className="text-center">
@@ -442,12 +586,7 @@ export default function Page() {
               crew is already at their desks.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
-              <LinkButton
-                href="/start"
-                variant="primary"
-                size="xl"
-                className="vc-shimmer-border"
-              >
+              <LinkButton href="/start" variant="primary" size="xl" className="vc-shimmer-border">
                 Host a vibeclub →
               </LinkButton>
               <LinkButton

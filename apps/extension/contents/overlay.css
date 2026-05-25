@@ -13,7 +13,11 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 22px;
   color: white;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    sans-serif;
   font-size: 13px;
   box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.5),
@@ -157,6 +161,226 @@
 }
 .vc-timer-break {
   color: #a78bfa;
+}
+/* mirrors --color-vibe-amber-soft from design-core/themes/vibeclubs.css */
+.vc-timer-ship {
+  color: #fcd34d;
+  text-shadow: 0 0 24px rgba(252, 211, 77, 0.4);
+}
+/* mirrors --color-phase-dance from design-core/themes/vibeclubs.css */
+.vc-timer-dance {
+  color: #ec4899;
+}
+
+/* Phase-change flashes — brief amber/violet sweep when phase enters */
+@keyframes vc-flash-ship {
+  0% {
+    box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.6);
+    background: rgba(245, 158, 11, 0.06);
+  }
+  100% {
+    box-shadow: inset 0 0 0 1px transparent;
+    background: transparent;
+  }
+}
+@keyframes vc-flash-dance {
+  0% {
+    box-shadow: inset 0 0 0 1px rgba(236, 72, 153, 0.6);
+    background: rgba(236, 72, 153, 0.06);
+  }
+  100% {
+    box-shadow: inset 0 0 0 1px transparent;
+    background: transparent;
+  }
+}
+.vc-flash-ship {
+  animation: vc-flash-ship 1.2s ease-out;
+  border-radius: 14px;
+}
+.vc-flash-dance {
+  animation: vc-flash-dance 1.2s ease-out;
+  border-radius: 14px;
+}
+
+/* SHIP MOMENT */
+.vc-ship {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.vc-ship-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #fcd34d;
+}
+.vc-ship-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+.vc-ship-label {
+  flex: 1;
+}
+.vc-ship-time {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0;
+}
+.vc-ship-prompt {
+  font-size: 14px;
+  color: white;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.vc-ship-input {
+  width: 100%;
+  resize: none;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  background: rgba(245, 158, 11, 0.04);
+  color: white;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.45;
+  outline: none;
+  box-sizing: border-box;
+}
+.vc-ship-input:focus {
+  border-color: rgba(245, 158, 11, 0.55);
+  background: rgba(245, 158, 11, 0.08);
+}
+.vc-ship-input::placeholder {
+  color: rgba(255, 255, 255, 0.32);
+}
+.vc-ship-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.vc-ship-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.35);
+}
+.vc-ship-button {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  background: rgba(245, 158, 11, 0.18);
+  color: #fcd34d;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.vc-ship-button:hover:not(:disabled) {
+  background: rgba(245, 158, 11, 0.28);
+}
+.vc-ship-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* DANCE BREAK */
+.vc-dance {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0 6px;
+}
+.vc-dance-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #ec4899;
+}
+.vc-dance-bpm {
+  font-family: 'JetBrains Mono', monospace;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.vc-dance-pulse {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@keyframes vc-dance-beat {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 1;
+  }
+}
+@keyframes vc-dance-ring-out {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+.vc-dance-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(236, 72, 153, 0.7);
+  animation: vc-dance-ring-out var(--vc-beat-ms, 500ms) ease-out infinite;
+}
+.vc-dance-ring-2 {
+  animation-delay: calc(var(--vc-beat-ms, 500ms) * -0.33);
+  border-color: rgba(236, 72, 153, 0.4);
+}
+.vc-dance-ring-3 {
+  animation-delay: calc(var(--vc-beat-ms, 500ms) * -0.66);
+  border-color: rgba(236, 72, 153, 0.2);
+}
+.vc-dance-time {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 28px;
+  font-weight: 700;
+  color: #ec4899;
+  letter-spacing: -0.02em;
+}
+.vc-dance-nudge {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Reduced-motion parity per docs/strategy/design-evolution.md §Design posture rule 2.
+   Mirrors the guard already in design-core/motion.css for .live-dot / .vc-beat. */
+@media (prefers-reduced-motion: reduce) {
+  .vc-dance-ring,
+  .vc-dance-ring-2,
+  .vc-dance-ring-3,
+  .vc-flash-ship,
+  .vc-flash-dance,
+  .live-dot {
+    animation: none !important;
+  }
 }
 
 .vc-phase {

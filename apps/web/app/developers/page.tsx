@@ -5,40 +5,13 @@ import { Container, Eyebrow, Section } from '@/components/layout/container'
 import { Card, CardBody, CardEyebrow, CardTitle, CodeBlock, LinkButton } from '@/components/ui'
 import { Reveal, Stagger, StaggerItem } from '@/components/motion'
 import { DevelopersNetworkLazy } from '@/components/three'
+import { PACKAGES } from '@/lib/packages'
 
 export const metadata = {
   title: 'Developers',
   description:
     'Five MIT-licensed npm packages — vibe-mix, pomodoro-sync, ai-witness, session-card, suno-bridge.',
 }
-
-const PACKAGES: { name: string; desc: string; entry: string }[] = [
-  {
-    name: '@vibeclubs/vibe-mix',
-    desc: 'Three-layer Web Audio mixer. Ambient + music + page. Framework-agnostic, equal-power faders, duck-on-voice.',
-    entry: "import { createMixer } from '@vibeclubs/vibe-mix'",
-  },
-  {
-    name: '@vibeclubs/pomodoro-sync',
-    desc: 'Pomodoro state machine + Supabase Realtime broadcast. Late-joiner ping/pong. No drift.',
-    entry: "import { createPomodoro } from '@vibeclubs/pomodoro-sync'",
-  },
-  {
-    name: '@vibeclubs/ai-witness',
-    desc: 'Claude prompt builder for session recaps. Hard-enforces "never interrupt" in the system prompt.',
-    entry: "import { witnessPrompt } from '@vibeclubs/ai-witness'",
-  },
-  {
-    name: '@vibeclubs/session-card',
-    desc: 'SVG session card renderer. 1200×630. Deterministic from session data. Brand-locked.',
-    entry: "import { renderSessionCardSVG } from '@vibeclubs/session-card'",
-  },
-  {
-    name: '@vibeclubs/suno-bridge',
-    desc: 'Suno API wrapper with royalty-free fallback. Prompt helper reads club genre + time of day.',
-    entry: "import { generateMusic } from '@vibeclubs/suno-bridge'",
-  },
-]
 
 export default function DevelopersPage() {
   return (
@@ -80,19 +53,22 @@ export default function DevelopersPage() {
             <div className="grid md:grid-cols-2 gap-4">
               {PACKAGES.map((p) => (
                 <StaggerItem key={p.name}>
-                  <Card pad="lg" interactive className="h-full">
-                    <CardEyebrow className="font-mono text-amber-300">{p.name}</CardEyebrow>
-                    <CardBody className="mb-5 text-white/70 leading-relaxed">{p.desc}</CardBody>
-                    <div className="rounded-xl bg-black/40 border border-white/5 px-3 py-2 font-mono text-xs text-white/60 mb-4 overflow-x-auto">
-                      {p.entry}
-                    </div>
-                    <a
-                      href={`https://www.npmjs.com/package/${p.name}`}
-                      className="text-xs font-mono text-white/40 hover:text-amber-300 transition"
-                    >
-                      npm →
-                    </a>
-                  </Card>
+                  <Link href={`/developers/${p.slug}` as never} className="block h-full">
+                    <Card pad="lg" interactive className="h-full">
+                      <CardEyebrow className="font-mono text-amber-300">{p.name}</CardEyebrow>
+                      <div className="text-white/85 font-medium mb-2">{p.tagline}</div>
+                      <CardBody className="mb-5 text-white/65 leading-relaxed">
+                        {p.description}
+                      </CardBody>
+                      <div className="rounded-xl bg-black/40 border border-white/5 px-3 py-2 font-mono text-xs text-white/60 mb-4 overflow-x-auto">
+                        {p.importLine}
+                      </div>
+                      <div className="flex items-center justify-between text-xs font-mono">
+                        <span className="text-white/40">{p.exports.length} exports · MIT</span>
+                        <span className="text-amber-300/80">view docs →</span>
+                      </div>
+                    </Card>
+                  </Link>
                 </StaggerItem>
               ))}
             </div>
@@ -160,8 +136,8 @@ pomo.on('complete', (cycle) => console.log('shipped', cycle))`}
                 >
                   CONTRIBUTING.md
                 </Link>{' '}
-                for style + the vetoes (no breakout rooms, no host controls, no recording-by-default,
-                no calendar features — these are load-bearing).
+                for style + the vetoes (no breakout rooms, no host controls, no
+                recording-by-default, no calendar features — these are load-bearing).
               </CardBody>
               <div className="mt-5">
                 <LinkButton
