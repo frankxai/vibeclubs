@@ -32,16 +32,16 @@ const DialogPortal = DialogPrimitive.Portal as unknown as (props: {
   children?: ReactNode
 }) => ReactNode
 const DialogOverlay = DialogPrimitive.Overlay as unknown as (
-  props: ComponentPropsWithoutRef<'div'>
+  props: ComponentPropsWithoutRef<'div'>,
 ) => ReactNode
 const DialogContentPrimitive = DialogPrimitive.Content as unknown as (
-  props: DialogContentProps & { ref?: React.Ref<HTMLDivElement> }
+  props: DialogContentProps & { ref?: React.Ref<HTMLDivElement> },
 ) => ReactNode
 const DialogTitlePrimitive = DialogPrimitive.Title as unknown as (
-  props: DialogTitleProps & { ref?: React.Ref<HTMLHeadingElement> }
+  props: DialogTitleProps & { ref?: React.Ref<HTMLHeadingElement> },
 ) => ReactNode
 const DialogDescriptionPrimitive = DialogPrimitive.Description as unknown as (
-  props: DialogDescriptionProps & { ref?: React.Ref<HTMLParagraphElement> }
+  props: DialogDescriptionProps & { ref?: React.Ref<HTMLParagraphElement> },
 ) => ReactNode
 
 export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(function DialogContent(
@@ -92,12 +92,12 @@ export const DialogTitle = forwardRef<HTMLHeadingElement, DialogTitleProps>(func
 
 export const DialogDescription = forwardRef<HTMLParagraphElement, DialogDescriptionProps>(
   function DialogDescription({ className, ...rest }, ref) {
-  return (
-    <DialogDescriptionPrimitive
-      ref={ref}
-      className={cn('text-sm text-white/60 leading-relaxed', className)}
-      {...rest}
-    />
-  )
+    return (
+      <DialogDescriptionPrimitive
+        ref={ref}
+        className={cn('text-sm text-white/60 leading-relaxed', className)}
+        {...rest}
+      />
+    )
   },
 )

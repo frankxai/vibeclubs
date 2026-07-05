@@ -35,8 +35,7 @@ function Scene() {
   useFrame((state, delta) => {
     if (groupRef.current) {
       groupRef.current.rotation.y += delta * 0.15
-      groupRef.current.rotation.x =
-        Math.sin(state.clock.elapsedTime * 0.2) * 0.08 - 0.05
+      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.2) * 0.08 - 0.05
     }
   })
 

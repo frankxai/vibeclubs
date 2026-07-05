@@ -1,10 +1,7 @@
 {
   "risk": "production",
   "health": "pnpm build",
-  "agentFiles": [
-    "AGENTS.md",
-    "CLAUDE.md"
-  ],
+  "agentFiles": ["AGENTS.md", "CLAUDE.md"],
   "deployPolicy": "manual",
   "globalHooksAllowed": false
 }

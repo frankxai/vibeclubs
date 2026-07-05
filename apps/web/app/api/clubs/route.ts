@@ -31,7 +31,10 @@ export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => null)
   const parsed = ClubInput.safeParse(body)
   if (!parsed.success) {
-    return NextResponse.json({ error: 'Invalid input', issues: parsed.error.flatten() }, { status: 400 })
+    return NextResponse.json(
+      { error: 'Invalid input', issues: parsed.error.flatten() },
+      { status: 400 },
+    )
   }
 
   const supabase = await createSupabaseServerClient()
@@ -53,11 +56,7 @@ export async function POST(request: NextRequest) {
     opener_id: user.id,
   }
 
-  const { data, error } = await supabase
-    .from('clubs')
-    .insert(payload)
-    .select('id, slug')
-    .single()
+  const { data, error } = await supabase.from('clubs').insert(payload).select('id, slug').single()
 
   if (error) {
     const status = error.code === '23505' ? 409 : 500

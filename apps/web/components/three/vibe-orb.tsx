@@ -101,7 +101,6 @@ function Orb({ ambient, music, voice }: OrbProps) {
       uCameraPosition: { value: [0, 0, 3] as [number, number, number] },
     }),
     // uniforms are a stable object created once; values are updated in useFrame
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )
 

@@ -27,7 +27,10 @@ export default async function PlaybookEntryPage({ params }: Params) {
     <main className="min-h-screen">
       <Nav />
       <article className="pt-32 pb-16 px-6 max-w-2xl mx-auto">
-        <Link href="/playbook" className="text-sm text-white/50 hover:text-white/80 mb-6 inline-block">
+        <Link
+          href="/playbook"
+          className="text-sm text-white/50 hover:text-white/80 mb-6 inline-block"
+        >
           ← How it works
         </Link>
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-3">{entry.title}</h1>

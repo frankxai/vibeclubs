@@ -86,7 +86,7 @@ export function StartForm() {
     const templateId = search.get('template')
     const t = findTemplate(templateId)
     if (t) applyTemplate(t.id)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [])
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((f) => ({ ...f, [key]: value }))
@@ -188,7 +188,10 @@ export function StartForm() {
           />
         </Field>
 
-        <Field label="What are you shipping?" hint="Two lines max. Specific = the right people show up.">
+        <Field
+          label="What are you shipping?"
+          hint="Two lines max. Specific = the right people show up."
+        >
           <Textarea
             rows={3}
             value={form.description}
@@ -258,8 +261,8 @@ export function StartForm() {
         </Button>
 
         <p className="text-xs text-white/40 text-center">
-          Magic link to your email on submit. Your vibeclub goes public on the directory so your crew
-          can find it.
+          Magic link to your email on submit. Your vibeclub goes public on the directory so your
+          crew can find it.
         </p>
       </form>
     </div>

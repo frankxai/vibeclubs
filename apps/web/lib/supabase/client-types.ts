@@ -23,10 +23,7 @@ type VibeSupabaseAuth = {
     data: unknown
     error: SupabaseAuthError | null
   }>
-  signInWithOtp(credentials: {
-    email: string
-    options?: { emailRedirectTo?: string }
-  }): Promise<{
+  signInWithOtp(credentials: { email: string; options?: { emailRedirectTo?: string } }): Promise<{
     data: unknown
     error: SupabaseAuthError | null
   }>

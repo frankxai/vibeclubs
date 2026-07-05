@@ -19,11 +19,7 @@ export function TimerDisplay({ mmss, phase = 'idle', size = 'md', className }: T
     lg: 'text-7xl',
   }
   const tone =
-    phase === 'focus'
-      ? 'text-[#4FD18C]'
-      : phase === 'break'
-        ? 'text-[#a78bfa]'
-        : 'text-amber-400'
+    phase === 'focus' ? 'text-[#4FD18C]' : phase === 'break' ? 'text-[#a78bfa]' : 'text-amber-400'
 
   return (
     <div

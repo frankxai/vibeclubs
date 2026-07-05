@@ -22,12 +22,7 @@ type PulseBeatProps = {
  * (extension overlay, club page, hero badges) that pass the same BPM
  * animate in sync — this is the vibe mechanic #1 "shared tempo."
  */
-export function PulseBeat({
-  bpm = 95,
-  size = 12,
-  tone = 'amber',
-  className,
-}: PulseBeatProps) {
+export function PulseBeat({ bpm = 95, size = 12, tone = 'amber', className }: PulseBeatProps) {
   const color =
     tone === 'signal'
       ? 'var(--color-vibe-signal, #4fd18c)'
@@ -40,15 +35,17 @@ export function PulseBeat({
   return (
     <span
       className={cn('vc-beat inline-block rounded-full', className)}
-      style={{
-        width: size,
-        height: size,
-        background: color,
-        boxShadow: `0 0 ${size * 1.6}px ${color}`,
-        // Expose BPM as a CSS var so the .vc-beat animation-duration picks it up.
-        '--bpm': bpm,
-        '--bpm-seconds': `calc(60 / ${bpm} * 1s)`,
-      } as BeatStyle}
+      style={
+        {
+          width: size,
+          height: size,
+          background: color,
+          boxShadow: `0 0 ${size * 1.6}px ${color}`,
+          // Expose BPM as a CSS var so the .vc-beat animation-duration picks it up.
+          '--bpm': bpm,
+          '--bpm-seconds': `calc(60 / ${bpm} * 1s)`,
+        } as BeatStyle
+      }
       aria-hidden
     />
   )
@@ -77,12 +74,14 @@ export function PulseRing({
   return (
     <div
       className={cn('relative inline-flex items-center justify-center', className)}
-      style={{
-        width: size,
-        height: size,
-        '--bpm': bpm,
-        '--bpm-seconds': `calc(60 / ${bpm} * 1s)`,
-      } as BeatStyle}
+      style={
+        {
+          width: size,
+          height: size,
+          '--bpm': bpm,
+          '--bpm-seconds': `calc(60 / ${bpm} * 1s)`,
+        } as BeatStyle
+      }
     >
       <div
         className="vc-beat absolute inset-0 rounded-full"

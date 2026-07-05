@@ -2,14 +2,7 @@
 // Replace with generated types via `supabase gen types typescript` once the project
 // is provisioned (see ENVIRONMENT.md §1).
 
-export type ClubType =
-  | 'coding'
-  | 'music'
-  | 'design'
-  | 'study'
-  | 'fitness'
-  | 'writing'
-  | 'other'
+export type ClubType = 'coding' | 'music' | 'design' | 'study' | 'fitness' | 'writing' | 'other'
 
 export type ClubPlatform = 'meet' | 'discord' | 'zoom' | 'in_person' | 'other'
 

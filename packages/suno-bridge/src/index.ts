@@ -37,7 +37,8 @@ const DEFAULT_FALLBACKS = [
 ]
 
 export async function generateMusic(opts: SunoGenerateOptions): Promise<SunoTrack> {
-  const apiKey = opts.apiKey ?? (typeof process !== 'undefined' ? process.env.SUNO_API_KEY : undefined)
+  const apiKey =
+    opts.apiKey ?? (typeof process !== 'undefined' ? process.env.SUNO_API_KEY : undefined)
   const apiBase = opts.apiBase ?? 'https://api.suno.com/v1'
   const fetchImpl = opts.fetchImpl ?? fetch
 
@@ -58,7 +59,11 @@ export async function generateMusic(opts: SunoGenerateOptions): Promise<SunoTrac
       }),
     })
     if (!res.ok) throw new Error(`Suno ${res.status}`)
-    const body = (await res.json()) as { audio_url: string; title?: string; duration_seconds?: number }
+    const body = (await res.json()) as {
+      audio_url: string
+      title?: string
+      duration_seconds?: number
+    }
     return {
       url: body.audio_url,
       source: 'suno',

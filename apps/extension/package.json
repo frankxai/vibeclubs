@@ -30,7 +30,14 @@
   "manifest": {
     "name": "Vibeclubs",
     "description": "Three-layer vibe mixer + synced Pomodoro + session cards on any page.",
-    "host_permissions": ["https://*/*", "http://*/*"],
-    "permissions": ["storage", "activeTab", "tabCapture"]
+    "host_permissions": [
+      "https://*/*",
+      "http://*/*"
+    ],
+    "permissions": [
+      "storage",
+      "activeTab",
+      "tabCapture"
+    ]
   }
 }

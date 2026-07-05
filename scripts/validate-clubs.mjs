@@ -64,7 +64,9 @@ function parseFrontmatter(raw) {
 function validate(slug, parsed) {
   const errors = []
   if (!parsed) {
-    errors.push('Missing or malformed YAML frontmatter (expected ---\\n...\\n---\\n at top of file)')
+    errors.push(
+      'Missing or malformed YAML frontmatter (expected ---\\n...\\n---\\n at top of file)',
+    )
     return errors
   }
   const { data, body } = parsed
@@ -139,7 +141,13 @@ for (const file of files) {
 }
 
 if (asJson) {
-  console.log(JSON.stringify({ checked: files.length, failed: allErrors.length, details: allErrors }, null, 2))
+  console.log(
+    JSON.stringify(
+      { checked: files.length, failed: allErrors.length, details: allErrors },
+      null,
+      2,
+    ),
+  )
 } else {
   if (allErrors.length === 0) {
     console.log(`✓ validate-clubs: all ${files.length} clubs valid`)

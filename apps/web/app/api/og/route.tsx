@@ -17,8 +17,7 @@ export async function GET(request: Request) {
   const slug = url.searchParams.get('slug')
   let title = url.searchParams.get('title') ?? 'Host a vibeclub.'
   let subtitle =
-    url.searchParams.get('sub') ??
-    'Claude Code + your crew + a soundtrack. Ship the thing.'
+    url.searchParams.get('sub') ?? 'Claude Code + your crew + a soundtrack. Ship the thing.'
   let rhythm = ''
 
   if (slug && process.env.NEXT_PUBLIC_SUPABASE_URL) {
@@ -40,80 +39,73 @@ export async function GET(request: Request) {
   }
 
   return new ImageResponse(
-    (
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          background:
-            'linear-gradient(135deg, #0a0a0f 0%, #1a1025 60%, #2a1435 100%)',
-          padding: 72,
-          fontFamily: 'Inter, system-ui, sans-serif',
-          color: 'white',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <div
-            style={{
-              width: 14,
-              height: 14,
-              borderRadius: 999,
-              background: '#f59e0b',
-            }}
-          />
-          <div style={{ fontSize: 22, fontWeight: 600, letterSpacing: -0.2 }}>
-            Vibeclubs
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-          <div
-            style={{
-              fontSize: 96,
-              fontWeight: 700,
-              lineHeight: 1,
-              letterSpacing: -2,
-              color: 'white',
-              maxWidth: 1000,
-            }}
-          >
-            {title}
-          </div>
-          <div
-            style={{
-              fontSize: 28,
-              color: 'rgba(255,255,255,0.7)',
-              lineHeight: 1.35,
-              maxWidth: 900,
-            }}
-          >
-            {subtitle}
-          </div>
-        </div>
-
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        background: 'linear-gradient(135deg, #0a0a0f 0%, #1a1025 60%, #2a1435 100%)',
+        padding: 72,
+        fontFamily: 'Inter, system-ui, sans-serif',
+        color: 'white',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+            width: 14,
+            height: 14,
+            borderRadius: 999,
+            background: '#f59e0b',
+          }}
+        />
+        <div style={{ fontSize: 22, fontWeight: 600, letterSpacing: -0.2 }}>Vibeclubs</div>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+        <div
+          style={{
+            fontSize: 96,
+            fontWeight: 700,
+            lineHeight: 1,
+            letterSpacing: -2,
+            color: 'white',
+            maxWidth: 1000,
           }}
         >
-          <div style={{ display: 'flex', gap: 28, color: 'rgba(255,255,255,0.5)', fontSize: 20 }}>
-            {rhythm && <span>{rhythm}</span>}
-            <span>·</span>
-            <span>MIT</span>
-            <span>·</span>
-            <span>open source</span>
-          </div>
-          <div style={{ fontSize: 20, color: '#f59e0b', fontWeight: 600 }}>
-            vibeclubs.ai
-          </div>
+          {title}
+        </div>
+        <div
+          style={{
+            fontSize: 28,
+            color: 'rgba(255,255,255,0.7)',
+            lineHeight: 1.35,
+            maxWidth: 900,
+          }}
+        >
+          {subtitle}
         </div>
       </div>
-    ),
+
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <div style={{ display: 'flex', gap: 28, color: 'rgba(255,255,255,0.5)', fontSize: 20 }}>
+          {rhythm && <span>{rhythm}</span>}
+          <span>·</span>
+          <span>MIT</span>
+          <span>·</span>
+          <span>open source</span>
+        </div>
+        <div style={{ fontSize: 20, color: '#f59e0b', fontWeight: 600 }}>vibeclubs.ai</div>
+      </div>
+    </div>,
     {
       width: 1200,
       height: 630,

@@ -8,8 +8,12 @@ describe('promptFromClub', () => {
   })
 
   it('shifts mood by time of day', () => {
-    expect(promptFromClub({ clubType: 'coding', timeOfDay: 'night' })).toContain('quiet introspective')
-    expect(promptFromClub({ clubType: 'coding', timeOfDay: 'morning' })).toContain('bright uplifting')
+    expect(promptFromClub({ clubType: 'coding', timeOfDay: 'night' })).toContain(
+      'quiet introspective',
+    )
+    expect(promptFromClub({ clubType: 'coding', timeOfDay: 'morning' })).toContain(
+      'bright uplifting',
+    )
   })
 
   it('accepts explicit genre override', () => {

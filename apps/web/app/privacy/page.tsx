@@ -24,9 +24,9 @@ export default function Privacy() {
             <h2>The Chrome extension</h2>
             <p>
               The extension <strong>never reads page content</strong>. It renders an overlay and
-              mixes audio locally via Web Audio. The only network traffic is: the pomodoro
-              broadcast (club slug + timer state to Supabase Realtime) and a session summary
-              (duration + cycle count to our API). Open source so you can verify —{' '}
+              mixes audio locally via Web Audio. The only network traffic is: the pomodoro broadcast
+              (club slug + timer state to Supabase Realtime) and a session summary (duration + cycle
+              count to our API). Open source so you can verify —{' '}
               <a href="https://github.com/frankxai/vibeclubs">read the source</a>.
             </p>
             <h2>Auto-recaps</h2>

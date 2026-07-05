@@ -44,14 +44,7 @@ export function LaunchMark({ size = 120, className, static: isStatic }: LaunchMa
       </defs>
 
       {/* Outer orbit ring — thin */}
-      <circle
-        cx={cx}
-        cy={cy}
-        r={r}
-        fill="none"
-        stroke="rgba(255,255,255,0.08)"
-        strokeWidth={1}
-      />
+      <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={1} />
 
       {/* Signal-green core — pulses */}
       <circle cx={cx} cy={cy} r={size * 0.14} fill="url(#vc-mark-core)" className="vc-mark-core" />

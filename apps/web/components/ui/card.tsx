@@ -36,10 +36,18 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
   { className, tone, pad, interactive, ...rest },
   ref,
 ) {
-  return <div ref={ref} className={cn(cardStyles({ tone, pad, interactive }), className)} {...rest} />
+  return (
+    <div ref={ref} className={cn(cardStyles({ tone, pad, interactive }), className)} {...rest} />
+  )
 })
 
-export function CardEyebrow({ children, className }: { children: React.ReactNode; className?: string }) {
+export function CardEyebrow({
+  children,
+  className,
+}: {
+  children: React.ReactNode
+  className?: string
+}) {
   return (
     <div
       className={cn(
@@ -64,6 +72,12 @@ export function CardTitle({
   return <Comp className={cn('text-xl font-semibold leading-tight', className)}>{children}</Comp>
 }
 
-export function CardBody({ children, className }: { children: React.ReactNode; className?: string }) {
+export function CardBody({
+  children,
+  className,
+}: {
+  children: React.ReactNode
+  className?: string
+}) {
   return <div className={cn('text-sm text-white/60 leading-relaxed', className)}>{children}</div>
 }

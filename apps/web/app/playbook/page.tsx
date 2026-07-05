@@ -41,7 +41,9 @@ export default function PlaybookIndex() {
                     </div>
                     <div className="text-sm text-white/60 mt-1">{p.summary}</div>
                   </div>
-                  <span className="text-white/30 pt-1 group-hover:text-amber-300 transition">→</span>
+                  <span className="text-white/30 pt-1 group-hover:text-amber-300 transition">
+                    →
+                  </span>
                 </Link>
               </li>
             ))}
