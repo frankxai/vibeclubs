@@ -167,7 +167,7 @@
     {
       "name": "typecheck",
       "status": "blocked",
-      "evidence": "Direct tsc against apps/web reports pre-existing repo-wide Supabase generated-type gaps and React type skew across shared UI/Radix components; not introduced by this homepage/motion lane."
+      "evidence": "corepack pnpm --filter @vibeclubs/web typecheck reports two broader release blockers: Supabase table access collapses to never across app routes, and React/@types skew makes shared UI/Radix components invalid JSX. Targeted compatibility probes for schema records and row type aliases did not resolve the failures, so this needs a dedicated Supabase/React type modernization pass rather than a runtime-proof hero patch."
     },
     {
       "name": "pnpm-install",
@@ -181,10 +181,24 @@
     "notes": "Visual ship standard met locally, but release remains gated: proof object, mobile hierarchy, voice, package install, changed-file lint, and visual QA pass. Deductions: local production build/typecheck are blocked by repo-wide TypeScript residuals, and live host/deploy path is not yet attached to the Starlight Vercel project."
   },
   "decision": "iterate",
+  "release_blocker_assessment": {
+    "verdict": "Do not promote this branch until TypeScript and deploy ownership are resolved.",
+    "safe_to_keep": [
+      "Homepage runtime proof implementation.",
+      "Reduced-motion reveal visibility hardening.",
+      "Voice audit, changed-file ESLint, whitespace, and visual QA evidence."
+    ],
+    "do_not_fold_into_this_lane": [
+      "Supabase generated-type modernization.",
+      "React/Radix type-world alignment.",
+      "Live host/provider migration."
+    ],
+    "latest_investigation": "Schema record and row type alias probes were reverted after they did not change the typecheck failure shape."
+  },
   "known_risks": [
     "vibeclubs.ai is live but was not found as a project in the known Starlight Vercel team; production deploy path needs owner/provider confirmation.",
     "DNS points to 216.150.x.x addresses rather than the usual Vercel edge record.",
-    "Full app typecheck currently fails on pre-existing Supabase generated types and React/Radix type skew.",
+    "Full app typecheck currently fails on Supabase table inference collapsing to never plus React/Radix JSX compatibility errors.",
     "Repo Playwright E2E needs the expected local chromium_headless_shell-1217 browser revision before it can serve as a release gate.",
     "Use corepack pnpm for repo gates; global pnpm 11 is not the right install path for this pnpm@9 repo.",
     "Local visual QA used Next dev because production build is gated by the repo-wide residuals above."

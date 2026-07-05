@@ -63,3 +63,12 @@ Track A only.
 - `corepack pnpm install --frozen-lockfile --force` passes with the repo's pnpm 9 package manager.
 - Changed-file ESLint and whitespace checks pass.
 - Any repo-wide type/build/deploy residual is recorded separately from the scoped visual lane.
+
+## Release Blocker Diagnosis
+
+This lane should stay scoped to homepage proof, motion visibility, and evidence. A follow-up type modernization pass is required before preview or production promotion.
+
+- `corepack pnpm --filter @vibeclubs/web typecheck` currently fails on Supabase table access collapsing to `never` across app routes.
+- The same gate also reports React/@types skew where shared UI and Radix components are rejected as JSX components.
+- Targeted probes for schema record shape and row type aliases did not change the failure shape and were reverted.
+- The live domain host/provider still needs confirmation because `vibeclubs.ai` is not attached to the known Starlight Vercel team.
