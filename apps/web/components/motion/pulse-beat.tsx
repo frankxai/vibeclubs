@@ -1,4 +1,10 @@
 import { cn } from '@/lib/cn'
+import type { CSSProperties, ReactNode } from 'react'
+
+type BeatStyle = CSSProperties & {
+  '--bpm': number
+  '--bpm-seconds': string
+}
 
 type PulseBeatProps = {
   /** Beats per minute. 60 → once per second. Default 95 — the default focus BPM. */
@@ -40,10 +46,9 @@ export function PulseBeat({
         background: color,
         boxShadow: `0 0 ${size * 1.6}px ${color}`,
         // Expose BPM as a CSS var so the .vc-beat animation-duration picks it up.
-        // @ts-expect-error — CSS custom property
         '--bpm': bpm,
         '--bpm-seconds': `calc(60 / ${bpm} * 1s)`,
-      }}
+      } as BeatStyle}
       aria-hidden
     />
   )
@@ -59,7 +64,7 @@ export function PulseRing({
   tone = 'amber',
   className,
   children,
-}: PulseBeatProps & { children?: React.ReactNode }) {
+}: PulseBeatProps & { children?: ReactNode }) {
   const color =
     tone === 'signal'
       ? 'rgba(79, 209, 140, 0.4)'
@@ -75,10 +80,9 @@ export function PulseRing({
       style={{
         width: size,
         height: size,
-        // @ts-expect-error — CSS custom property
         '--bpm': bpm,
         '--bpm-seconds': `calc(60 / ${bpm} * 1s)`,
-      }}
+      } as BeatStyle}
     >
       <div
         className="vc-beat absolute inset-0 rounded-full"

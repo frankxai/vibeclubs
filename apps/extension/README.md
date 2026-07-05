@@ -28,7 +28,7 @@ Output: `build/chrome-mv3-prod.zip` — upload to [chrome.google.com/webstore/de
 
 ## Icon
 
-`assets/icon.png` is a placeholder. Replace with a 512×512 transparent PNG before shipping. Plasmo auto-generates all required sizes.
+`assets/icon.png` is a 512×512 transparent PNG. Plasmo auto-generates all required sizes.
 
 ## Permissions
 

@@ -5,10 +5,13 @@
     "allowJs": true,
     "jsx": "preserve",
     "plugins": [{ "name": "next" }],
+    "preserveSymlinks": true,
+    "types": ["react", "react-dom", "node"],
+    "typeRoots": ["./node_modules/@types"],
     "paths": {
       "@/*": ["./*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "tests/e2e"]
 }

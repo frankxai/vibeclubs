@@ -2,7 +2,7 @@
 
 import { Suspense, useMemo, useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import type { ShaderMaterial, Mesh } from 'three'
+import type { ShaderMaterial, Mesh, Uniform } from 'three'
 
 export type VibeOrbProps = {
   /** 0..1, drives the amber color band and vertex displacement */
@@ -80,6 +80,14 @@ const fragmentShader = /* glsl */ `
 
 type OrbProps = Required<Pick<VibeOrbProps, 'ambient' | 'music' | 'voice'>>
 
+type OrbUniforms = {
+  uTime: Uniform<number>
+  uAmbient: Uniform<number>
+  uMusic: Uniform<number>
+  uVoice: Uniform<number>
+  uCameraPosition: Uniform<[number, number, number]>
+}
+
 function Orb({ ambient, music, voice }: OrbProps) {
   const materialRef = useRef<ShaderMaterial>(null)
   const meshRef = useRef<Mesh>(null)
@@ -100,12 +108,13 @@ function Orb({ ambient, music, voice }: OrbProps) {
   useFrame((state, delta) => {
     const mat = materialRef.current
     if (mat) {
-      mat.uniforms.uTime.value += delta
-      mat.uniforms.uAmbient.value += (ambient - mat.uniforms.uAmbient.value) * 0.08
-      mat.uniforms.uMusic.value += (music - mat.uniforms.uMusic.value) * 0.08
-      mat.uniforms.uVoice.value += (voice - mat.uniforms.uVoice.value) * 0.08
+      const shaderUniforms = mat.uniforms as OrbUniforms
+      shaderUniforms.uTime.value += delta
+      shaderUniforms.uAmbient.value += (ambient - shaderUniforms.uAmbient.value) * 0.08
+      shaderUniforms.uMusic.value += (music - shaderUniforms.uMusic.value) * 0.08
+      shaderUniforms.uVoice.value += (voice - shaderUniforms.uVoice.value) * 0.08
       const cam = state.camera.position
-      mat.uniforms.uCameraPosition.value = [cam.x, cam.y, cam.z]
+      shaderUniforms.uCameraPosition.value = [cam.x, cam.y, cam.z]
     }
     const mesh = meshRef.current
     if (mesh) {

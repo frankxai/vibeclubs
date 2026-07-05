@@ -1,10 +1,43 @@
 'use client'
 
 import * as TooltipPrimitive from '@radix-ui/react-tooltip'
-import { forwardRef, type ReactNode } from 'react'
+import { type ComponentPropsWithoutRef, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 
 export const TooltipProvider = TooltipPrimitive.Provider
+
+type TooltipRootProps = ComponentPropsWithoutRef<typeof TooltipPrimitive.Root> & {
+  children?: ReactNode
+  className?: string
+}
+type TooltipTriggerProps = ComponentPropsWithoutRef<typeof TooltipPrimitive.Trigger> & {
+  children?: ReactNode
+  className?: string
+  asChild?: boolean
+}
+type TooltipContentProps = ComponentPropsWithoutRef<typeof TooltipPrimitive.Content> & {
+  children?: ReactNode
+  className?: string
+}
+type TooltipArrowProps = ComponentPropsWithoutRef<typeof TooltipPrimitive.Arrow> & {
+  className?: string
+}
+
+const TooltipRootPrimitive = TooltipPrimitive.Root as unknown as (
+  props: TooltipRootProps,
+) => ReactNode
+const TooltipTriggerPrimitive = TooltipPrimitive.Trigger as unknown as (
+  props: TooltipTriggerProps,
+) => ReactNode
+const TooltipPortalPrimitive = TooltipPrimitive.Portal as unknown as (props: {
+  children?: ReactNode
+}) => ReactNode
+const TooltipContentPrimitive = TooltipPrimitive.Content as unknown as (
+  props: TooltipContentProps,
+) => ReactNode
+const TooltipArrowPrimitive = TooltipPrimitive.Arrow as unknown as (
+  props: TooltipArrowProps,
+) => ReactNode
 
 interface TooltipProps {
   content: ReactNode
@@ -15,10 +48,10 @@ interface TooltipProps {
 
 export function Tooltip({ content, children, side = 'top', delayDuration = 200 }: TooltipProps) {
   return (
-    <TooltipPrimitive.Root delayDuration={delayDuration}>
-      <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
-      <TooltipPrimitive.Portal>
-        <TooltipPrimitive.Content
+    <TooltipRootPrimitive delayDuration={delayDuration}>
+      <TooltipTriggerPrimitive asChild>{children}</TooltipTriggerPrimitive>
+      <TooltipPortalPrimitive>
+        <TooltipContentPrimitive
           side={side}
           sideOffset={6}
           className={cn(
@@ -28,16 +61,13 @@ export function Tooltip({ content, children, side = 'top', delayDuration = 200 }
           )}
         >
           {content}
-          <TooltipPrimitive.Arrow className="fill-[#0e0e16] stroke-white/10" />
-        </TooltipPrimitive.Content>
-      </TooltipPrimitive.Portal>
-    </TooltipPrimitive.Root>
+          <TooltipArrowPrimitive className="fill-[#0e0e16] stroke-white/10" />
+        </TooltipContentPrimitive>
+      </TooltipPortalPrimitive>
+    </TooltipRootPrimitive>
   )
 }
 
-export const TooltipRoot = forwardRef<
-  React.ElementRef<typeof TooltipPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Root>
->(function TooltipRoot(props, _ref) {
-  return <TooltipPrimitive.Root {...props} />
-})
+export function TooltipRoot(props: TooltipRootProps) {
+  return <TooltipRootPrimitive {...props} />
+}

@@ -1,4 +1,4 @@
-import { forwardRef, type SelectHTMLAttributes } from 'react'
+import { forwardRef, type ReactElement, type SelectHTMLAttributes } from 'react'
 import { cn } from '@/lib/cn'
 
 interface SelectProps<T extends string>
@@ -37,4 +37,4 @@ export const Select = forwardRef(function Select<T extends string>(
       ))}
     </select>
   )
-}) as <T extends string>(props: SelectProps<T> & { ref?: React.Ref<HTMLSelectElement> }) => JSX.Element
+}) as <T extends string>(props: SelectProps<T> & { ref?: React.Ref<HTMLSelectElement> }) => ReactElement

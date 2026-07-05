@@ -1,27 +1,63 @@
 'use client'
 
 import * as DialogPrimitive from '@radix-ui/react-dialog'
-import { forwardRef, type HTMLAttributes } from 'react'
+import {
+  forwardRef,
+  type ComponentPropsWithoutRef,
+  type HTMLAttributes,
+  type ReactNode,
+} from 'react'
 import { cn } from '@/lib/cn'
 
 export const Dialog = DialogPrimitive.Root
 export const DialogTrigger = DialogPrimitive.Trigger
 export const DialogClose = DialogPrimitive.Close
 
-export const DialogContent = forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(function DialogContent({ className, children, ...rest }, ref) {
+type WithChildrenAndClassName<T> = T & {
+  children?: ReactNode
+  className?: string
+}
+
+type DialogContentProps = WithChildrenAndClassName<
+  ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+>
+type DialogTitleProps = WithChildrenAndClassName<
+  ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
+>
+type DialogDescriptionProps = WithChildrenAndClassName<
+  ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
+>
+
+const DialogPortal = DialogPrimitive.Portal as unknown as (props: {
+  children?: ReactNode
+}) => ReactNode
+const DialogOverlay = DialogPrimitive.Overlay as unknown as (
+  props: ComponentPropsWithoutRef<'div'>
+) => ReactNode
+const DialogContentPrimitive = DialogPrimitive.Content as unknown as (
+  props: DialogContentProps & { ref?: React.Ref<HTMLDivElement> }
+) => ReactNode
+const DialogTitlePrimitive = DialogPrimitive.Title as unknown as (
+  props: DialogTitleProps & { ref?: React.Ref<HTMLHeadingElement> }
+) => ReactNode
+const DialogDescriptionPrimitive = DialogPrimitive.Description as unknown as (
+  props: DialogDescriptionProps & { ref?: React.Ref<HTMLParagraphElement> }
+) => ReactNode
+
+export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(function DialogContent(
+  { className, children, ...rest },
+  ref,
+) {
   return (
-    <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay
+    <DialogPortal>
+      <DialogOverlay
         className={cn(
           'fixed inset-0 z-50 bg-black/60 backdrop-blur-sm',
           'data-[state=open]:animate-in data-[state=closed]:animate-out',
           'data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0',
         )}
       />
-      <DialogPrimitive.Content
+      <DialogContentPrimitive
         ref={ref}
         className={cn(
           'fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2',
@@ -32,8 +68,8 @@ export const DialogContent = forwardRef<
         {...rest}
       >
         {children}
-      </DialogPrimitive.Content>
-    </DialogPrimitive.Portal>
+      </DialogContentPrimitive>
+    </DialogPortal>
   )
 })
 
@@ -41,12 +77,12 @@ export function DialogHeader({ className, ...rest }: HTMLAttributes<HTMLDivEleme
   return <div className={cn('mb-4', className)} {...rest} />
 }
 
-export const DialogTitle = forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Title>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
->(function DialogTitle({ className, ...rest }, ref) {
+export const DialogTitle = forwardRef<HTMLHeadingElement, DialogTitleProps>(function DialogTitle(
+  { className, ...rest },
+  ref,
+) {
   return (
-    <DialogPrimitive.Title
+    <DialogTitlePrimitive
       ref={ref}
       className={cn('text-xl font-semibold tracking-tight', className)}
       {...rest}
@@ -54,15 +90,14 @@ export const DialogTitle = forwardRef<
   )
 })
 
-export const DialogDescription = forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Description>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
->(function DialogDescription({ className, ...rest }, ref) {
+export const DialogDescription = forwardRef<HTMLParagraphElement, DialogDescriptionProps>(
+  function DialogDescription({ className, ...rest }, ref) {
   return (
-    <DialogPrimitive.Description
+    <DialogDescriptionPrimitive
       ref={ref}
       className={cn('text-sm text-white/60 leading-relaxed', className)}
       {...rest}
     />
   )
-})
+  },
+)

@@ -25,7 +25,9 @@
  *     `docs/strategy/vibe-mechanics.md` for the design rationale.
  */
 
-import type { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js'
+import type { SupabaseClient } from '@supabase/supabase-js'
+
+type RealtimeChannel = ReturnType<SupabaseClient['channel']>
 
 export type Phase = 'idle' | 'focus' | 'break' | 'ship' | 'dance'
 
@@ -212,7 +214,7 @@ export function createPomodoro(config: PomodoroConfig): Pomodoro {
       config: { broadcast: { self: false } },
     })
 
-    channel.on('broadcast', { event: 'state' }, ({ payload }) => {
+    channel.on('broadcast', { event: 'state' }, ({ payload }: { payload: unknown }) => {
       const remote = payload as PomodoroState
       // Only follow if we're not the host
       if (state.hostId === identity) return
@@ -224,7 +226,7 @@ export function createPomodoro(config: PomodoroConfig): Pomodoro {
       if (state.hostId === identity) broadcast('state', state)
     })
 
-    void channel.subscribe((status) => {
+    void channel.subscribe((status: string) => {
       if (status === 'SUBSCRIBED') {
         // Ask any existing host for current state
         void channel?.send({ type: 'broadcast', event: 'ping', payload: { identity } })

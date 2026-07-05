@@ -90,8 +90,7 @@ export default function SessionCard3D({
             global
             polar={[-0.3, 0.3]}
             azimuth={[-0.6, 0.6]}
-            config={{ mass: 1, tension: 170 }}
-            snap={{ mass: 2, tension: 260 }}
+            snap
           >
             <Card frontColor={frontColor} backColor={backColor} flipped={flipped} />
           </PresentationControls>

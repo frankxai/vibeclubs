@@ -1,12 +1,13 @@
 import { cookies } from 'next/headers'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import type { Database } from './types'
+import type { PublicSchema, VibeSupabaseClient } from './client-types'
 
 type CookieUpdate = { name: string; value: string; options?: CookieOptions }
 
 export async function createSupabaseServerClient() {
   const cookieStore = await cookies()
-  return createServerClient<Database>(
+  return createServerClient<Database, 'public', PublicSchema>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -19,16 +20,16 @@ export async function createSupabaseServerClient() {
         },
       },
     },
-  )
+  ) as VibeSupabaseClient
 }
 
 export function createSupabaseServiceClient() {
   // Service-role client for privileged server-side operations (seeding, admin tasks).
   // NEVER import this into a client component.
   const { createClient } = require('@supabase/supabase-js') as typeof import('@supabase/supabase-js')
-  return createClient<Database>(
+  return createClient<Database, 'public'>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     { auth: { persistSession: false } },
-  )
+  ) as VibeSupabaseClient
 }

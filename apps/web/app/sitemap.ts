@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { PLAYBOOK } from './playbook/playbook-data'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
+import type { ClubRow } from '@/lib/supabase/types'
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://vibeclubs.ai'
 
@@ -39,9 +40,10 @@ async function loadClubRoutes(): Promise<MetadataRoute.Sitemap> {
       .select('slug, updated_at')
       .eq('is_active', true)
       .limit(1000)
-    return (data ?? []).map((c) => ({
+    const clubs = (data ?? []) as Pick<ClubRow, 'slug' | 'updated_at'>[]
+    return clubs.map((c) => ({
       url: `${SITE}/club/${c.slug}`,
-      lastModified: new Date((c as { updated_at: string }).updated_at),
+      lastModified: new Date(c.updated_at),
       priority: 0.8,
     }))
   } catch {

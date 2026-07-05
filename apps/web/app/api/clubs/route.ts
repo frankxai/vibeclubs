@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
   const { data, error } = await supabase
     .from('clubs')
     .insert(payload)
-    .select('slug')
+    .select('id, slug')
     .single()
 
   if (error) {
@@ -65,9 +65,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Ensure the opener is also a member with the owner role.
-  await supabase
-    .from('club_members')
-    .insert({ club_id: (data as { id?: string }).id ?? '', user_id: user.id, role: 'owner' })
+  await supabase.from('club_members').insert({ club_id: data.id, user_id: user.id, role: 'owner' })
 
   return NextResponse.json({ slug: data.slug })
 }
