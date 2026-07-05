@@ -1,9 +1,9 @@
 import Link from 'next/link'
+import { ArrowRight, Bot, CheckCircle2, Chrome, Headphones, Music2, Radio } from 'lucide-react'
 import { Nav } from '@/components/nav'
 import { Footer } from '@/components/footer'
 import {
   Badge,
-  Button,
   LinkButton,
   Card,
   CardEyebrow,
@@ -18,10 +18,16 @@ import { FeatureCard } from '@/components/patterns/feature-card'
 import { TierCard } from '@/components/patterns/tier-card'
 import { SessionCardPreview } from '@/components/patterns/session-card-preview'
 import { AnimatedAurora } from '@/components/patterns/animated-aurora'
-import { SparkOrb } from '@/components/patterns/spark-orb'
 import { LaunchMark } from '@/components/patterns/launch-mark'
 import { Reveal, Stagger, StaggerItem, GradientText } from '@/components/motion'
 import { CLUB_TEMPLATES } from '@/lib/club-templates'
+import { cn } from '@/lib/cn'
+
+const proofStats = [
+  { label: 'where', value: 'Meet / Discord' },
+  { label: 'mix', value: '3 faders' },
+  { label: 'ship', value: 'recap card' },
+]
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -54,6 +60,150 @@ const jsonLd = {
   ],
 }
 
+function MobileRuntimeProof() {
+  return (
+    <div
+      data-mobile-runtime-proof="true"
+      aria-label="Vibeclubs extension proof"
+      className="lg:hidden grid grid-cols-3 gap-2 rounded-2xl border border-white/10 bg-black/35 p-2 backdrop-blur-xl"
+    >
+      {proofStats.map((stat) => (
+        <div key={stat.label} className="rounded-xl bg-white/[0.04] px-3 py-3">
+          <div className="text-[10px] uppercase tracking-[0.18em] text-white/35">{stat.label}</div>
+          <div className="mt-1 text-sm font-semibold leading-tight text-white">{stat.value}</div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function RuntimeRow({
+  icon: Icon,
+  label,
+  value,
+  tone = 'amber',
+}: {
+  icon: typeof Chrome
+  label: string
+  value: string
+  tone?: 'amber' | 'signal' | 'violet'
+}) {
+  const toneClass =
+    tone === 'signal'
+      ? 'text-[#4FD18C] bg-[#4FD18C]/10 border-[#4FD18C]/20'
+      : tone === 'violet'
+        ? 'text-[#a78bfa] bg-[#8b5cf6]/10 border-[#8b5cf6]/20'
+        : 'text-amber-300 bg-amber-400/10 border-amber-400/20'
+
+  return (
+    <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.035] p-3">
+      <div className={cn('grid h-9 w-9 place-items-center rounded-xl border', toneClass)}>
+        <Icon className="h-4 w-4" aria-hidden />
+      </div>
+      <div>
+        <div className="text-[10px] uppercase tracking-[0.18em] text-white/35">{label}</div>
+        <div className="mt-0.5 text-sm font-semibold text-white">{value}</div>
+      </div>
+    </div>
+  )
+}
+
+function VibeRuntimeProof({ className }: { className?: string }) {
+  return (
+    <div
+      data-vibe-runtime-proof="true"
+      aria-label="Vibeclubs extension runtime proof"
+      className={cn(
+        'relative overflow-hidden rounded-3xl border border-white/10 bg-black/35 p-4 shadow-2xl backdrop-blur-xl',
+        className,
+      )}
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(245,158,11,0.16),transparent_36%),radial-gradient(circle_at_90%_20%,rgba(139,92,246,0.16),transparent_38%)]" />
+      <div className="relative rounded-2xl border border-white/10 bg-[#08080d]/95 p-3">
+        <div className="flex items-center justify-between gap-3 border-b border-white/10 pb-3">
+          <div className="flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
+            <span className="h-2.5 w-2.5 rounded-full bg-amber-300/80" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#4FD18C]/80" />
+          </div>
+          <div className="min-w-0 flex-1 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-center font-mono text-[11px] text-white/45">
+            meet.google.com / crew-lock-in
+          </div>
+          <Chrome className="h-4 w-4 text-white/40" aria-hidden />
+        </div>
+
+        <div className="grid gap-4 pt-4 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="space-y-3">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-[10px] uppercase tracking-[0.18em] text-white/35">
+                    crew already here
+                  </div>
+                  <div className="mt-1 text-base font-semibold text-white">Claude Code sprint</div>
+                </div>
+                <div className="flex -space-x-2">
+                  {['FR', 'LX', 'MJ'].map((initials) => (
+                    <div
+                      key={initials}
+                      className="grid h-8 w-8 place-items-center rounded-full border border-black bg-white text-[10px] font-bold text-black"
+                    >
+                      {initials}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-5 grid grid-cols-2 gap-2 text-sm">
+                <div className="rounded-xl bg-black/45 p-3">
+                  <div className="font-mono text-2xl font-bold text-amber-300">90</div>
+                  <div className="text-[10px] uppercase tracking-[0.18em] text-white/35">
+                    minutes
+                  </div>
+                </div>
+                <div className="rounded-xl bg-black/45 p-3">
+                  <div className="font-mono text-2xl font-bold text-[#4FD18C]">3</div>
+                  <div className="text-[10px] uppercase tracking-[0.18em] text-white/35">
+                    cycles
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <RuntimeRow icon={Radio} label="any tab" value="Meet, Discord, YouTube" />
+            <RuntimeRow icon={CheckCircle2} label="after" value="card ready" tone="signal" />
+          </div>
+
+          <div className="rounded-2xl border border-amber-400/20 bg-[#120d05]/80 p-4 shadow-[0_0_42px_-24px_rgba(245,158,11,0.75)]">
+            <div className="mb-4 flex items-start justify-between gap-3">
+              <div>
+                <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-amber-200/70">
+                  <Headphones className="h-3.5 w-3.5" aria-hidden />
+                  Vibeclubs extension
+                </div>
+                <div className="mt-2 text-lg font-semibold leading-tight text-white">
+                  shared soundtrack, shared timer
+                </div>
+              </div>
+              <TimerDisplay mmss="32:14" phase="focus" size="sm" />
+            </div>
+
+            <div className="space-y-3 rounded-2xl border border-white/10 bg-black/35 p-3">
+              <Fader label="Ambient" defaultValue={38} accent="amber" disabled />
+              <Fader label="Suno" defaultValue={26} accent="violet" disabled />
+              <Fader label="Voice" defaultValue={82} accent="signal" disabled />
+            </div>
+
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <RuntimeRow icon={Music2} label="music" value="per listener" tone="violet" />
+              <RuntimeRow icon={Bot} label="recap" value="Claude keeps quiet notes" tone="signal" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function Page() {
   return (
     <main className="min-h-screen">
@@ -66,18 +216,8 @@ export default function Page() {
       {/* HERO */}
       <div className="relative overflow-hidden">
         <AnimatedAurora />
-        <SparkOrb
-          size={760}
-          hue="dual"
-          className="left-[-12%] top-[6%] opacity-70 md:opacity-90"
-        />
-        <SparkOrb
-          size={420}
-          hue="violet"
-          className="right-[-6%] top-[38%] hidden md:block opacity-60"
-        />
-        <Container as="section" width="xl" className="relative pt-40 pb-28">
-          <div className="grid lg:grid-cols-[1.3fr_1fr] gap-16 items-center">
+        <Container as="section" width="xl" className="relative pt-28 pb-20 md:pt-36 md:pb-28">
+          <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-12 items-center">
             <Stagger gap={0.09} amount={0.1}>
               <StaggerItem>
                 <div className="flex items-center gap-3 mb-8">
@@ -88,7 +228,7 @@ export default function Page() {
                 </div>
               </StaggerItem>
               <StaggerItem>
-                <h1 className="text-6xl md:text-8xl font-bold tracking-tight leading-[0.92] mb-8">
+                <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold tracking-tight leading-[0.92] mb-8">
                   Host a
                   <br />
                   <GradientText tone="warm">vibeclub.</GradientText>
@@ -101,19 +241,28 @@ export default function Page() {
                 </p>
               </StaggerItem>
               <StaggerItem>
-                <div className="flex flex-wrap items-center gap-3">
+                <MobileRuntimeProof />
+              </StaggerItem>
+              <StaggerItem>
+                <div className="flex flex-wrap items-center gap-3 mt-6 lg:mt-0">
                   <LinkButton
                     href="/start"
                     variant="primary"
                     size="xl"
                     className="vc-shimmer-border"
+                    trailing={<ArrowRight className="h-4 w-4" aria-hidden />}
                   >
-                    Host a vibeclub →
+                    Host a vibeclub
                   </LinkButton>
                   <LinkButton href="/explore" variant="outline" size="xl">
                     Find one tonight
                   </LinkButton>
-                  <LinkButton href="/extension" variant="ghost" size="xl">
+                  <LinkButton
+                    href="/extension"
+                    variant="ghost"
+                    size="xl"
+                    leading={<Chrome className="h-4 w-4" aria-hidden />}
+                  >
                     Install extension
                   </LinkButton>
                 </div>
@@ -135,26 +284,7 @@ export default function Page() {
               </StaggerItem>
             </Stagger>
             <Reveal direction="left" delay={0.25} amount={0.1}>
-              <div className="relative lg:pl-8">
-                <SessionCardPreview
-                  clubName="lofi-coders-amsterdam"
-                  handle="@frankx"
-                  minutes={90}
-                  cycles={3}
-                  platform="Discord"
-                  date="Apr 21 2026"
-                  className="shadow-2xl rotate-[-2deg]"
-                />
-                <div className="absolute -top-4 -right-4 rotate-[4deg] hidden sm:block">
-                  <div className="rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 px-4 py-3 shadow-xl">
-                    <div className="text-[10px] uppercase tracking-wider text-white/40 font-mono mb-1">
-                      live
-                    </div>
-                    <TimerDisplay mmss="32:14" phase="focus" size="md" />
-                    <div className="text-[10px] text-white/40 mt-1">cycle 2 of 3</div>
-                  </div>
-                </div>
-              </div>
+              <VibeRuntimeProof className="hidden lg:block" />
             </Reveal>
           </div>
         </Container>
@@ -442,12 +572,7 @@ export default function Page() {
               crew is already at their desks.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
-              <LinkButton
-                href="/start"
-                variant="primary"
-                size="xl"
-                className="vc-shimmer-border"
-              >
+              <LinkButton href="/start" variant="primary" size="xl" className="vc-shimmer-border">
                 Host a vibeclub →
               </LinkButton>
               <LinkButton

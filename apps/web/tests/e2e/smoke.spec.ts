@@ -5,6 +5,18 @@ test.describe('landing smoke', () => {
     await page.goto('/')
     await expect(page.getByRole('heading', { level: 1 })).toContainText(/Host a\s*vibeclub/i)
     await expect(page.getByRole('link', { name: /Host a vibeclub/i }).first()).toBeVisible()
+    await expect(page.locator('[data-vibe-runtime-proof="true"]')).toBeVisible()
+    await expect(page.getByText('Vibeclubs extension')).toBeVisible()
+    await expect(page.getByText('shared soundtrack, shared timer')).toBeVisible()
+  })
+
+  test('mobile landing keeps runtime proof in the first viewport', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto('/')
+    await expect(page.locator('[data-mobile-runtime-proof="true"]')).toBeVisible()
+    await expect(page.locator('[data-vibe-runtime-proof="true"]')).toBeHidden()
+    await expect(page.getByText('3 faders')).toBeVisible()
+    await expect(page.getByText('recap card')).toBeVisible()
   })
 
   test('nav links reach primary surfaces', async ({ page }) => {

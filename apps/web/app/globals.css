@@ -97,7 +97,8 @@
   /* --- Typography ---------------------------------------------- */
   --font-display: 'Cal Sans', 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+  --font-mono:
+    'JetBrains Mono', ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
 
   /* Typographic scale — matches the 4-pt baseline */
   --text-2xs: 0.6875rem; /* 11 */
@@ -319,22 +320,10 @@ button,
   );
 }
 .vc-gradient-text--cool {
-  background-image: conic-gradient(
-    from 220deg at 50% 50%,
-    #8b5cf6,
-    #6b3fa0,
-    #4fd18c,
-    #8b5cf6
-  );
+  background-image: conic-gradient(from 220deg at 50% 50%, #8b5cf6, #6b3fa0, #4fd18c, #8b5cf6);
 }
 .vc-gradient-text--signal {
-  background-image: conic-gradient(
-    from 220deg at 50% 50%,
-    #86efac,
-    #4fd18c,
-    #f59e0b,
-    #86efac
-  );
+  background-image: conic-gradient(from 220deg at 50% 50%, #86efac, #4fd18c, #f59e0b, #86efac);
 }
 @keyframes vc-gradient-drift {
   0%,
@@ -474,6 +463,11 @@ button,
   .vc-launch-mark--animated .vc-mark-core,
   .vc-launch-mark--animated .vc-mark-core-inner {
     animation: none !important;
+  }
+
+  .vc-motion-reveal {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 

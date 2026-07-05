@@ -1,0 +1,192 @@
+{
+  "version": "2026-07-05",
+  "task": "Upgrade the Vibeclubs homepage hero into a runtime-proof first viewport and harden reduced-motion reveal visibility.",
+  "surface": "Vibeclubs homepage hero, mobile proof strip, and shared motion primitives.",
+  "audience": "Vibe coders, AI-native builders, small maker crews, OSS contributors, and Arcanea/FrankX ecosystem builders who expect an immediately legible format, not another meeting product.",
+  "first_read": "A visitor should understand that Vibeclubs is a format powered by an extension overlay: the crew stays where it already works, while Vibeclubs adds soundtrack, timer, and recap.",
+  "standards": [
+    "C:/Users/frank/starlight/repos/_intelligence/README.md",
+    "C:/Users/frank/starlight/repos/_intelligence/operating-system.md",
+    "C:/Users/frank/starlight/repos/_intelligence/taste.md",
+    "C:/Users/frank/starlight/repos/_intelligence/design.md",
+    "C:/Users/frank/starlight/repos/_intelligence/motion.md",
+    "C:/Users/frank/starlight/repos/_intelligence/quality-gates.md",
+    "C:/Users/frank/starlight/repos/DESIGN_TASTE.md",
+    "C:/Users/frank/starlight/repos/WEB_EXPERIENCE_STANDARD.md",
+    "C:/Users/frank/starlight/repos/MOTION_TASTE_RUBRIC.md",
+    "C:/Users/frank/starlight/repos/VISUAL_QA_GATE.md",
+    "C:/Users/frank/starlight/repos/design-agent-standards/PREMIUM_ASSET_STANDARD.md",
+    "C:/Users/frank/starlight/repos/design-agent-standards/AGENTIC_DESIGN_LOOP.md",
+    "C:/Users/frank/starlight/repos/design-agent-standards/OUTCOMES.md",
+    "C:/Users/frank/starlight/repos/vibeclubs/VISION.md",
+    "C:/Users/frank/starlight/repos/vibeclubs/docs/strategy/design-evolution.md"
+  ],
+  "references": [
+    {
+      "label": "Live baseline desktop screenshot",
+      "source": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/vibeclubs-live-baseline-20260705/vibeclubs-live-desktop-viewport-1440x1000.png",
+      "reason": "Confirmed the live page was polished but led with a recap card rather than the extension runtime."
+    },
+    {
+      "label": "Live baseline mobile screenshot",
+      "source": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/vibeclubs-live-baseline-20260705/vibeclubs-live-mobile-viewport-390x844.png",
+      "reason": "Confirmed mobile had strong copy and CTA but no runtime proof before first scroll."
+    },
+    {
+      "label": "Vibeclubs vision",
+      "source": "C:/Users/frank/starlight/repos/vibeclubs/VISION.md",
+      "reason": "Used ADR-002 format-not-platform, extension-as-runtime, and five-word voice constraints."
+    },
+    {
+      "label": "Implementation brief",
+      "source": "C:/Users/frank/starlight/repos/vibeclubs/docs/VIBECLUBS_RUNTIME_PROOF_BRIEF_2026-07-05.md",
+      "reason": "Records audience expectation, visual story, motion job, and tool routing."
+    }
+  ],
+  "direction": {
+    "keep": [
+      "Canonical hero line and builder voice.",
+      "Dark amber/violet/signal palette.",
+      "Existing lightweight Framer and CSS atmosphere.",
+      "Directory/start/extension CTAs."
+    ],
+    "avoid": [
+      "Decorative orb as primary focal asset.",
+      "Generic meeting-product language.",
+      "New hosted-room or LiveKit implications.",
+      "Reduced-motion paths that hide the page until animation hydration."
+    ],
+    "signature": "A compact extension runtime proof: tab, crew, faders, timer, and recap outcome.",
+    "system": [
+      "Desktop: replace hero card with a structured extension overlay proof panel.",
+      "Mobile: add three-part proof strip before CTA.",
+      "Motion: preserve entrance wrappers for no-preference users and force final visible state for reduced motion.",
+      "Copy: use Vibeclubs voice and keep proof labels short.",
+      "QA: capture desktop, mobile, and mobile reduced-motion screenshots."
+    ]
+  },
+  "asset_quality": {
+    "tier": "C",
+    "source_method": "product-capture",
+    "provenance": "owned",
+    "why_premium": "The primary hero asset shows the actual Vibeclubs operating mechanism instead of decorative atmosphere: extension overlay, faders, timer, crew context, and recap outcome.",
+    "shortcut_risk": "low",
+    "context_tested": true
+  },
+  "artifacts": [
+    {
+      "path_or_url": "C:/Users/frank/starlight/repos/vibeclubs/apps/web/app/page.tsx",
+      "kind": "ui",
+      "inspected": true,
+      "notes": "Adds VibeRuntimeProof, MobileRuntimeProof, icon-led CTAs, and removes SparkOrb from the hero focal area."
+    },
+    {
+      "path_or_url": "C:/Users/frank/starlight/repos/vibeclubs/apps/web/components/motion/stagger.tsx",
+      "kind": "motion",
+      "inspected": true,
+      "notes": "Adds stable reveal wrapper class and hydration warning suppression for reduced-motion parity."
+    },
+    {
+      "path_or_url": "C:/Users/frank/starlight/repos/vibeclubs/apps/web/components/motion/reveal.tsx",
+      "kind": "motion",
+      "inspected": true,
+      "notes": "Adds stable reveal wrapper class and hydration warning suppression for reduced-motion parity."
+    },
+    {
+      "path_or_url": "C:/Users/frank/starlight/repos/vibeclubs/apps/web/app/globals.css",
+      "kind": "motion",
+      "inspected": true,
+      "notes": "Reduced-motion media query forces reveal wrappers to visible final state."
+    },
+    {
+      "path_or_url": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/vibeclubs-runtime-proof-local-20260705-r4/vibeclubs-runtime-proof-r4-desktop-viewport-1440x1000.png",
+      "kind": "image",
+      "inspected": true,
+      "notes": "Desktop first viewport shows hero copy, primary CTA, and extension runtime proof panel without horizontal overflow."
+    },
+    {
+      "path_or_url": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/vibeclubs-runtime-proof-local-20260705-r4/vibeclubs-runtime-proof-r4-mobile-viewport-390x844.png",
+      "kind": "image",
+      "inspected": true,
+      "notes": "Mobile first viewport shows proof strip and primary CTA before first scroll."
+    },
+    {
+      "path_or_url": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/vibeclubs-runtime-proof-local-20260705-r4/vibeclubs-runtime-proof-r4-mobile-reduced-viewport-390x844.png",
+      "kind": "image",
+      "inspected": true,
+      "notes": "Reduced-motion mobile first viewport keeps the same proof and CTA hierarchy visible."
+    },
+    {
+      "path_or_url": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/vibeclubs-runtime-proof-local-20260705-r4/vibeclubs-runtime-proof-r4-qa-report.json",
+      "kind": "web",
+      "inspected": true,
+      "notes": "Automated QA records status 200, overflowX 0, correct desktop/mobile proof visibility, CTA visibility, and no Next dev overlay."
+    }
+  ],
+  "checks": [
+    {
+      "name": "asset-tier",
+      "status": "pass",
+      "evidence": "Tier C exact UI/product proof; the hero focal asset is an owned runtime mechanism rather than decorative filler."
+    },
+    {
+      "name": "export-inspection",
+      "status": "pass",
+      "evidence": "Desktop, mobile, and mobile reduced-motion screenshots were inspected from R4 local QA."
+    },
+    {
+      "name": "repo-intake",
+      "status": "pass",
+      "evidence": "Invoke-UntrustedRepoIntake.ps1 passed before implementation; no leaks found and dependency scan found no package-source issues."
+    },
+    {
+      "name": "voice-audit",
+      "status": "pass",
+      "evidence": "node scripts/voice-audit.mjs passed after implementation."
+    },
+    {
+      "name": "changed-file-eslint",
+      "status": "pass",
+      "evidence": "node node_modules/eslint/bin/eslint.js apps/web/app/page.tsx apps/web/components/motion/stagger.tsx apps/web/components/motion/reveal.tsx apps/web/tests/e2e/smoke.spec.ts passed."
+    },
+    {
+      "name": "diff-whitespace",
+      "status": "pass",
+      "evidence": "git diff --check passed."
+    },
+    {
+      "name": "visual-qa",
+      "status": "pass",
+      "evidence": "R4 local screenshots passed desktop, mobile, and reduced-motion review with overflowX 0 and no Next dev overlay."
+    },
+    {
+      "name": "playwright-e2e",
+      "status": "blocked",
+      "evidence": "corepack pnpm test:e2e was attempted after install. Browser tests could not launch because Playwright expected missing local chromium_headless_shell-1217; the request test also hit a reused/stale port 3000 server before the port was cleaned. No repo source failure was confirmed by this run."
+    },
+    {
+      "name": "typecheck",
+      "status": "blocked",
+      "evidence": "Direct tsc against apps/web reports pre-existing repo-wide Supabase generated-type gaps and React type skew across shared UI/Radix components; not introduced by this homepage/motion lane."
+    },
+    {
+      "name": "pnpm-install",
+      "status": "pass",
+      "evidence": "corepack pnpm install --frozen-lockfile --force passed with pnpm 9.0.0 after the earlier global pnpm 11 ignored-builds guard was identified as the wrong package-manager path for this repo."
+    }
+  ],
+  "score": {
+    "total": 26,
+    "max": 30,
+    "notes": "Visual ship standard met locally, but release remains gated: proof object, mobile hierarchy, voice, package install, changed-file lint, and visual QA pass. Deductions: local production build/typecheck are blocked by repo-wide TypeScript residuals, and live host/deploy path is not yet attached to the Starlight Vercel project."
+  },
+  "decision": "iterate",
+  "known_risks": [
+    "vibeclubs.ai is live but was not found as a project in the known Starlight Vercel team; production deploy path needs owner/provider confirmation.",
+    "DNS points to 216.150.x.x addresses rather than the usual Vercel edge record.",
+    "Full app typecheck currently fails on pre-existing Supabase generated types and React/Radix type skew.",
+    "Repo Playwright E2E needs the expected local chromium_headless_shell-1217 browser revision before it can serve as a release gate.",
+    "Use corepack pnpm for repo gates; global pnpm 11 is not the right install path for this pnpm@9 repo.",
+    "Local visual QA used Next dev because production build is gated by the repo-wide residuals above."
+  ]
+}

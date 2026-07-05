@@ -4,7 +4,7 @@ import * as React from 'react'
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
 
 type MotionDivProps = Omit<
-  React.HTMLAttributes<HTMLDivElement>,
+  React.HTMLAttributes<globalThis.HTMLDivElement>,
   'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag'
 > & {
   variants?: Variants
@@ -40,10 +40,11 @@ export function Stagger({
   children,
 }: StaggerProps) {
   const prefersReduced = useReducedMotion()
+  const motionClassName = ['vc-motion-reveal', className].filter(Boolean).join(' ')
 
   if (prefersReduced) {
     return (
-      <div className={className} style={style}>
+      <div className={motionClassName} style={style} suppressHydrationWarning>
         {children as React.ReactNode}
       </div>
     )
@@ -51,8 +52,9 @@ export function Stagger({
 
   return (
     <MotionDiv
-      className={className}
+      className={motionClassName}
       style={style}
+      suppressHydrationWarning
       initial="hidden"
       whileInView="visible"
       viewport={{ once, amount }}
@@ -82,8 +84,15 @@ type StaggerItemProps = {
 }
 
 export function StaggerItem({ className, style, children }: StaggerItemProps) {
+  const motionClassName = ['vc-motion-reveal', className].filter(Boolean).join(' ')
+
   return (
-    <MotionDiv className={className} style={style} variants={itemVariants}>
+    <MotionDiv
+      className={motionClassName}
+      style={style}
+      variants={itemVariants}
+      suppressHydrationWarning
+    >
       {children}
     </MotionDiv>
   )

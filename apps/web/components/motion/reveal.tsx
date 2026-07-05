@@ -38,17 +38,21 @@ export function Reveal({
   children,
 }: RevealProps) {
   const prefersReduced = useReducedMotion()
+  const motionClassName = ['vc-motion-reveal', className].filter(Boolean).join(' ')
 
   if (prefersReduced) {
     return (
-      <div className={className} style={style}>
+      <div className={motionClassName} style={style} suppressHydrationWarning>
         {children as React.ReactNode}
       </div>
     )
   }
 
   const MotionDiv = motion.div as unknown as React.FC<
-    Omit<React.HTMLAttributes<HTMLDivElement>, 'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag'> & {
+    Omit<
+      React.HTMLAttributes<globalThis.HTMLDivElement>,
+      'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag'
+    > & {
       variants?: Variants
       initial?: string
       whileInView?: string
@@ -60,8 +64,9 @@ export function Reveal({
 
   return (
     <MotionDiv
-      className={className}
+      className={motionClassName}
       style={style}
+      suppressHydrationWarning
       variants={directionVariants[direction]}
       initial="hidden"
       whileInView="visible"
