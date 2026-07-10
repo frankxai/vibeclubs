@@ -24,7 +24,6 @@ export function Avatar({ src, name, size = 'md', className }: AvatarProps) {
     .join('')
 
   if (src) {
-    // eslint-disable-next-line @next/next/no-img-element
     return (
       <img
         src={src}

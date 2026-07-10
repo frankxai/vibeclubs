@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: 'Vibeclubs',
     short_name: 'Vibeclubs',
     description:
-      'Claude Code + your crew + a soundtrack. Host a vibeclub.',
+      'Lock in with your crew, ship one visible thing, and keep the proof.',
     start_url: '/',
     display: 'standalone',
     background_color: '#0a0a0f',

@@ -19,6 +19,15 @@ const nextConfig = {
     // runs the full check and surfaces the residual errors explicitly.
     ignoreBuildErrors: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/favicon.ico',
+        destination: '/icon.svg',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 export default nextConfig

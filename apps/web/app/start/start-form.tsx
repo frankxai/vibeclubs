@@ -86,7 +86,7 @@ export function StartForm() {
     const templateId = search.get('template')
     const t = findTemplate(templateId)
     if (t) applyTemplate(t.id)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [])
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((f) => ({ ...f, [key]: value }))

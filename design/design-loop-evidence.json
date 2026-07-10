@@ -1,0 +1,131 @@
+{
+  "version": "2026-07-10",
+  "task": "Replace simulated Vibeclubs proof with an operable local host-to-recap ritual and explicit trust boundaries.",
+  "surface": "Homepage, local proof component, metadata, favicon route, privacy copy, and operating documentation.",
+  "audience": "Builders and small crews evaluating a focused-work ritual.",
+  "first_read": "Lock in together. Leave with proof.",
+  "standards": [
+    "DESIGN_TASTE.md",
+    "WEB_EXPERIENCE_STANDARD.md",
+    "MOTION_TASTE_RUBRIC.md",
+    "VISUAL_QA_GATE.md",
+    "design-agent-standards/PREMIUM_ASSET_STANDARD.md",
+    "design-agent-standards/AGENTIC_DESIGN_LOOP.md",
+    "_intelligence/quality-gates.md"
+  ],
+  "references": [
+    {
+      "label": "Vibeclubs product vision",
+      "source": "VISION.md",
+      "reason": "Defines the focused ritual and canonical consumer voice."
+    },
+    {
+      "label": "Existing owned icon",
+      "source": "apps/web/app/icon.svg",
+      "reason": "Vector-first identity source for the inspected extension raster export."
+    }
+  ],
+  "direction": {
+    "keep": [
+      "Focused-session ritual",
+      "Open-source package proof",
+      "Amber timing signal",
+      "Existing vector identity"
+    ],
+    "avoid": [
+      "Simulated live activity",
+      "Unverified paid tiers",
+      "AI observation overclaims",
+      "Decorative 3D or generated filler"
+    ],
+    "signature": "A visitor can operate the full ritual and leave with an exact recap asset before signing in.",
+    "system": [
+      "Tier C code-native product interface",
+      "Owned vector icon and inspected raster export",
+      "Five-state ritual rail",
+      "Named proof-breathe motion with reduced-motion fallback"
+    ]
+  },
+  "asset_quality": {
+    "tier": "C",
+    "source_method": "product-capture",
+    "provenance": "owned",
+    "why_premium": "The primary visual is the actual timer and recap-card capability, not decorative media or simulated product proof.",
+    "shortcut_risk": "low",
+    "context_tested": false
+  },
+  "artifacts": [
+    {
+      "path_or_url": "apps/web/components/ritual-proof.tsx",
+      "kind": "interactive-product-proof",
+      "inspected": true,
+      "notes": "Source-reviewed, contract-tested, and compiled in the production build."
+    },
+    {
+      "path_or_url": "apps/web/app/privacy/page.tsx",
+      "kind": "trust-ui",
+      "inspected": true,
+      "notes": "Consent, structured payload, retention, processor, and deletion boundaries are explicit."
+    },
+    {
+      "path_or_url": "apps/extension/assets/icon.png",
+      "kind": "rasterized-owned-vector",
+      "inspected": true,
+      "notes": "512px export inspected at original resolution; replaces the text placeholder that broke the extension build."
+    },
+    {
+      "path_or_url": "design/visual-qa",
+      "kind": "web-screenshot-set",
+      "inspected": true,
+      "notes": "The one local production capture produced a 1440×1200 homepage export after the harness timeout; it was inspected at original resolution. Mobile and reduced-motion captures remain outside the one-attempt cap."
+    }
+  ],
+  "checks": [
+    {
+      "name": "frozen-install",
+      "status": "pass",
+      "evidence": "pnpm install --frozen-lockfile completed across all nine workspace projects."
+    },
+    {
+      "name": "voice-audit",
+      "status": "pass",
+      "evidence": "Canonical consumer vocabulary audit passed."
+    },
+    {
+      "name": "tests",
+      "status": "pass",
+      "evidence": "Six test files and 28 tests passed, including local invite and deterministic recap contracts."
+    },
+    {
+      "name": "lint",
+      "status": "pass",
+      "evidence": "All 13 Turbo lint tasks passed after restoring the Next 16-compatible web lint command."
+    },
+    {
+      "name": "typecheck",
+      "status": "blocked",
+      "evidence": "Extension asset typing is repaired; the pre-existing web React 18/19 split and ungenerated Supabase Database types still fail the standalone checker."
+    },
+    {
+      "name": "build",
+      "status": "pass",
+      "evidence": "All eight Turbo production build tasks passed; Next prerendered 25 routes and Plasmo completed the Chrome MV3 bundle."
+    },
+    {
+      "name": "visual-qa",
+      "status": "blocked",
+      "evidence": "Desktop first viewport passed inspection. Mobile and reduced-motion exports were not captured under the one-attempt cap, so the draft remains below ship threshold."
+    }
+  ],
+  "score": {
+    "total": 25,
+    "max": 30,
+    "notes": "Product truth, hierarchy, utility, trust language, desktop composition, responsive code, reduced motion, lint, tests, and builds are strong. Score is capped until mobile/reduced-motion exports and the standalone web type migration pass."
+  },
+  "decision": "iterate",
+  "known_risks": [
+    "Hosted Supabase and Anthropic paths still require configured credentials and separate end-to-end proof.",
+    "Visual QA has not yet completed.",
+    "Legacy extension dependencies require a separate coordinated security upgrade lane."
+  ]
+}
