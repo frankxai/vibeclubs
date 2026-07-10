@@ -27,8 +27,7 @@ export const metadata: Metadata = {
   creator: 'Frank Riemer',
   openGraph: {
     title: 'Vibeclubs — Host a vibeclub',
-    description:
-      'Lock in with your crew, ship one visible thing, and keep the proof. Open source.',
+    description: 'Lock in with your crew, ship one visible thing, and keep the proof. Open source.',
     url: 'https://vibeclubs.ai',
     siteName: 'Vibeclubs',
     type: 'website',
@@ -45,11 +44,7 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="dark">
       <body className="bg-[#0a0a0f] text-white antialiased">

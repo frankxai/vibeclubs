@@ -10,7 +10,7 @@ const LINKS = [
   { href: '/extension', label: 'Extension' },
   { href: '/developers', label: 'Developers' },
   { href: '/playbook', label: 'How it works' },
-]
+] as const
 
 export function Nav() {
   const pathname = usePathname()

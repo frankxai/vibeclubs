@@ -245,9 +245,7 @@ if (asJson) {
   console.error('| File | Line | Hit | Context |')
   console.error('|---|---|---|---|')
   for (const v of violations) {
-    console.error(
-      `| \`${v.path}\` | ${v.line} | \`${v.hit}\` | ${v.text.replace(/\|/g, '\\|')} |`,
-    )
+    console.error(`| \`${v.path}\` | ${v.line} | \`${v.hit}\` | ${v.text.replace(/\|/g, '\\|')} |`)
   }
   console.error('\nReference: VISION.md §Voice + .claude/skills/voice/SKILL.md')
   console.error('Rewrite using the five words: vibeclub / host / crew / lock in / ship')

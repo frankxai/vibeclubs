@@ -45,8 +45,8 @@ export default function Privacy() {
             <p>
               Anthropic processes that structured request to generate the recap. Vibeclubs does not
               persist the raw recap request as a separate record. A generated recap is saved only
-              when the signed-in hosted flow stores it with the run. Saved run history remains
-              until the account holder deletes it or requests deletion.
+              when the signed-in hosted flow stores it with the run. Saved run history remains until
+              the account holder deletes it or requests deletion.
             </p>
             <h2>Your choices</h2>
             <p>

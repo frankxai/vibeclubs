@@ -160,8 +160,8 @@ pomo.on('complete', (cycle) => console.log('shipped', cycle))`}
                 >
                   CONTRIBUTING.md
                 </Link>{' '}
-                for style + the vetoes (no breakout rooms, no host controls, no recording-by-default,
-                no calendar features — these are load-bearing).
+                for style + the vetoes (no breakout rooms, no host controls, no
+                recording-by-default, no calendar features — these are load-bearing).
               </CardBody>
               <div className="mt-5">
                 <LinkButton

@@ -173,7 +173,8 @@ export default function VibeOverlay() {
         <section className="vc-section">
           <div className={`vc-timer vc-timer-${state?.phase ?? 'idle'}`}>{mmss || '25:00'}</div>
           <div className="vc-phase">
-            {state?.phase ?? 'idle'} {state && <span className="vc-cycle">· cycle {state.cycle + 1}</span>}
+            {state?.phase ?? 'idle'}{' '}
+            {state && <span className="vc-cycle">· cycle {state.cycle + 1}</span>}
           </div>
           <div className="vc-primary-controls">
             <button onClick={() => pomo?.start()}>Start</button>

@@ -48,7 +48,10 @@ export function Reveal({
   }
 
   const MotionDiv = motion.div as unknown as React.FC<
-    Omit<React.HTMLAttributes<HTMLDivElement>, 'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag'> & {
+    Omit<
+      React.HTMLAttributes<HTMLDivElement>,
+      'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag'
+    > & {
       variants?: Variants
       initial?: string
       whileInView?: string

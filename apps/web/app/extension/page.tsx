@@ -86,9 +86,9 @@ export default function ExtensionPage() {
                 Three layers. One sphere. Drag the faders.
               </h2>
               <p className="text-white/55 max-w-2xl mx-auto mt-5 text-lg leading-relaxed">
-                A custom WebGL shader paints each fader as a color band on the orb. This is the
-                same three-layer mix the extension runs — amber ambient, violet music, signal-green
-                page audio — previewed here so you can feel the knobs before you install.
+                A custom WebGL shader paints each fader as a color band on the orb. This is the same
+                three-layer mix the extension runs — amber ambient, violet music, signal-green page
+                audio — previewed here so you can feel the knobs before you install.
               </p>
             </div>
           </Reveal>
@@ -135,8 +135,7 @@ export default function ExtensionPage() {
                 Auto-notes.
               </CardTitle>
               <CardBody>
-                Session ends, Claude writes a two-liner, card lands on your profile. Shareable to
-                X.
+                Session ends, Claude writes a two-liner, card lands on your profile. Shareable to X.
               </CardBody>
             </Card>
             <Card pad="md" interactive>
@@ -179,7 +178,9 @@ export default function ExtensionPage() {
             </div>
             <div>
               <Eyebrow>Keyboard</Eyebrow>
-              <h2 className="text-3xl font-bold tracking-tight mt-4 mb-5">Shortcuts on any page.</h2>
+              <h2 className="text-3xl font-bold tracking-tight mt-4 mb-5">
+                Shortcuts on any page.
+              </h2>
               <ul className="space-y-3 text-sm text-white/70">
                 <li className="flex items-center gap-3">
                   <Kbd>⌘</Kbd>

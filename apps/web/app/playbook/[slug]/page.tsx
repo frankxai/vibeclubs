@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import type { Route } from 'next'
 import { notFound } from 'next/navigation'
 import { Nav } from '@/components/nav'
 import { Footer } from '@/components/footer'
@@ -27,7 +28,10 @@ export default async function PlaybookEntryPage({ params }: Params) {
     <main className="min-h-screen">
       <Nav />
       <article className="pt-32 pb-16 px-6 max-w-2xl mx-auto">
-        <Link href="/playbook" className="text-sm text-white/50 hover:text-white/80 mb-6 inline-block">
+        <Link
+          href="/playbook"
+          className="text-sm text-white/50 hover:text-white/80 mb-6 inline-block"
+        >
           ← How it works
         </Link>
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-3">{entry.title}</h1>
@@ -108,8 +112,16 @@ function renderInline(text: string): React.ReactNode {
     }
     const linkMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/)
     if (linkMatch) {
+      const href = linkMatch[2]!
+      if (/^https?:\/\//.test(href)) {
+        return (
+          <a key={i} href={href} className="text-amber-300 hover:underline">
+            {linkMatch[1]}
+          </a>
+        )
+      }
       return (
-        <Link key={i} href={linkMatch[2]!} className="text-amber-300 hover:underline">
+        <Link key={i} href={href as Route} className="text-amber-300 hover:underline">
           {linkMatch[1]}
         </Link>
       )

@@ -16,12 +16,7 @@ type PulseBeatProps = {
  * (extension overlay, club page, hero badges) that pass the same BPM
  * animate in sync — this is the vibe mechanic #1 "shared tempo."
  */
-export function PulseBeat({
-  bpm = 95,
-  size = 12,
-  tone = 'amber',
-  className,
-}: PulseBeatProps) {
+export function PulseBeat({ bpm = 95, size = 12, tone = 'amber', className }: PulseBeatProps) {
   const color =
     tone === 'signal'
       ? 'var(--color-vibe-signal, #4fd18c)'

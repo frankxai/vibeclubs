@@ -26,8 +26,7 @@ const jsonLd = {
   url: 'https://vibeclubs.ai',
   applicationCategory: 'ProductivityApplication',
   operatingSystem: 'Web, Chrome',
-  description:
-    'An open focused-work ritual with a shared timer, ship checkpoint, and recap card.',
+  description: 'An open focused-work ritual with a shared timer, ship checkpoint, and recap card.',
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
   codeRepository: 'https://github.com/frankxai/vibeclubs',
 }
@@ -54,9 +53,9 @@ export default function Page() {
               <span className="block text-amber-300">Leave with proof.</span>
             </h1>
             <p className="mt-8 max-w-2xl text-lg leading-8 text-white/62 md:text-xl">
-              Vibeclubs gives a crew one focused-work ritual: name the thing, share the clock,
-              ship, and keep a recap card. Use Meet, Discord, Zoom, a café, or any place that
-              already works.
+              Vibeclubs gives a crew one focused-work ritual: name the thing, share the clock, ship,
+              and keep a recap card. Use Meet, Discord, Zoom, a café, or any place that already
+              works.
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               <LinkButton href="#try-it" size="xl">
@@ -111,7 +110,9 @@ export default function Page() {
       <section id="try-it" className="border-b border-white/8 py-24 md:py-32">
         <div className="mx-auto max-w-[1200px] px-6">
           <div className="mb-12 max-w-3xl">
-            <p className="font-mono text-xs uppercase tracking-[.2em] text-amber-300">Try the loop</p>
+            <p className="font-mono text-xs uppercase tracking-[.2em] text-amber-300">
+              Try the loop
+            </p>
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em] md:text-6xl">
               The ritual is the product.
             </h2>
@@ -162,7 +163,9 @@ export default function Page() {
 
       <section className="py-24 text-center md:py-32">
         <div className="mx-auto max-w-3xl px-6">
-          <p className="font-mono text-xs uppercase tracking-[.2em] text-amber-300">Start honestly</p>
+          <p className="font-mono text-xs uppercase tracking-[.2em] text-amber-300">
+            Start honestly
+          </p>
           <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em] md:text-6xl">
             Bring the work. Invite the crew.
           </h2>

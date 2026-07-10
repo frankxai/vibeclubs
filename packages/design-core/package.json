@@ -13,7 +13,9 @@
     "./themes/vibeclubs.css": "./src/themes/vibeclubs.css",
     "./themes/frankx.css": "./src/themes/frankx.css"
   },
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
     "lint": "eslint src",

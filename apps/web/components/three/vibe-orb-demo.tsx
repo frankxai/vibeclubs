@@ -83,9 +83,9 @@ export function VibeOrbDemo({ className }: { className?: string }) {
             Drag the faders
           </div>
           <p className="text-lg text-white/70 leading-relaxed max-w-md">
-            This is the extension, visualized. Every fader drives a shader uniform.
-            The same three layers power your actual session — ambient, music, voice — in each
-            listener&apos;s ears, never broadcast.
+            This is the extension, visualized. Every fader drives a shader uniform. The same three
+            layers power your actual session — ambient, music, voice — in each listener&apos;s ears,
+            never broadcast.
           </p>
         </div>
 

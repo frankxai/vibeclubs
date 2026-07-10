@@ -25,8 +25,8 @@ export default function StartPage() {
                   Host a vibeclub.
                 </h1>
                 <p className="text-lg text-white/60 mb-12 leading-relaxed max-w-xl">
-                  Pick a template or build your own. Share the link. Your crew shows up.
-                  That&apos;s the whole thing.
+                  Pick a template or build your own. Share the link. Your crew shows up. That&apos;s
+                  the whole thing.
                 </p>
                 <Suspense fallback={null}>
                   <StartForm />

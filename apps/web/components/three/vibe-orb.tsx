@@ -99,12 +99,12 @@ function Orb({ ambient, music, voice }: OrbProps) {
   useFrame((state, delta) => {
     const mat = materialRef.current
     if (mat) {
-      mat.uniforms.uTime.value += delta
-      mat.uniforms.uAmbient.value += (ambient - mat.uniforms.uAmbient.value) * 0.08
-      mat.uniforms.uMusic.value += (music - mat.uniforms.uMusic.value) * 0.08
-      mat.uniforms.uVoice.value += (voice - mat.uniforms.uVoice.value) * 0.08
+      mat.uniforms.uTime!.value += delta
+      mat.uniforms.uAmbient!.value += (ambient - mat.uniforms.uAmbient!.value) * 0.08
+      mat.uniforms.uMusic!.value += (music - mat.uniforms.uMusic!.value) * 0.08
+      mat.uniforms.uVoice!.value += (voice - mat.uniforms.uVoice!.value) * 0.08
       const cam = state.camera.position
-      mat.uniforms.uCameraPosition.value = [cam.x, cam.y, cam.z]
+      mat.uniforms.uCameraPosition!.value = [cam.x, cam.y, cam.z]
     }
     const mesh = meshRef.current
     if (mesh) {

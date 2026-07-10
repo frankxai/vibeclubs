@@ -1,7 +1,7 @@
 'use client'
 
 import * as TooltipPrimitive from '@radix-ui/react-tooltip'
-import { forwardRef, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 
 export const TooltipProvider = TooltipPrimitive.Provider
@@ -35,9 +35,4 @@ export function Tooltip({ content, children, side = 'top', delayDuration = 200 }
   )
 }
 
-export const TooltipRoot = forwardRef<
-  React.ElementRef<typeof TooltipPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Root>
->(function TooltipRoot(props, _ref) {
-  return <TooltipPrimitive.Root {...props} />
-})
+export const TooltipRoot = TooltipPrimitive.Root

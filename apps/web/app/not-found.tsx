@@ -10,9 +10,7 @@ export default function NotFound() {
       <Section pad="lg" className="pt-32">
         <Container width="md" className="text-center">
           <Eyebrow className="inline-flex">404</Eyebrow>
-          <h1 className="text-6xl md:text-8xl font-bold tracking-tight mt-5 mb-5">
-            Not here.
-          </h1>
+          <h1 className="text-6xl md:text-8xl font-bold tracking-tight mt-5 mb-5">Not here.</h1>
           <p className="text-white/60 mb-10 text-lg">
             Either the vibeclub wrapped, the link is wrong, or you&apos;re hunting a route nobody
             built yet. Either way, there&apos;s elsewhere to be.

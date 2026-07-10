@@ -128,9 +128,7 @@ export default async function UserPage({ params }: Params) {
   )
 }
 
-async function loadUser(
-  handle: string,
-): Promise<{ user: UserRow | null; sessions: SessionRow[] }> {
+async function loadUser(handle: string): Promise<{ user: UserRow | null; sessions: SessionRow[] }> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return { user: null, sessions: [] }
   try {
     const supabase = await createSupabaseServerClient()

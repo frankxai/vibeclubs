@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import type { Route } from 'next'
 
 export function Footer() {
   return (
@@ -55,9 +56,18 @@ function Col({ title, children }: { title: string; children: React.ReactNode }) 
 }
 
 function A({ href, children }: { href: string; children: React.ReactNode }) {
+  if (/^https?:\/\//.test(href)) {
+    return (
+      <li>
+        <a href={href} className="hover:text-white/80 transition">
+          {children}
+        </a>
+      </li>
+    )
+  }
   return (
     <li>
-      <Link href={href} className="hover:text-white/80 transition">
+      <Link href={href as Route} className="hover:text-white/80 transition">
         {children}
       </Link>
     </li>

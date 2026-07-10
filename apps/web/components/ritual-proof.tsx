@@ -20,7 +20,9 @@ export function RitualProof() {
 
   const invite = `vibeclubs.ai/local/${slugifyVibeclub(clubName)}`
   const proofSequence = sequenceForPreset('vibe_coding_sprint')
-  const proofStages = proofSequence.filter((item) => item.phase === 'focus' || item.phase === 'ship')
+  const proofStages = proofSequence.filter(
+    (item) => item.phase === 'focus' || item.phase === 'ship',
+  )
 
   const recap = useMemo(
     () =>
@@ -112,10 +114,13 @@ export function RitualProof() {
           </h3>
           <p className="mt-4 max-w-md leading-7 text-white/52">
             {stage === 'host' && 'A useful vibeclub begins with one concrete ship target.'}
-            {stage === 'join' && 'This tab models a host plus one crew mate. No network room is created.'}
+            {stage === 'join' &&
+              'This tab models a host plus one crew mate. No network room is created.'}
             {stage === 'focus' && 'The real timer engine is running a six-second inspection cycle.'}
-            {stage === 'ship' && 'A recap is only credible when it names the artifact that changed.'}
-            {stage === 'recap' && 'The recap text and SVG card are deterministic and generated in this tab.'}
+            {stage === 'ship' &&
+              'A recap is only credible when it names the artifact that changed.'}
+            {stage === 'recap' &&
+              'The recap text and SVG card are deterministic and generated in this tab.'}
           </p>
 
           <div className="mt-9 rounded-2xl border border-white/8 bg-black/20 p-5">
