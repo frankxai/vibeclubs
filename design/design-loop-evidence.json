@@ -1,7 +1,7 @@
 {
   "version": "2026-07-10",
-  "task": "Replace simulated Vibeclubs proof with an operable local host-to-recap ritual and explicit trust boundaries.",
-  "surface": "Homepage, local proof component, metadata, favicon route, privacy copy, and operating documentation.",
+  "task": "Keep the operable local ritual intact while adding a truthful per-participant boundary before hosted AI recap.",
+  "surface": "Homepage proof, extension settings, AI recap request gate, privacy copy, and operating documentation.",
   "audience": "Builders and small crews evaluating a focused-work ritual.",
   "first_read": "Lock in together. Leave with proof.",
   "standards": [
@@ -52,7 +52,7 @@
     "provenance": "owned",
     "why_premium": "The primary visual is the actual timer and recap-card capability, not decorative media or simulated product proof.",
     "shortcut_risk": "low",
-    "context_tested": false
+    "context_tested": true
   },
   "artifacts": [
     {
@@ -65,7 +65,13 @@
       "path_or_url": "apps/web/app/privacy/page.tsx",
       "kind": "trust-ui",
       "inspected": true,
-      "notes": "Consent, structured payload, retention, processor, and deletion boundaries are explicit."
+      "notes": "Desktop and 390px mobile renders inspected. Local proof, per-person AI acknowledgement, structured payload, analytics prohibition, no automatic expiry, no self-service deletion, and the published request path match current code and schema."
+    },
+    {
+      "path_or_url": "apps/extension/contents/overlay.tsx",
+      "kind": "participant-consent-control",
+      "inspected": true,
+      "notes": "Source, typecheck, unit contract, and Chrome MV3 bundle inspected. AI recap defaults off, old ambiguous settings normalize off, acknowledgement precedes enablement, and the event-time gate reads current settings rather than a stale closure."
     },
     {
       "path_or_url": "apps/extension/assets/icon.png",
@@ -77,10 +83,20 @@
       "path_or_url": "design/visual-qa",
       "kind": "web-screenshot-set",
       "inspected": true,
-      "notes": "The one local production capture produced a 1440×1200 homepage export after the harness timeout; it was inspected at original resolution. Mobile and reduced-motion captures remain outside the one-attempt cap."
+      "notes": "Homepage closure remains 28/30. Fresh privacy desktop/mobile and homepage reduced-motion captures were inspected; no overflow or errors, and reduced motion had zero running animations."
     }
   ],
   "checks": [
+    {
+      "name": "asset-tier",
+      "status": "pass",
+      "evidence": "Tier C remains correct: the proof and consent boundary are functional code-native interfaces. No generated or external media was added."
+    },
+    {
+      "name": "export-inspection",
+      "status": "pass",
+      "evidence": "Actual production-build privacy exports at 1440px and 390px plus a reduced-motion homepage render and completed mobile ritual were inspected."
+    },
     {
       "name": "frozen-install",
       "status": "pass",
@@ -94,7 +110,7 @@
     {
       "name": "tests",
       "status": "pass",
-      "evidence": "Six test files and 28 tests passed, including local invite and deterministic recap contracts."
+      "evidence": "Seven test files and 34 tests passed, including participant notice gating, old-setting normalization, prohibited telemetry sinks, schema-backed retention/deletion wording, and local ritual preservation."
     },
     {
       "name": "lint",
@@ -103,8 +119,8 @@
     },
     {
       "name": "typecheck",
-      "status": "blocked",
-      "evidence": "Extension asset typing is repaired; the pre-existing web React 18/19 split and ungenerated Supabase Database types still fail the standalone checker."
+      "status": "pass",
+      "evidence": "All 14 Turbo typecheck/build dependency tasks passed, including the extension and web app."
     },
     {
       "name": "build",
@@ -113,19 +129,20 @@
     },
     {
       "name": "visual-qa",
-      "status": "blocked",
-      "evidence": "Desktop first viewport passed inspection. Mobile and reduced-motion exports were not captured under the one-attempt cap, so the draft remains below ship threshold."
+      "status": "pass",
+      "evidence": "The existing 28/30 homepage score is preserved. Privacy passed desktop and 390px mobile without overflow or console errors; reduced-motion homepage had zero running animations; the complete local ritual still rendered its recap and SVG without network writes or browser storage."
     }
   ],
   "score": {
-    "total": 25,
+    "total": 28,
     "max": 30,
-    "notes": "Product truth, hierarchy, utility, trust language, desktop composition, responsive code, reduced motion, lint, tests, and builds are strong. Score is capped until mobile/reduced-motion exports and the standalone web type migration pass."
+    "notes": "Product truth, hierarchy, utility, participant choice, responsive composition, reduced motion, lint, typecheck, tests, and builds are strong. The inline extension notice adds one earned trust surface without changing the homepage composition or ritual flow."
   },
-  "decision": "iterate",
+  "decision": "ship",
   "known_risks": [
-    "Hosted Supabase and Anthropic paths still require configured credentials and separate end-to-end proof.",
-    "Visual QA has not yet completed.",
+    "The hosted database and Anthropic path still require credentialed end-to-end proof before production activation.",
+    "Saved hosted records have no automatic expiry or self-service delete control; support-request handling remains an operating responsibility.",
+    "Final controller/processor, DPA, and data-region decisions remain human-gated.",
     "Legacy extension dependencies require a separate coordinated security upgrade lane."
   ]
 }

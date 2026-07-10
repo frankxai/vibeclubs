@@ -40,6 +40,25 @@ export interface WitnessPrompt {
   user: string
 }
 
+export interface AiRecapChoice {
+  recapEnabled: boolean
+  recapNoticeAccepted: boolean
+}
+
+/** Old installs may have persisted recapEnabled before acknowledgement existed. */
+export function normalizeAiRecapChoice(input: unknown): AiRecapChoice {
+  const stored = input && typeof input === 'object' ? (input as Record<string, unknown>) : {}
+  const recapNoticeAccepted = stored.recapNoticeAccepted === true
+  return {
+    recapNoticeAccepted,
+    recapEnabled: recapNoticeAccepted && stored.recapEnabled === true,
+  }
+}
+
+export function canRequestAiRecap(choice: AiRecapChoice): boolean {
+  return choice.recapNoticeAccepted && choice.recapEnabled
+}
+
 const SYSTEM_PROMPT = `You are the Vibeclubs witness. You live quietly inside a focused work session.
 
 Your three jobs, exactly:

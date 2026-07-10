@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import type { PlasmoCSConfig, PlasmoGetStyle } from 'plasmo'
 import { createMixer, type Layer, type Mixer } from '@vibeclubs/vibe-mix'
 import { createPomodoro, type Pomodoro, type PomodoroState } from '@vibeclubs/pomodoro-sync'
+import { canRequestAiRecap, normalizeAiRecapChoice } from '@vibeclubs/ai-witness'
 
 export const config: PlasmoCSConfig = {
   matches: ['https://*/*', 'http://*/*'],
@@ -21,12 +22,14 @@ interface Settings {
   ambientPreset: string
   duckOnVoice: boolean
   recapEnabled: boolean
+  recapNoticeAccepted: boolean
 }
 
 const DEFAULT_SETTINGS: Settings = {
   ambientPreset: 'lofi',
   duckOnVoice: true,
-  recapEnabled: true,
+  recapEnabled: false,
+  recapNoticeAccepted: false,
 }
 
 export default function VibeOverlay() {
@@ -34,6 +37,8 @@ export default function VibeOverlay() {
   const [collapsed, setCollapsed] = useState(false)
   const [view, setView] = useState<View>('timer')
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS)
+  const settingsRef = useRef<Settings>(DEFAULT_SETTINGS)
+  const [settingsLoaded, setSettingsLoaded] = useState(false)
 
   const [mixer, setMixer] = useState<Mixer | null>(null)
   const [pomo, setPomo] = useState<Pomodoro | null>(null)
@@ -45,14 +50,26 @@ export default function VibeOverlay() {
   useEffect(() => {
     chrome.storage.local.get(['clubSlug', 'settings'], (data) => {
       if (typeof data.clubSlug === 'string' && data.clubSlug) setClubSlug(data.clubSlug)
-      if (data.settings) setSettings({ ...DEFAULT_SETTINGS, ...(data.settings as Settings) })
+      if (data.settings) {
+        const stored = data.settings as Partial<Settings>
+        const next = {
+          ...DEFAULT_SETTINGS,
+          ...stored,
+          ...normalizeAiRecapChoice(stored),
+        }
+        settingsRef.current = next
+        setSettings(next)
+      }
+      setSettingsLoaded(true)
     })
   }, [])
 
   // Persist settings
   useEffect(() => {
+    if (!settingsLoaded) return
+    settingsRef.current = settings
     void chrome.storage.local.set({ settings })
-  }, [settings])
+  }, [settings, settingsLoaded])
 
   // Keyboard shortcuts (⌘K / ⌘J / ⌘⇧M)
   useEffect(() => {
@@ -92,7 +109,7 @@ export default function VibeOverlay() {
     p.on<number>('tick', (remainingMs) => setTimerMs(remainingMs))
     p.on('phase', () => setState(p.state()))
     p.on<number>('complete', async (cycle) => {
-      if (!settings.recapEnabled) return
+      if (!canRequestAiRecap(settingsRef.current)) return
       const resp = await chrome.runtime
         .sendMessage({
           type: 'recap:event',
@@ -222,15 +239,55 @@ export default function VibeOverlay() {
               checked={settings.duckOnVoice}
               onChange={(e) => setSettings((s) => ({ ...s, duckOnVoice: e.target.checked }))}
             />
-            <span>Duck ambient when someone speaks</span>
+            <span>Lower ambient when someone speaks</span>
+          </label>
+          <div className="vc-disclosure" role="note" aria-label="AI recap data notice">
+            <strong>Before Claude writes a recap</strong>
+            <p>
+              Enabling sends a club identifier, timer event, and cycle count to Vibeclubs, then
+              Anthropic. It does not send page content, audio, video, chat, or screen pixels.
+            </p>
+            <a href="https://vibeclubs.ai/privacy" target="_blank" rel="noreferrer noopener">
+              Read the hosted data boundary ↗
+            </a>
+          </div>
+          <label className="vc-toggle">
+            <input
+              type="checkbox"
+              checked={settings.recapNoticeAccepted}
+              onChange={(e) => {
+                const accepted = e.target.checked
+                setSettings((s) => {
+                  const next = {
+                    ...s,
+                    recapNoticeAccepted: accepted,
+                    recapEnabled: accepted ? s.recapEnabled : false,
+                  }
+                  settingsRef.current = next
+                  return next
+                })
+              }}
+            />
+            <span>I understand and choose whether recap can run in this browser</span>
           </label>
           <label className="vc-toggle">
             <input
               type="checkbox"
               checked={settings.recapEnabled}
-              onChange={(e) => setSettings((s) => ({ ...s, recapEnabled: e.target.checked }))}
+              disabled={!settings.recapNoticeAccepted}
+              onChange={(e) => {
+                const recapEnabled = e.target.checked
+                setSettings((s) => {
+                  const next = {
+                    ...s,
+                    recapEnabled,
+                  }
+                  settingsRef.current = next
+                  return next
+                })
+              }}
             />
-            <span>AI recap at session end</span>
+            <span>Let Claude write timer recaps</span>
           </label>
           <a
             href={`https://vibeclubs.ai/club/${clubSlug}`}

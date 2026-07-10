@@ -1,5 +1,24 @@
 import { describe, expect, it } from 'vitest'
-import { detectMilestone, witnessPrompt } from './index'
+import { canRequestAiRecap, detectMilestone, normalizeAiRecapChoice, witnessPrompt } from './index'
+
+describe('AI recap acknowledgement', () => {
+  it('keeps recap off until the current notice is accepted', () => {
+    expect(normalizeAiRecapChoice(undefined)).toEqual({
+      recapEnabled: false,
+      recapNoticeAccepted: false,
+    })
+    expect(normalizeAiRecapChoice({ recapEnabled: true })).toEqual({
+      recapEnabled: false,
+      recapNoticeAccepted: false,
+    })
+  })
+
+  it('requires both acknowledgement and an enabled choice at request time', () => {
+    expect(canRequestAiRecap({ recapEnabled: true, recapNoticeAccepted: false })).toBe(false)
+    expect(canRequestAiRecap({ recapEnabled: false, recapNoticeAccepted: true })).toBe(false)
+    expect(canRequestAiRecap({ recapEnabled: true, recapNoticeAccepted: true })).toBe(true)
+  })
+})
 
 describe('witnessPrompt', () => {
   it('produces a system + user prompt pair', () => {

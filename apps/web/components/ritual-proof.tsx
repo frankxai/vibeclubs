@@ -140,8 +140,8 @@ export function RitualProof() {
           </div>
 
           <div className="mt-6 rounded-2xl border border-emerald-300/15 bg-emerald-300/[0.04] p-5 text-sm leading-6 text-emerald-100/68">
-            AI recap is off in this proof. In the hosted path, the host must deliberately enable it
-            and tell the crew before the clock starts.
+            AI recap is off in this proof. In the extension, each person must read and accept the
+            data notice before enabling recap in their own browser.
           </div>
         </div>
 

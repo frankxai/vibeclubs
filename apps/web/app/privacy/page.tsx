@@ -32,28 +32,39 @@ export default function Privacy() {
             <p>
               The extension renders an overlay and mixes audio locally with Web Audio. It does not
               read the content of the page underneath it. Its relevant network traffic is timer
-              synchronization and any recap request the host explicitly enables.
+              synchronization and any recap request that a person explicitly enables in their own
+              browser.
             </p>
             <h2>Optional AI recap</h2>
             <p>
-              AI recap is off by default. A host must enable it before a run and should tell the
-              crew before the clock starts. A recap request contains structured facts only: event
-              type, cycle count, focus duration, selected work venue, and any club name or handle
-              the host entered. It never contains audio, video, chat, screen pixels, or page
-              content.
+              AI recap is off by default. Before it can run, each person must accept the notice in
+              their own extension and then enable it. The current extension recap event contains a
+              club identifier, event type, and cycle count. It does not contain audio, video, chat,
+              screen pixels, page content, a club name, a handle, a ship note, or prior recap text.
             </p>
             <p>
-              Anthropic processes that structured request to generate the recap. Vibeclubs does not
-              persist the raw recap request as a separate record. A generated recap is saved only
-              when the signed-in hosted flow stores it with the run. Saved run history remains until
-              the account holder deletes it or requests deletion.
+              Anthropic processes that structured request to generate the recap. The app code does
+              not save the raw request or Claude response as a separate database record. A recap can
+              become part of hosted history only if a signed-in client deliberately includes it in a
+              run it saves.
+            </p>
+            <h2>Retention and deletion</h2>
+            <p>
+              The current hosted app has no automatic expiry for saved records and no self-service
+              delete control. A record can remain in Supabase until the account is deleted or
+              Vibeclubs support completes an authorized deletion. Under the current database rules,
+              deleting an account also deletes its saved run history.
             </p>
             <h2>Your choices</h2>
             <p>
-              Keep AI recap off and use the deterministic local card. If you enable it, tell the
-              crew first. You can request an export or deletion at{' '}
-              <a href="mailto:privacy@vibeclubs.ai">privacy@vibeclubs.ai</a>. We target a response
-              within seven days.
+              Keep AI recap off and use the deterministic local card. The published path for an
+              export or deletion request is <a href="mailto:open@vibeclubs.ai">open@vibeclubs.ai</a>
+              . There is no published fixed response-time commitment yet.
+            </p>
+            <h2>Analytics boundary</h2>
+            <p>
+              No analytics provider is installed. Club names, handles, ship notes, and recap text
+              are not sent to analytics.
             </p>
             <h2>Processors</h2>
             <p>

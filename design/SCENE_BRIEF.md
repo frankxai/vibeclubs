@@ -16,6 +16,10 @@ Tier C code-native product proof. It calls the actual monorepo timer state machi
 - Resolution: exact recap and generated SVG appear after a ship note.
 - Reduced motion: decorative glow freezes; the timer remains numerically functional.
 
+## Hosted trust continuation
+
+The extension settings view uses one quiet amber notice before the two-step acknowledgement and enable controls. It names the current structured payload and processors without a legal modal or new motion. The disabled recap control makes the boundary visible while leaving timer, mixer, and deterministic local proof behavior unchanged.
+
 ## Future media
 
 After the hosted loop is stable, capture Tier A footage of two real browsers synchronizing and producing a recap. A 10–15 second silent product film may then replace supporting copy on wide screens. Do not commission 3D until a distinct, useful brand metaphor exists.
