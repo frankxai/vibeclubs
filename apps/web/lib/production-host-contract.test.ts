@@ -1,29 +1,40 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import config from '../next.config.mjs'
 
 const root = path.resolve(import.meta.dirname, '../../..')
 const read = (file: string) => fs.readFileSync(path.join(root, file), 'utf8')
 
 describe('production host contract', () => {
   it('publishes one absolute homepage canonical', () => {
-    expect(read('apps/web/app/page.tsx')).toContain(
-      "alternates: { canonical: 'https://vibeclubs.ai/' }",
+    expect(read('apps/web/app/page.tsx')).toMatch(/canonical:\s*['"]https:\/\/vibeclubs\.ai\/['"]/)
+  })
+
+  it('redirects the www host to the apex without changing the path', async () => {
+    const redirects = await config.redirects!()
+    const redirect = redirects.find(
+      (candidate) => candidate.destination === 'https://vibeclubs.ai/:path*',
     )
+
+    expect(redirect).toBeDefined()
+    expect(redirect?.has).toEqual([{ type: 'host', value: 'www.vibeclubs.ai' }])
+    expect(redirect?.permanent).toBe(true)
   })
 
-  it('redirects the www host to the apex without changing the path', () => {
-    const config = read('apps/web/next.config.mjs')
-    expect(config).toContain("has: [{ type: 'host', value: 'www.vibeclubs.ai' }]")
-    expect(config).toContain("destination: 'https://vibeclubs.ai/:path*'")
-    expect(config).toContain('permanent: true')
-  })
+  it('sets the baseline browser security headers', async () => {
+    const headerRoutes = await config.headers!()
+    const headers = headerRoutes.find((route) => route.source === '/:path*')?.headers
 
-  it('sets the baseline browser security headers', () => {
-    const config = read('apps/web/next.config.mjs')
-    expect(config).toContain("{ key: 'X-Content-Type-Options', value: 'nosniff' }")
-    expect(config).toContain("{ key: 'X-Frame-Options', value: 'DENY' }")
-    expect(config).toContain("{ key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' }")
-    expect(config).toContain("value: 'camera=(), microphone=(), geolocation=()'")
+    expect(headers).toContainEqual({ key: 'X-Content-Type-Options', value: 'nosniff' })
+    expect(headers).toContainEqual({ key: 'X-Frame-Options', value: 'DENY' })
+    expect(headers).toContainEqual({
+      key: 'Referrer-Policy',
+      value: 'strict-origin-when-cross-origin',
+    })
+    expect(headers).toContainEqual({
+      key: 'Permissions-Policy',
+      value: 'camera=(), microphone=(), geolocation=()',
+    })
   })
 })
