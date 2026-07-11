@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'Lock in with your crew. Ship the thing.',
   description:
     'A focused-work ritual for crews who make things. Host anywhere, run a shared timer, mark what shipped, and keep a recap card.',
-  alternates: { canonical: '/' },
+  alternates: { canonical: 'https://vibeclubs.ai/' },
 }
 
 const flow = [
