@@ -35,17 +35,23 @@ function Scene() {
   useFrame((state, delta) => {
     if (groupRef.current) {
       groupRef.current.rotation.y += delta * 0.15
-      groupRef.current.rotation.x =
-        Math.sin(state.clock.elapsedTime * 0.2) * 0.08 - 0.05
+      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.2) * 0.08 - 0.05
     }
   })
 
-  const edgeGeometries = useMemo(
+  const edgeLines = useMemo(
     () =>
       EDGES.map(([a, b]) => {
         const start = new THREE.Vector3(...NODES[a]!.position)
         const end = new THREE.Vector3(...NODES[b]!.position)
-        return new THREE.BufferGeometry().setFromPoints([start, end])
+        const geometry = new THREE.BufferGeometry().setFromPoints([start, end])
+        const material = new THREE.LineBasicMaterial({
+          color: '#ffffff',
+          transparent: true,
+          opacity: 0.18,
+          toneMapped: false,
+        })
+        return new THREE.Line(geometry, material)
       }),
     [],
   )
@@ -80,10 +86,8 @@ function Scene() {
         </group>
       ))}
 
-      {edgeGeometries.map((geom, i) => (
-        <line key={i} geometry={geom}>
-          <lineBasicMaterial color="#ffffff" transparent opacity={0.18} toneMapped={false} />
-        </line>
+      {edgeLines.map((line, i) => (
+        <primitive key={i} object={line} />
       ))}
     </group>
   )

@@ -13,7 +13,11 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 22px;
   color: white;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    sans-serif;
   font-size: 13px;
   box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.5),
@@ -312,6 +316,43 @@
   width: 16px;
   height: 16px;
   cursor: pointer;
+}
+.vc-toggle input[type='checkbox']:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.vc-disclosure {
+  padding: 10px 12px;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  background: rgba(245, 158, 11, 0.05);
+  border-radius: 14px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 10px;
+  line-height: 1.5;
+}
+.vc-disclosure strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #fcd34d;
+  font-size: 10px;
+}
+.vc-disclosure p {
+  margin: 0;
+}
+.vc-disclosure a {
+  display: inline-block;
+  margin-top: 6px;
+  color: #fcd34d;
+  text-decoration: none;
+}
+.vc-disclosure a:hover {
+  color: #f59e0b;
+}
+.vc-disclosure a:focus-visible,
+.vc-toggle input[type='checkbox']:focus-visible {
+  outline: 2px solid #fcd34d;
+  outline-offset: 3px;
 }
 
 .vc-link {

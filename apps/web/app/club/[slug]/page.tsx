@@ -124,7 +124,9 @@ export default async function ClubPage({ params }: Params) {
                 <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-5 leading-[1.02]">
                   {club.name}
                 </h1>
-                <p className="text-lg text-white/70 max-w-2xl leading-relaxed">{club.description}</p>
+                <p className="text-lg text-white/70 max-w-2xl leading-relaxed">
+                  {club.description}
+                </p>
                 {club.host && (
                   <p className="mt-4 text-sm text-white/45 font-mono">Hosted by {club.host}</p>
                 )}
@@ -204,8 +206,8 @@ export default async function ClubPage({ params }: Params) {
               <li className="flex gap-4">
                 <span className="font-mono text-xs text-amber-400 pt-1 w-6">03</span>
                 <span>
-                  Click start. Everyone in the club on the extension hits the same pomodoro at{' '}
-                  {bpm} BPM. Recap lands on your profile when you&apos;re done.
+                  Click start. Everyone in the club on the extension hits the same pomodoro at {bpm}{' '}
+                  BPM. Recap lands on your profile when you&apos;re done.
                 </span>
               </li>
             </ol>
@@ -319,11 +321,7 @@ async function loadClub(slug: string): Promise<{
         .eq('club_id', row.id)
         .order('started_at', { ascending: false })
         .limit(10),
-      supabase
-        .from('tool_recommendations')
-        .select('*')
-        .eq('club_type', row.type)
-        .limit(6),
+      supabase.from('tool_recommendations').select('*').eq('club_type', row.type).limit(6),
     ])
     return {
       club: {

@@ -92,20 +92,19 @@ function Orb({ ambient, music, voice }: OrbProps) {
       uVoice: { value: voice },
       uCameraPosition: { value: [0, 0, 3] as [number, number, number] },
     }),
-    // uniforms are a stable object created once; values are updated in useFrame
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // Uniforms are a stable object created once; values are updated in useFrame.
     [],
   )
 
   useFrame((state, delta) => {
     const mat = materialRef.current
     if (mat) {
-      mat.uniforms.uTime.value += delta
-      mat.uniforms.uAmbient.value += (ambient - mat.uniforms.uAmbient.value) * 0.08
-      mat.uniforms.uMusic.value += (music - mat.uniforms.uMusic.value) * 0.08
-      mat.uniforms.uVoice.value += (voice - mat.uniforms.uVoice.value) * 0.08
+      mat.uniforms.uTime!.value += delta
+      mat.uniforms.uAmbient!.value += (ambient - mat.uniforms.uAmbient!.value) * 0.08
+      mat.uniforms.uMusic!.value += (music - mat.uniforms.uMusic!.value) * 0.08
+      mat.uniforms.uVoice!.value += (voice - mat.uniforms.uVoice!.value) * 0.08
       const cam = state.camera.position
-      mat.uniforms.uCameraPosition.value = [cam.x, cam.y, cam.z]
+      mat.uniforms.uCameraPosition!.value = [cam.x, cam.y, cam.z]
     }
     const mesh = meshRef.current
     if (mesh) {

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     template: '%s · Vibeclubs',
   },
   description:
-    'Claude Code + your crew + a soundtrack. Lock in for 90 minutes, ship the thing, recap lands on your profile. Open source. Works on Meet, Discord, Zoom, anywhere.',
+    'A focused-work ritual for crews who make things. Host anywhere, run a shared timer, mark what shipped, and keep a recap card.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://vibeclubs.ai'),
   keywords: [
     'co-working',
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     'vibeclub',
     'body doubling',
     'focus',
-    'claude code',
+    'focused work',
     'open source',
     'discord',
     'google meet',
@@ -27,8 +27,7 @@ export const metadata: Metadata = {
   creator: 'Frank Riemer',
   openGraph: {
     title: 'Vibeclubs — Host a vibeclub',
-    description:
-      'Claude Code + your crew + a soundtrack. Lock in, ship, recap lands on your profile. Open source.',
+    description: 'Lock in with your crew, ship one visible thing, and keep the proof. Open source.',
     url: 'https://vibeclubs.ai',
     siteName: 'Vibeclubs',
     type: 'website',
@@ -40,15 +39,12 @@ export const metadata: Metadata = {
     images: ['/api/og'],
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+    shortcut: '/favicon.ico',
   },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="dark">
       <body className="bg-[#0a0a0f] text-white antialiased">

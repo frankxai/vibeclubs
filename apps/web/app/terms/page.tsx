@@ -12,9 +12,7 @@ export default function Terms() {
       <Section pad="md" className="pt-28">
         <Container width="md">
           <Eyebrow>Terms</Eyebrow>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mt-4 mb-8">
-            Simple terms.
-          </h1>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mt-4 mb-8">Simple terms.</h1>
           <Prose>
             <p>
               Vibeclubs is provided as-is, MIT-licensed on the{' '}

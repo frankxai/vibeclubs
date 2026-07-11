@@ -41,9 +41,7 @@ export function Section({
     xl: 'py-32',
   }
   return (
-    <section
-      className={cn(padMap[pad], border && 'border-t border-white/5', className)}
-    >
+    <section className={cn(padMap[pad], border && 'border-t border-white/5', className)}>
       {children}
     </section>
   )
@@ -65,11 +63,7 @@ export function Eyebrow({
   }
   return (
     <div
-      className={cn(
-        'text-[11px] uppercase tracking-[0.22em] font-mono',
-        tones[tone],
-        className,
-      )}
+      className={cn('text-[11px] uppercase tracking-[0.22em] font-mono', tones[tone], className)}
     >
       {children}
     </div>

@@ -44,9 +44,7 @@ function slugify(name) {
 async function main() {
   const clubsDir = join(cwd(), 'content', 'clubs')
   if (!existsSync(clubsDir)) {
-    console.error(
-      `\x1b[31mcontent/clubs/ not found at ${clubsDir}. Run from repo root.\x1b[0m`,
-    )
+    console.error(`\x1b[31mcontent/clubs/ not found at ${clubsDir}. Run from repo root.\x1b[0m`)
     exit(1)
   }
   const existingSlugs = new Set(

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useTransition } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import type { Route } from 'next'
 import { Button, Field, Input, Textarea, Select } from '@/components/ui'
 import { CLUB_TEMPLATES, findTemplate } from '@/lib/club-templates'
 import type { ClubPlatform, ClubType, PomodoroPreset } from '@/lib/supabase/types'
@@ -86,7 +87,7 @@ export function StartForm() {
     const templateId = search.get('template')
     const t = findTemplate(templateId)
     if (t) applyTemplate(t.id)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [])
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((f) => ({ ...f, [key]: value }))
@@ -122,7 +123,7 @@ export function StartForm() {
         }
         if (res.status === 401 && body.signin) {
           sessionStorage.setItem('vc:pending-club', JSON.stringify(form))
-          router.push(body.signin)
+          router.push(body.signin as Route)
           return
         }
         setError(body.error ?? 'Something broke')
@@ -130,7 +131,7 @@ export function StartForm() {
       }
       const { slug } = (await res.json()) as { slug: string }
       sessionStorage.removeItem('vc:pending-club')
-      router.push(`/club/${slug}`)
+      router.push(`/club/${slug}` as Route)
     })
   }
 
@@ -188,7 +189,10 @@ export function StartForm() {
           />
         </Field>
 
-        <Field label="What are you shipping?" hint="Two lines max. Specific = the right people show up.">
+        <Field
+          label="What are you shipping?"
+          hint="Two lines max. Specific = the right people show up."
+        >
           <Textarea
             rows={3}
             value={form.description}
@@ -258,8 +262,8 @@ export function StartForm() {
         </Button>
 
         <p className="text-xs text-white/40 text-center">
-          Magic link to your email on submit. Your vibeclub goes public on the directory so your crew
-          can find it.
+          Magic link to your email on submit. Your vibeclub goes public on the directory so your
+          crew can find it.
         </p>
       </form>
     </div>

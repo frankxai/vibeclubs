@@ -86,13 +86,7 @@ export default function SessionCard3D({
         <pointLight position={[2, 2, 3]} intensity={0.9} />
         <pointLight position={[-2, -1, 2]} intensity={0.3} color="#8b5cf6" />
         <Suspense fallback={null}>
-          <PresentationControls
-            global
-            polar={[-0.3, 0.3]}
-            azimuth={[-0.6, 0.6]}
-            config={{ mass: 1, tension: 170 }}
-            snap={{ mass: 2, tension: 260 }}
-          >
+          <PresentationControls global polar={[-0.3, 0.3]} azimuth={[-0.6, 0.6]} damping={0.2} snap>
             <Card frontColor={frontColor} backColor={backColor} flipped={flipped} />
           </PresentationControls>
         </Suspense>

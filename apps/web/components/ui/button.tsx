@@ -1,5 +1,6 @@
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react'
 import Link from 'next/link'
+import type { Route } from 'next'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/cn'
@@ -111,7 +112,7 @@ export function LinkButton({
     )
   }
   return (
-    <Link href={href} className={cls}>
+    <Link href={href as Route} className={cls}>
       {leading}
       {children}
       {trailing}

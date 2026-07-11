@@ -32,8 +32,7 @@ function Ring({ phase, progress }: RingProps) {
   useFrame((state, delta) => {
     if (groupRef.current) {
       groupRef.current.rotation.y += delta * 0.25
-      groupRef.current.rotation.x =
-        Math.sin(state.clock.elapsedTime * 0.35) * 0.12 - 0.08
+      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.35) * 0.12 - 0.08
     }
     if (ringRef.current) {
       const mat = ringRef.current.material as THREE.MeshStandardMaterial
@@ -53,13 +52,7 @@ function Ring({ phase, progress }: RingProps) {
 
   const arcGeometry = useMemo(() => {
     // Procedural arc for progress: torus segment with scaled arc angle
-    return new THREE.TorusGeometry(
-      1.18,
-      0.02,
-      12,
-      96,
-      Math.max(0.001, progress * Math.PI * 2),
-    )
+    return new THREE.TorusGeometry(1.18, 0.02, 12, 96, Math.max(0.001, progress * Math.PI * 2))
   }, [progress])
 
   return (
@@ -96,11 +89,7 @@ function Ring({ phase, progress }: RingProps) {
   )
 }
 
-export default function TimerRing({
-  phase = 'focus',
-  progress = 0.55,
-  className,
-}: TimerRingProps) {
+export default function TimerRing({ phase = 'focus', progress = 0.55, className }: TimerRingProps) {
   return (
     <div className={className}>
       <Canvas

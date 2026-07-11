@@ -10,7 +10,7 @@ const LINKS = [
   { href: '/extension', label: 'Extension' },
   { href: '/developers', label: 'Developers' },
   { href: '/playbook', label: 'How it works' },
-]
+] as const
 
 export function Nav() {
   const pathname = usePathname()
@@ -51,8 +51,8 @@ export function Nav() {
           </a>
         </div>
 
-        <LinkButton href="/start" variant="primary" size="sm">
-          Host a vibeclub
+        <LinkButton href="/#try-it" variant="primary" size="sm">
+          Try the proof
         </LinkButton>
       </div>
     </nav>

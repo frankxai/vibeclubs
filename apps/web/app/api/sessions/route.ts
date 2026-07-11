@@ -17,7 +17,10 @@ const SessionInput = z.object({
 export async function POST(request: NextRequest) {
   const parsed = SessionInput.safeParse(await request.json().catch(() => null))
   if (!parsed.success) {
-    return NextResponse.json({ error: 'Invalid input', issues: parsed.error.flatten() }, { status: 400 })
+    return NextResponse.json(
+      { error: 'Invalid input', issues: parsed.error.flatten() },
+      { status: 400 },
+    )
   }
 
   const supabase = await createSupabaseServerClient()

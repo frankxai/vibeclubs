@@ -140,7 +140,7 @@ export function createMixer(options: MixerOptions = {}): Mixer {
       gains.ambient.gain.cancelScheduledValues(now)
       gains.ambient.gain.setValueAtTime(gains.ambient.gain.value, now)
       gains.ambient.gain.linearRampToValueAtTime(base * factor, now + durationMs / 1000)
-      gains.ambient.gain.linearRampToValueAtTime(base, now + (durationMs / 1000) + 0.8)
+      gains.ambient.gain.linearRampToValueAtTime(base, now + durationMs / 1000 + 0.8)
     },
 
     dispose() {

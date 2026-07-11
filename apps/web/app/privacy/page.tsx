@@ -1,5 +1,5 @@
-import { Nav } from '@/components/nav'
 import { Footer } from '@/components/footer'
+import { Nav } from '@/components/nav'
 import { Container, Eyebrow, Section } from '@/components/layout/container'
 import { Prose } from '@/components/patterns/prose'
 
@@ -12,41 +12,67 @@ export default function Privacy() {
       <Section pad="md" className="pt-28">
         <Container width="md">
           <Eyebrow>Privacy</Eyebrow>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mt-4 mb-8">
-            What we collect. What we don&apos;t.
+          <h1 className="mt-4 mb-8 text-4xl font-bold tracking-tight md:text-5xl">
+            What the ritual can see.
           </h1>
           <Prose>
             <p>
-              <strong>Vibeclubs collects the minimum.</strong> We hold your email (magic-link auth),
-              the clubs you host, and the sessions you log. Nothing else. No analytics SDKs that
-              track you across the web. No ad pixels. No behavior graphs.
+              <strong>The local proof on the homepage sends nothing to Vibeclubs.</strong> Its
+              invite, timer, ship note, recap text, and SVG card stay in your browser tab. Reloading
+              clears them.
             </p>
-            <h2>The Chrome extension</h2>
+            <h2>Hosted accounts and live timing</h2>
             <p>
-              The extension <strong>never reads page content</strong>. It renders an overlay and
-              mixes audio locally via Web Audio. The only network traffic is: the pomodoro
-              broadcast (club slug + timer state to Supabase Realtime) and a session summary
-              (duration + cycle count to our API). Open source so you can verify —{' '}
-              <a href="https://github.com/frankxai/vibeclubs">read the source</a>.
+              The hosted path can hold your email for magic-link sign-in, the vibeclubs you host,
+              basic timer state, and the recaps you choose to save. Supabase provides
+              authentication, database storage, and realtime timer broadcasts. Live timing sends a
+              club identifier and timer state; it does not need your screen, voice, or page content.
             </p>
-            <h2>Auto-recaps</h2>
+            <h2>Chrome extension</h2>
             <p>
-              If you enable the AI recap, a small Claude call runs per pomodoro event. Claude sees
-              only the event type and basic session context (cycle count, focus minutes, platform
-              name). It never sees your voice, your screen, or any page content. Recap outputs are
-              stored on your session; you can delete them.
+              The extension renders an overlay and mixes audio locally with Web Audio. It does not
+              read the content of the page underneath it. Its relevant network traffic is timer
+              synchronization and any recap request that a person explicitly enables in their own
+              browser.
             </p>
-            <h2>Third-party processors</h2>
+            <h2>Optional AI recap</h2>
             <p>
-              Supabase (auth + Postgres + Realtime). Anthropic (recap Claude calls). Suno (music
-              generation, Pro only). Vercel (hosting). No other third parties touch your data.
+              AI recap is off by default. Before it can run, each person must accept the notice in
+              their own extension and then enable it. The current extension recap event contains a
+              club identifier, event type, and cycle count. It does not contain audio, video, chat,
+              screen pixels, page content, a club name, a handle, a ship note, or prior recap text.
             </p>
-            <h2>Rights</h2>
             <p>
-              Email <a href="mailto:privacy@vibeclubs.ai">privacy@vibeclubs.ai</a> to request an
-              export or deletion. We respond within 7 days.
+              Anthropic processes that structured request to generate the recap. The app code does
+              not save the raw request or Claude response as a separate database record. A recap can
+              become part of hosted history only if a signed-in client deliberately includes it in a
+              run it saves.
             </p>
-            <p className="text-white/40 text-xs mt-8">Last updated 2026-04-21.</p>
+            <h2>Retention and deletion</h2>
+            <p>
+              The current hosted app has no automatic expiry for saved records and no self-service
+              delete control. A record can remain in Supabase until the account is deleted or
+              Vibeclubs support completes an authorized deletion. Under the current database rules,
+              deleting an account also deletes its saved run history.
+            </p>
+            <h2>Your choices</h2>
+            <p>
+              Keep AI recap off and use the deterministic local card. The published path for an
+              export or deletion request is <a href="mailto:open@vibeclubs.ai">open@vibeclubs.ai</a>
+              . There is no published fixed response-time commitment yet.
+            </p>
+            <h2>Analytics boundary</h2>
+            <p>
+              No analytics provider is installed. Club names, handles, ship notes, and recap text
+              are not sent to analytics.
+            </p>
+            <h2>Processors</h2>
+            <p>
+              Vercel hosts the site. Supabase supports the hosted account and live timer. Anthropic
+              receives structured recap requests only when the optional recap is enabled. Suno is
+              used only when a user deliberately requests supported music generation.
+            </p>
+            <p className="mt-8 text-xs text-white/40">Last updated 2026-07-10.</p>
           </Prose>
         </Container>
       </Section>
