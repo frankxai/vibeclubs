@@ -7,6 +7,22 @@ test.describe('landing smoke', () => {
     await expect(page.getByRole('link', { name: /Try the proof/i }).first()).toBeVisible()
   })
 
+  test('local ritual stays on recap after a manual focus skip', async ({ page }) => {
+    await page.goto('/', { waitUntil: 'domcontentloaded' })
+    await page.getByRole('button', { name: /Create local invite/i }).click()
+    await page.getByRole('button', { name: /Start 6-second focus/i }).click()
+    await page.getByRole('button', { name: /Move to ship checkpoint/i }).click()
+    await page
+      .getByPlaceholder(/A link, artifact, decision, or concrete change/i)
+      .fill('A verified recap flow')
+    await page.getByRole('button', { name: /Create local recap/i }).click()
+
+    await expect(page.getByRole('heading', { name: /Keep the proof/i })).toBeVisible()
+    await page.waitForTimeout(7_000)
+    await expect(page.getByRole('heading', { name: /Keep the proof/i })).toBeVisible()
+    await expect(page.getByRole('img', { name: /Recap card for Ship Night/i })).toBeVisible()
+  })
+
   test('nav links reach primary surfaces', async ({ page }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' })
     await page.getByRole('link', { name: 'Find' }).first().click()

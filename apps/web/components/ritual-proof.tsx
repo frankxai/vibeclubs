@@ -57,6 +57,12 @@ export function RitualProof() {
     setStage('join')
   }
 
+  function finishFocus() {
+    timerRef.current?.dispose()
+    timerRef.current = null
+    setStage('ship')
+  }
+
   function startProof() {
     timerRef.current?.dispose()
     const timer = createPomodoro({
@@ -66,7 +72,7 @@ export function RitualProof() {
       identity: 'local-host',
     })
     timer.on<number>('tick', setRemainingMs)
-    timer.on('complete', () => setStage('ship'))
+    timer.on('complete', finishFocus)
     timerRef.current = timer
     setRemainingMs(6000)
     setStage('focus')
@@ -205,7 +211,7 @@ export function RitualProof() {
                   00:{seconds.toString().padStart(2, '0')}
                 </p>
                 <p className="mx-auto mt-6 max-w-md text-white/48">{shipTarget}</p>
-                <Button className="mt-8" variant="ghost" onClick={() => setStage('ship')}>
+                <Button className="mt-8" variant="ghost" onClick={finishFocus}>
                   Move to ship checkpoint
                 </Button>
               </div>
