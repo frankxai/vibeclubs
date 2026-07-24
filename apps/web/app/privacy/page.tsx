@@ -23,17 +23,17 @@ export default function Privacy() {
             </p>
             <h2>Hosted accounts and live timing</h2>
             <p>
-              The hosted path can hold your email for magic-link sign-in, the vibeclubs you host,
-              basic timer state, and the recaps you choose to save. Supabase provides
-              authentication, database storage, and realtime timer broadcasts. Live timing sends a
-              club identifier and timer state; it does not need your screen, voice, or page content.
+              Account-backed hosting is currently closed on the public site. When a reviewed build
+              enables it, Supabase can hold your email, the vibeclubs you host, timer state, and the
+              work you choose to save. Live timing needs a club identifier and timer state; it does
+              not need your screen, voice, or page content.
             </p>
             <h2>Chrome extension</h2>
             <p>
               The extension renders an overlay and mixes audio locally with Web Audio. It does not
-              read the content of the page underneath it. Its relevant network traffic is timer
-              synchronization and any recap request that a person explicitly enables in their own
-              browser.
+              read the content of the page underneath it. The public source runs its timer locally.
+              A configured build can send timer state through Supabase Realtime. A recap request
+              runs only after a person accepts the disclosure and enables it in their own browser.
             </p>
             <h2>Optional AI recap</h2>
             <p>
@@ -50,16 +50,17 @@ export default function Privacy() {
             </p>
             <h2>Retention and deletion</h2>
             <p>
-              The current hosted app has no automatic expiry for saved records and no self-service
-              delete control. A record can remain in Supabase until the account is deleted or
-              Vibeclubs support completes an authorized deletion. Under the current database rules,
-              deleting an account also deletes its saved run history.
+              The current database schema has no automatic expiry and no self-service delete
+              control. If account-backed hosting opens, a saved record can remain in Supabase until
+              the account is deleted or Vibeclubs support completes an authorized deletion. Under
+              the current schema, deleting an account also deletes its saved history.
             </p>
             <h2>Your choices</h2>
             <p>
-              Keep AI recap off and use the deterministic local card. The published path for an
-              export or deletion request is <a href="mailto:open@vibeclubs.ai">open@vibeclubs.ai</a>
-              . There is no published fixed response-time commitment yet.
+              Keep AI recap off and use the deterministic local card. If account-backed hosting
+              opens, the published path for an export or deletion request is{' '}
+              <a href="mailto:open@vibeclubs.ai">open@vibeclubs.ai</a>. There is no published fixed
+              response-time commitment yet.
             </p>
             <h2>Analytics boundary</h2>
             <p>
@@ -68,11 +69,11 @@ export default function Privacy() {
             </p>
             <h2>Processors</h2>
             <p>
-              Vercel hosts the site. Supabase supports the hosted account and live timer. Anthropic
-              receives structured recap requests only when the optional recap is enabled. Suno is
-              used only when a user deliberately requests supported music generation.
+              Vercel hosts the site. Supabase and Anthropic are present in source but their public
+              account and recap paths stay closed until they have production receipts. The public
+              build does not send requests to Suno.
             </p>
-            <p className="mt-8 text-xs text-white/40">Last updated 2026-07-10.</p>
+            <p className="mt-8 text-xs text-white/40">Last updated 2026-07-24.</p>
           </Prose>
         </Container>
       </Section>

@@ -6,7 +6,6 @@ type: coding
 preset: 50_10
 ambient: lofi
 schedule: 'Mondays 21:00 CET'
-platform_url: 'https://discord.gg/vibeclubs'
 featured: true
 location: 'Amsterdam'
 ---

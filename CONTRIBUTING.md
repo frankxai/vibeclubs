@@ -59,9 +59,8 @@ To keep Vibeclubs coherent, we are **not** accepting PRs for:
 
 If in doubt, open a discussion first.
 
-## Community
+## Contact
 
-- Discord: https://discord.gg/vibeclubs
 - X: https://x.com/vibeclubsai
 - Email: open@vibeclubs.ai
 

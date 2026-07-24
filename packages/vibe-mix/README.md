@@ -9,7 +9,7 @@ const mixer = createMixer({ ambientBaseUrl: '/ambient' })
 await mixer.loadAmbient('lofi')
 mixer.setLevel('ambient', 0.4)
 mixer.setLevel('music', 0.25)
-await mixer.playMusic('https://cdn.vibeclubs.ai/suno/track-123.mp3')
+await mixer.playMusic(trackUrl)
 
 // Duck the ambient when someone starts speaking
 mixer.duckAmbient(-6, 300)

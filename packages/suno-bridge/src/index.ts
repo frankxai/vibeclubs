@@ -1,12 +1,12 @@
 /**
  * @vibeclubs/suno-bridge
  *
- * Thin Suno API wrapper with graceful fallback to curated royalty-free tracks.
+ * Thin Suno API wrapper with an explicit caller-supplied fallback.
  *
  * This package is deliberately minimal: it exposes a single `generateMusic`
  * function that takes a prompt and returns a playable URL. If the Suno API is
- * unavailable (no key, rate limit, 5xx), it falls back to a curated lo-fi
- * track from the Vibeclubs CDN.
+ * unavailable (no key, rate limit, 5xx), it uses `fallbackUrl` when the caller
+ * supplies one. It never returns an unverified asset URL.
  *
  * NOTE: Suno's public API is still evolving. Exact endpoint + auth shape may
  * need adjustment when Frank secures API access — see ENVIRONMENT.md §3.
@@ -29,12 +29,6 @@ export interface SunoTrack {
   title?: string
   duration_seconds?: number
 }
-
-const DEFAULT_FALLBACKS = [
-  'https://cdn.vibeclubs.ai/fallback/lofi-1.mp3',
-  'https://cdn.vibeclubs.ai/fallback/lofi-2.mp3',
-  'https://cdn.vibeclubs.ai/fallback/lofi-3.mp3',
-]
 
 export async function generateMusic(opts: SunoGenerateOptions): Promise<SunoTrack> {
   const apiKey =
@@ -77,8 +71,7 @@ export async function generateMusic(opts: SunoGenerateOptions): Promise<SunoTrac
 
 function fallback(overrideUrl?: string): SunoTrack {
   if (overrideUrl) return { url: overrideUrl, source: 'fallback' }
-  const url = DEFAULT_FALLBACKS[Math.floor(Math.random() * DEFAULT_FALLBACKS.length)]!
-  return { url, source: 'fallback' }
+  throw new Error('Music generation is unavailable and no fallbackUrl was provided')
 }
 
 /** Heuristic: build a Suno prompt from a club's genre + time of day. */

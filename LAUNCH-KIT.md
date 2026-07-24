@@ -18,7 +18,7 @@ timestamps, post.
 3. it's a format, not a platform. you don't switch tools to run one. you open the extension on top of whatever's open and hit start.
 4. three faders: ambient, ai music (suno), your tab. equal-power web audio mixer. duck-on-voice. you feel the room through your ears.
 5. the pomodoro syncs across everyone in the club via supabase realtime. one block, everyone at once. body doubling, ritualized.
-6. at session end, claude writes a two-line recap. card lands on your profile. screenshot, post, your crew shows up next sunday. that's the loop.
+6. after explicit opt-in, claude can write a short recap. saved profiles stay out of launch copy until that path has a production receipt.
 7. vibeclubs.ai · github.com/frankxai/vibeclubs · hosting one tonight
 
 ---
@@ -45,7 +45,7 @@ What's open source (MIT):
 - @vibeclubs/pomodoro-sync — supabase realtime broadcast state machine
 - @vibeclubs/ai-witness — Claude prompt builder for session recaps
 - @vibeclubs/session-card — 1200×630 SVG card generator
-- @vibeclubs/suno-bridge — suno API wrapper with royalty-free fallback
+- @vibeclubs/suno-bridge — suno API wrapper with a caller-supplied fallback
 
 vibeclubs.ai has a directory where you list your club + where your crew
 finds one. The extension does the actual work.

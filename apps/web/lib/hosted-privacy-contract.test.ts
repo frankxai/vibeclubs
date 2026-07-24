@@ -49,7 +49,7 @@ describe('hosted participant privacy contract', () => {
     const schema = read('supabase/migrations/20260419000000_init.sql')
 
     expect(privacy).toMatch(/no automatic expiry/i)
-    expect(privacy).toMatch(/no self-service\s+delete control/i)
+    expect(privacy).toMatch(/no self-service\s+delete\s+control/i)
     expect(privacy).toContain('mailto:open@vibeclubs.ai')
     expect(privacy).not.toMatch(/within seven days|account holder deletes it/i)
     expect(schema).toMatch(

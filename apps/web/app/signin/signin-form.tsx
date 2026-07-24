@@ -4,10 +4,11 @@ import { useState, useTransition } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Button, Field, Input } from '@/components/ui'
 import { createSupabaseBrowserClient } from '@/lib/supabase/client'
+import { safeNextPath } from '@/lib/safe-next-path'
 
 export function SigninForm() {
   const searchParams = useSearchParams()
-  const next = searchParams.get('next') ?? '/start'
+  const next = safeNextPath(searchParams.get('next'), '/start')
   const [email, setEmail] = useState('')
   const [pending, startTransition] = useTransition()
   const [sent, setSent] = useState(false)

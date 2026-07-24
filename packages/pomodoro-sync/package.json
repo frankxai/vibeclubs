@@ -1,7 +1,7 @@
 {
   "name": "@vibeclubs/pomodoro-sync",
   "version": "0.1.0",
-  "description": "Pomodoro state machine with Supabase Realtime broadcast. Keeps distributed rooms in sync.",
+  "description": "Pomodoro state machine with an optional Supabase Realtime binding.",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.ts",
@@ -15,10 +15,10 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "@supabase/supabase-js": "^2.45.0"
+    "@supabase/supabase-js": "^2.110.2"
   },
   "devDependencies": {
-    "@supabase/supabase-js": "^2.45.0",
+    "@supabase/supabase-js": "^2.110.2",
     "typescript": "^5.5.0"
   }
 }

@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { z } from 'zod'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { hasHostedConfig } from '@/lib/hosted-config'
 
 const ClubInput = z.object({
   name: z.string().min(3).max(80),
@@ -28,6 +29,16 @@ const ClubInput = z.object({
 })
 
 export async function POST(request: NextRequest) {
+  if (!hasHostedConfig()) {
+    return NextResponse.json(
+      {
+        error: 'Account-backed hosting is not configured yet.',
+        code: 'hosted_not_configured',
+      },
+      { status: 503 },
+    )
+  }
+
   const body = await request.json().catch(() => null)
   const parsed = ClubInput.safeParse(body)
   if (!parsed.success) {
@@ -49,24 +60,24 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  const payload = {
-    ...parsed.data,
-    platform_url: parsed.data.platform_url || null,
-    schedule: parsed.data.schedule || null,
-    opener_id: user.id,
-  }
-
-  const { data, error } = await supabase.from('clubs').insert(payload).select('slug').single()
+  const { data, error } = await supabase
+    .rpc('create_club_with_owner', {
+      p_name: parsed.data.name,
+      p_slug: parsed.data.slug,
+      p_description: parsed.data.description,
+      p_type: parsed.data.type,
+      p_platform: parsed.data.platform,
+      p_platform_url: parsed.data.platform_url || null,
+      p_schedule: parsed.data.schedule || null,
+      p_pomodoro_preset: parsed.data.pomodoro_preset,
+      p_ambient_preset: parsed.data.ambient_preset,
+    })
+    .single()
 
   if (error) {
     const status = error.code === '23505' ? 409 : 500
     return NextResponse.json({ error: error.message }, { status })
   }
-
-  // Ensure the opener is also a member with the owner role.
-  await supabase
-    .from('club_members')
-    .insert({ club_id: (data as { id?: string }).id ?? '', user_id: user.id, role: 'owner' })
 
   return NextResponse.json({ slug: data.slug })
 }

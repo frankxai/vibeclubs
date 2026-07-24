@@ -1,7 +1,7 @@
 {
   "name": "@vibeclubs/suno-bridge",
   "version": "0.1.0",
-  "description": "Suno API wrapper with royalty-free fallback for Vibeclubs session music.",
+  "description": "Suno API wrapper with a caller-supplied fallback for Vibeclubs music.",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.ts",

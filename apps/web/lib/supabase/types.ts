@@ -160,7 +160,22 @@ export interface Database {
       }
     }
     Views: Record<string, never>
-    Functions: Record<string, never>
+    Functions: {
+      create_club_with_owner: {
+        Args: {
+          p_name: string
+          p_slug: string
+          p_description: string
+          p_type: ClubType
+          p_platform: ClubPlatform
+          p_platform_url: string | null
+          p_schedule: string | null
+          p_pomodoro_preset: PomodoroPreset
+          p_ambient_preset: string
+        }
+        Returns: { id: string; slug: string }[]
+      }
+    }
     Enums: Record<string, never>
     CompositeTypes: Record<string, never>
   }

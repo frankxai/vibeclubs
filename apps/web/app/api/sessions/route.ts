@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { z } from 'zod'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { hasHostedConfig } from '@/lib/hosted-config'
 
 const SessionInput = z.object({
   club_id: z.string().uuid().nullable().optional(),
@@ -15,6 +16,16 @@ const SessionInput = z.object({
 })
 
 export async function POST(request: NextRequest) {
+  if (!hasHostedConfig()) {
+    return NextResponse.json(
+      {
+        error: 'Saved run history is not configured yet.',
+        code: 'hosted_not_configured',
+      },
+      { status: 503 },
+    )
+  }
+
   const parsed = SessionInput.safeParse(await request.json().catch(() => null))
   if (!parsed.success) {
     return NextResponse.json(

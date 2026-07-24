@@ -206,14 +206,14 @@ export default async function ClubPage({ params }: Params) {
               <li className="flex gap-4">
                 <span className="font-mono text-xs text-amber-400 pt-1 w-6">03</span>
                 <span>
-                  Click start. Everyone in the club on the extension hits the same pomodoro at {bpm}{' '}
-                  BPM. Recap lands on your profile when you&apos;re done.
+                  Use the local timer at {bpm} BPM. Cross-device sync and saved recaps do not have a
+                  public release receipt yet.
                 </span>
               </li>
             </ol>
             <CardBody className="mt-6">
               <LinkButton href="/extension" variant="outline" size="md">
-                Install the extension →
+                Read the extension status →
               </LinkButton>
             </CardBody>
           </Card>

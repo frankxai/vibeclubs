@@ -4,6 +4,8 @@ import { Footer } from '@/components/footer'
 import { Container, Eyebrow, Section } from '@/components/layout/container'
 import { Reveal } from '@/components/motion'
 import { TimerRingCycling } from '@/components/three'
+import { LinkButton } from '@/components/ui'
+import { hasHostedConfig } from '@/lib/hosted-config'
 import { StartForm } from './start-form'
 
 export const metadata = {
@@ -12,6 +14,8 @@ export const metadata = {
 }
 
 export default function StartPage() {
+  const hostedReady = hasHostedConfig()
+
   return (
     <main className="min-h-screen">
       <Nav />
@@ -28,9 +32,37 @@ export default function StartPage() {
                   Pick a template or build your own. Share the link. Your crew shows up. That&apos;s
                   the whole thing.
                 </p>
-                <Suspense fallback={null}>
-                  <StartForm />
-                </Suspense>
+                {hostedReady ? (
+                  <Suspense fallback={null}>
+                    <StartForm />
+                  </Suspense>
+                ) : (
+                  <div className="rounded-3xl border border-amber-300/20 bg-amber-300/[0.04] p-6">
+                    <p className="font-mono text-xs uppercase tracking-[0.18em] text-amber-300">
+                      Hosted path closed
+                    </p>
+                    <h2 className="mt-3 text-2xl font-semibold">
+                      Account-backed hosting is not live yet.
+                    </h2>
+                    <p className="mt-3 max-w-xl leading-7 text-white/60">
+                      The local proof and public club files work now. Magic links and saved
+                      vibeclubs stay closed until the production database has a release receipt.
+                    </p>
+                    <div className="mt-6 flex flex-wrap gap-3">
+                      <LinkButton href="/#try-it" size="md">
+                        Run the local proof
+                      </LinkButton>
+                      <LinkButton
+                        href="https://github.com/frankxai/vibeclubs/tree/main/content/clubs"
+                        external
+                        variant="outline"
+                        size="md"
+                      >
+                        List a public club via PR ↗
+                      </LinkButton>
+                    </div>
+                  </div>
+                )}
               </div>
             </Reveal>
             <Reveal direction="left" delay={0.15} className="hidden lg:block">
@@ -39,7 +71,7 @@ export default function StartPage() {
                   <div className="flex items-center gap-2 mb-4">
                     <span className="live-dot signal" />
                     <span className="text-[10px] uppercase tracking-[0.22em] font-mono text-white/50">
-                      synced pomodoro · live preview
+                      timer states · source preview
                     </span>
                   </div>
                   <TimerRingCycling />
@@ -49,8 +81,8 @@ export default function StartPage() {
                       for the host to start.
                     </p>
                     <p>
-                      <span className="text-[#4fd18c]">Focus</span> — everyone in the club locks in
-                      together. Same block, no drift.
+                      <span className="text-[#4fd18c]">Focus</span> — the local timer runs the
+                      selected block in this browser.
                     </p>
                     <p>
                       <span className="text-[#a78bfa]">Break</span> — stand up, stretch, drop a

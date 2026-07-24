@@ -75,7 +75,7 @@ Vibeclubs is **the format** crews run during any of the above.
 ## What vibeclubs uniquely owns
 
 1. **The ritual definition.** What a "vibeclub" is. The playbook. The voice. The five words.
-2. **The extension runtime.** Mixer + synced pomodoro + recap overlay, on any platform.
+2. **The extension source.** Mixer + local timer + optional recap overlay. Realtime sync needs a configured build and release proof.
 3. **The OSS toolkit.** Five `@vibeclubs/*` npm packages any cohort / product / community can compose with.
 4. **The directory.** Where anyone can list a public vibeclub and anyone can find one tonight.
 5. **The session card.** The deterministic proof-of-work artefact.
@@ -101,7 +101,7 @@ Every session is both consumption (of the stack knowledge) and production (of th
 | GenCreator Engine | What vibeclubs provides |
 |---|---|
 | **Engine 1 — Research & Stack Library** | Cohort members run vibeclubs to *test* a stack recipe from `/stacks`. Their session cards become qualitative evidence. Member-spotlight research reports (Strategy v3 §2) recruit from the vibeclubs that produced standout cards. |
-| **Engine 2 — Cohort Community** | The cohort's weekly 90-min "lock-in" runs as a vibeclub. The extension provides the synced pomodoro. The session card is submitted as the week's proof-of-work. Guardians (Otome, Veloura, Watcher) observe via AI-witness and contribute recap without hosting. |
+| **Engine 2 — Cohort Community** | The cohort's weekly 90-min "lock-in" can run as a vibeclub. The current extension source provides the local timer; shared timing and saved cards remain release-gated. |
 | **Engine 3 — Curriculum & Substrate Routing** | Vibeclubs is one of the curriculum's atomic rituals: "complete 4 vibeclubs in Week 2 to graduate to Week 3." The session count is a verifiable curriculum checkpoint. |
 
 ## Who runs cohort vibeclubs

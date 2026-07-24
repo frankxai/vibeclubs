@@ -6,7 +6,6 @@ type: coding
 preset: vibe_coding_sprint
 ambient: lofi
 schedule: 'Thursdays 20:00 CET'
-platform_url: 'https://discord.gg/vibeclubs'
 ---
 
 Stakes night. Three 22-min focus blocks with 60-second ship moments

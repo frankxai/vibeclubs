@@ -74,7 +74,7 @@ This is opt-in. The default 25/5 preset has no dropout. Sprint is for crews that
 | 3 (sprint) | "energetic" + club genre | 120–130 |
 | Break | "celebratory" + genre × 1.3 | 128 |
 
-The user hears an escalation without operating a DJ board. For vibeclubs using fallback royalty-free tracks instead of Suno, the ambient preset library carries the same three-tier tagging (`warm`, `peak`, `sprint`).
+The user hears an escalation without operating a DJ board. A future reviewed audio catalog can carry the same three-tier tagging (`warm`, `peak`, `sprint`); the public build does not supply those tracks.
 
 ### 6. Body — the dance break as first-class phase
 

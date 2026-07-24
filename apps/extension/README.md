@@ -1,6 +1,8 @@
 # @vibeclubs/extension
 
-Chrome extension (Plasmo / Manifest V3) that injects the Vibeclubs overlay — three-layer mixer, synced Pomodoro, session tracking — onto any page.
+Chrome extension source (Plasmo / Manifest V3) for the Vibeclubs overlay. No Chrome Web Store build or GitHub release is public yet.
+
+The local timer works without hosted settings. Realtime sync requires a build with the public Supabase settings. Ambient playback requires a verified audio base URL. Saved profile history is not wired in the current extension.
 
 ## Develop
 
@@ -17,6 +19,14 @@ Plasmo will spin up a hot-reloading unpacked extension at `apps/extension/build/
 4. Pin the extension, click the icon, set a club slug (e.g. `lofi-coders`)
 5. Open Google Meet / Discord / YouTube — the overlay appears bottom-right
 
+Optional build settings:
+
+```bash
+PLASMO_PUBLIC_SUPABASE_URL=
+PLASMO_PUBLIC_SUPABASE_ANON_KEY=
+PLASMO_PUBLIC_AMBIENT_BASE_URL=
+```
+
 ## Build for the Chrome Web Store
 
 ```bash
@@ -24,7 +34,7 @@ pnpm --filter=@vibeclubs/extension build
 pnpm --filter=@vibeclubs/extension package
 ```
 
-Output: `build/chrome-mv3-prod.zip` — upload to [chrome.google.com/webstore/devconsole](https://chrome.google.com/webstore/devconsole).
+Output: `build/chrome-mv3-prod.zip`. Publishing it still requires owner review, a final icon, and Chrome Web Store approval.
 
 ## Icon
 
@@ -48,7 +58,6 @@ Output: `build/chrome-mv3-prod.zip` — upload to [chrome.google.com/webstore/de
 
 The extension never reads page content. It only:
 - Reads/writes its own `chrome.storage.local` values (club slug, user prefs)
-- Streams ambient audio from CDN
-- Broadcasts Pomodoro state over Supabase Realtime
-- POSTs session summaries to `vibeclubs.ai/api/sessions`
-- POSTs witness events to `vibeclubs.ai/api/witness` (proxy; Anthropic key stays on server)
+- Streams ambient audio only when the build supplies a verified audio base URL
+- Broadcasts timer state only when the build supplies the public Supabase settings
+- POSTs recap events to `vibeclubs.ai/api/recap` after disclosure and opt-in
