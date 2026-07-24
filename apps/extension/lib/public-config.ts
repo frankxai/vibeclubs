@@ -8,13 +8,27 @@ export interface ExtensionSupabaseConfig {
   anonKey: string
 }
 
+const FORBIDDEN_RAW_CHARACTER = /[\p{C}\p{White_Space}]/u
+
 export function readExtensionSupabaseConfig(
   environment: ExtensionPublicEnvironment,
 ): ExtensionSupabaseConfig | undefined {
   const rawUrl = environment.PLASMO_PUBLIC_SUPABASE_URL
   const anonKey = environment.PLASMO_PUBLIC_SUPABASE_ANON_KEY
 
-  if (!rawUrl || !anonKey || rawUrl !== rawUrl.trim() || anonKey !== anonKey.trim() || !anonKey) {
+  if (
+    typeof rawUrl !== 'string' ||
+    typeof anonKey !== 'string' ||
+    !rawUrl ||
+    !anonKey ||
+    FORBIDDEN_RAW_CHARACTER.test(rawUrl) ||
+    FORBIDDEN_RAW_CHARACTER.test(anonKey) ||
+    !rawUrl.startsWith('https://') ||
+    rawUrl.includes('\\') ||
+    rawUrl.includes('@') ||
+    rawUrl.includes('?') ||
+    rawUrl.includes('#')
+  ) {
     return undefined
   }
 
@@ -27,7 +41,9 @@ export function readExtensionSupabaseConfig(
       url.password ||
       url.search ||
       url.hash ||
-      url.pathname !== '/'
+      url.pathname !== '/' ||
+      url.hostname.endsWith('.') ||
+      (rawUrl !== url.origin && rawUrl !== `${url.origin}/`)
     ) {
       return undefined
     }

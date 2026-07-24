@@ -73,7 +73,7 @@ revoke all on function public.create_club_with_owner(
   text,
   public.pomodoro_preset,
   text
-) from public;
+) from public, anon, service_role;
 
 grant execute on function public.create_club_with_owner(
   text,
