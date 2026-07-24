@@ -23,18 +23,34 @@ describe('promptFromClub', () => {
 })
 
 describe('generateMusic', () => {
-  it('falls back to curated track when no API key provided', async () => {
-    const result = await generateMusic({ prompt: 'lofi', apiKey: '' })
+  it('uses the caller fallback when no API key is provided', async () => {
+    const result = await generateMusic({
+      prompt: 'lofi',
+      apiKey: '',
+      fallbackUrl: 'https://audio.example/fallback.mp3',
+    })
     expect(result.source).toBe('fallback')
-    expect(result.url).toMatch(/\.mp3$/)
+    expect(result.url).toBe('https://audio.example/fallback.mp3')
+  })
+
+  it('fails closed when no API key or verified fallback is available', async () => {
+    await expect(generateMusic({ prompt: 'lofi', apiKey: '' })).rejects.toThrow(
+      'no fallbackUrl was provided',
+    )
   })
 
   it('falls back when Suno API returns non-OK', async () => {
     const failingFetch = vi.fn(
       async () => new Response('nope', { status: 503 }),
     ) as unknown as typeof fetch
-    const result = await generateMusic({ prompt: 'lofi', apiKey: 'fake', fetchImpl: failingFetch })
+    const result = await generateMusic({
+      prompt: 'lofi',
+      apiKey: 'fake',
+      fallbackUrl: 'https://audio.example/fallback.mp3',
+      fetchImpl: failingFetch,
+    })
     expect(result.source).toBe('fallback')
+    expect(result.url).toBe('https://audio.example/fallback.mp3')
     expect(failingFetch).toHaveBeenCalledOnce()
   })
 

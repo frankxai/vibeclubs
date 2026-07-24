@@ -1,6 +1,8 @@
 import type { MetadataRoute } from 'next'
 import { PLAYBOOK } from './playbook/playbook-data'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { loadStaticClubs } from '@/lib/clubs/content'
+import { hasHostedConfig } from '@/lib/hosted-config'
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://vibeclubs.ai'
 
@@ -25,13 +27,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }))
 
+  const staticClubRoutes: MetadataRoute.Sitemap = loadStaticClubs().map((club) => ({
+    url: `${SITE}/club/${club.slug}`,
+    lastModified: now,
+    priority: 0.8,
+  }))
+
   const clubRoutes: MetadataRoute.Sitemap = await loadClubRoutes()
 
-  return [...staticRoutes, ...playbookRoutes, ...clubRoutes]
+  const routes = [...staticRoutes, ...playbookRoutes, ...staticClubRoutes, ...clubRoutes]
+  return [...new Map(routes.map((route) => [route.url, route])).values()]
 }
 
 async function loadClubRoutes(): Promise<MetadataRoute.Sitemap> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return []
+  if (!hasHostedConfig()) return []
   try {
     const supabase = await createSupabaseServerClient()
     const { data } = await supabase

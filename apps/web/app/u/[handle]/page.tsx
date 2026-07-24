@@ -8,6 +8,7 @@ import { SessionCardPreview } from '@/components/patterns/session-card-preview'
 import { Reveal, Stagger, StaggerItem } from '@/components/motion'
 import { SessionCard3DLazy } from '@/components/three'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { hasHostedConfig } from '@/lib/hosted-config'
 import type { SessionRow, UserRow } from '@/lib/supabase/types'
 
 interface Params {
@@ -16,7 +17,17 @@ interface Params {
 
 export async function generateMetadata({ params }: Params) {
   const { handle } = await params
-  return { title: `@${handle}` }
+  if (!hasHostedConfig()) {
+    return {
+      title: `@${handle}`,
+      robots: { index: false, follow: false },
+    }
+  }
+  const { user } = await loadUser(handle)
+  return {
+    title: `@${handle}`,
+    ...(user ? {} : { robots: { index: false, follow: false } }),
+  }
 }
 
 export default async function UserPage({ params }: Params) {
@@ -62,7 +73,13 @@ export default async function UserPage({ params }: Params) {
                       drag · tap to flip
                     </div>
                   </div>
-                  <SessionCard3DLazy className="w-full aspect-[2/1.1]" />
+                  {latest ? (
+                    <SessionCard3DLazy className="w-full aspect-[2/1.1]" />
+                  ) : (
+                    <div className="flex aspect-[2/1.1] items-center justify-center rounded-2xl border border-white/8 bg-black/20 px-6 text-center text-sm text-white/45">
+                      No saved work yet.
+                    </div>
+                  )}
                   {latest && (
                     <div className="flex items-center justify-between mt-5 text-xs text-white/55 font-mono">
                       <span>
@@ -100,7 +117,7 @@ export default async function UserPage({ params }: Params) {
                 No sessions yet. Install the extension and drop into a vibeclub.
               </p>
               <LinkButton href="/extension" variant="primary" size="md">
-                Install extension →
+                Read extension status →
               </LinkButton>
             </div>
           ) : (
@@ -129,7 +146,7 @@ export default async function UserPage({ params }: Params) {
 }
 
 async function loadUser(handle: string): Promise<{ user: UserRow | null; sessions: SessionRow[] }> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return { user: null, sessions: [] }
+  if (!hasHostedConfig()) return { user: null, sessions: [] }
   try {
     const supabase = await createSupabaseServerClient()
     const { data: user } = await supabase

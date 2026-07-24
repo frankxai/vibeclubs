@@ -7,35 +7,39 @@ import { Reveal, Stagger, StaggerItem } from '@/components/motion'
 import { DevelopersNetworkLazy } from '@/components/three'
 
 export const metadata = {
-  title: 'Developers',
-  description:
-    'Five MIT-licensed npm packages — vibe-mix, pomodoro-sync, ai-witness, session-card, suno-bridge.',
+  title: 'Developer source',
+  description: 'Five MIT-licensed workspace packages in source. npm publication is still pending.',
 }
 
-const PACKAGES: { name: string; desc: string; entry: string }[] = [
+const PACKAGES: { name: string; path: string; desc: string; entry: string }[] = [
   {
     name: '@vibeclubs/vibe-mix',
+    path: 'vibe-mix',
     desc: 'Three-layer Web Audio mixer. Ambient + music + page. Framework-agnostic, equal-power faders, duck-on-voice.',
     entry: "import { createMixer } from '@vibeclubs/vibe-mix'",
   },
   {
     name: '@vibeclubs/pomodoro-sync',
-    desc: 'Pomodoro state machine + Supabase Realtime broadcast. Late-joiner ping/pong. No drift.',
+    path: 'pomodoro-sync',
+    desc: 'Pomodoro state machine with optional Supabase Realtime binding when the caller supplies a client.',
     entry: "import { createPomodoro } from '@vibeclubs/pomodoro-sync'",
   },
   {
     name: '@vibeclubs/ai-witness',
+    path: 'ai-witness',
     desc: 'Claude prompt builder for session recaps. Hard-enforces "never interrupt" in the system prompt.',
     entry: "import { witnessPrompt } from '@vibeclubs/ai-witness'",
   },
   {
     name: '@vibeclubs/session-card',
+    path: 'session-card',
     desc: 'SVG session card renderer. 1200×630. Deterministic from session data. Brand-locked.',
     entry: "import { renderSessionCardSVG } from '@vibeclubs/session-card'",
   },
   {
     name: '@vibeclubs/suno-bridge',
-    desc: 'Suno API wrapper with royalty-free fallback. Prompt helper reads club genre + time of day.',
+    path: 'suno-bridge',
+    desc: 'Suno API wrapper with a caller-supplied fallback. Prompt helper reads club genre + time of day.',
     entry: "import { generateMusic } from '@vibeclubs/suno-bridge'",
   },
 ]
@@ -51,19 +55,19 @@ export default function DevelopersPage() {
               <div>
                 <Eyebrow>Developers</Eyebrow>
                 <h1 className="text-4xl md:text-6xl font-bold tracking-tight mt-4 mb-5 leading-[1.02]">
-                  Fork the vibe.
+                  Fork the source.
                 </h1>
                 <p className="text-xl text-white/60 max-w-2xl leading-relaxed mb-8">
-                  Every capability in the extension ships as a framework-agnostic npm package. MIT.
-                  Drop them into Electron, Raycast, Tauri, your own site. Nothing requires
-                  vibeclubs.ai.
+                  Five capabilities live as framework-agnostic workspace packages in the public
+                  repo. They are not published to npm yet. Clone the repo and work with them
+                  locally.
                 </p>
                 <div className="flex items-center gap-3 text-xs font-mono text-white/45">
-                  <span>{PACKAGES.length} packages</span>
+                  <span>{PACKAGES.length} workspace packages</span>
                   <span className="text-white/20">·</span>
                   <span>MIT</span>
                   <span className="text-white/20">·</span>
-                  <span>zero lock-in</span>
+                  <span>npm release pending</span>
                 </div>
               </div>
             </Reveal>
@@ -87,10 +91,10 @@ export default function DevelopersPage() {
                       {p.entry}
                     </div>
                     <a
-                      href={`https://www.npmjs.com/package/${p.name}`}
+                      href={`https://github.com/frankxai/vibeclubs/tree/main/packages/${p.path}`}
                       className="text-xs font-mono text-white/40 hover:text-amber-300 transition"
                     >
-                      npm →
+                      source →
                     </a>
                   </Card>
                 </StaggerItem>
@@ -106,11 +110,11 @@ export default function DevelopersPage() {
             <div>
               <Eyebrow>Quickstart</Eyebrow>
               <h2 className="text-3xl md:text-5xl font-bold tracking-tight mt-4 mb-5">
-                Three lines. Running mixer.
+                Clone it. Run locally.
               </h2>
               <p className="text-white/60 leading-relaxed mb-5">
-                Any framework, any runtime. The packages use `import` maps instead of framework
-                plugins, so they drop into anything — including Chrome extensions and Node.
+                The repository is the public install path today. The package names exist in the
+                workspace, but the registry releases do not.
               </p>
               <LinkButton
                 href="https://github.com/frankxai/vibeclubs"
@@ -122,23 +126,11 @@ export default function DevelopersPage() {
               </LinkButton>
             </div>
             <CodeBlock
-              caption="quickstart.ts"
-              lang="ts"
-              code={`pnpm add @vibeclubs/vibe-mix @vibeclubs/pomodoro-sync
-
-import { createMixer } from '@vibeclubs/vibe-mix'
-import { createPomodoro } from '@vibeclubs/pomodoro-sync'
-
-const mixer = createMixer()
-await mixer.loadAmbient('lofi')
-mixer.setLevel('ambient', 0.4)
-
-const pomo = createPomodoro({
-  clubId: 'lofi-coders',
-  preset: '50_10',
-})
-pomo.start()
-pomo.on('complete', (cycle) => console.log('shipped', cycle))`}
+              caption="local checkout"
+              code={`git clone https://github.com/frankxai/vibeclubs
+cd vibeclubs
+pnpm install
+pnpm --filter @vibeclubs/vibe-mix test`}
             />
           </div>
         </Container>

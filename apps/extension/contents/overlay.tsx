@@ -1,9 +1,11 @@
 import cssText from 'data-text:./overlay.css'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { PlasmoCSConfig, PlasmoGetStyle } from 'plasmo'
+import { createClient } from '@supabase/supabase-js'
 import { createMixer, type Layer, type Mixer } from '@vibeclubs/vibe-mix'
 import { createPomodoro, type Pomodoro, type PomodoroState } from '@vibeclubs/pomodoro-sync'
 import { canRequestAiRecap, normalizeAiRecapChoice } from '@vibeclubs/ai-witness'
+import { readExtensionSupabaseConfig } from '../lib/public-config'
 
 export const config: PlasmoCSConfig = {
   matches: ['https://*/*', 'http://*/*'],
@@ -31,6 +33,21 @@ const DEFAULT_SETTINGS: Settings = {
   recapEnabled: false,
   recapNoticeAccepted: false,
 }
+
+const ambientBaseUrl = process.env.PLASMO_PUBLIC_AMBIENT_BASE_URL?.replace(/\/+$/, '')
+const extensionSupabaseConfig = readExtensionSupabaseConfig({
+  PLASMO_PUBLIC_SUPABASE_URL: process.env.PLASMO_PUBLIC_SUPABASE_URL,
+  PLASMO_PUBLIC_SUPABASE_ANON_KEY: process.env.PLASMO_PUBLIC_SUPABASE_ANON_KEY,
+})
+const syncClient = extensionSupabaseConfig
+  ? createClient(extensionSupabaseConfig.url, extensionSupabaseConfig.anonKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+      },
+    })
+  : undefined
 
 export default function VibeOverlay() {
   const [clubSlug, setClubSlug] = useState<string | null>(null)
@@ -100,12 +117,16 @@ export default function VibeOverlay() {
     if (booted.current || !clubSlug) return
     booted.current = true
     const m = createMixer({
-      ambientBaseUrl: 'https://cdn.vibeclubs.ai/ambient',
+      ...(ambientBaseUrl ? { ambientBaseUrl } : {}),
       duckOnVoice: settings.duckOnVoice,
     })
-    void m.loadAmbient(settings.ambientPreset).catch(() => undefined)
+    if (ambientBaseUrl) void m.loadAmbient(settings.ambientPreset).catch(() => undefined)
     setMixer(m)
-    const p = createPomodoro({ clubId: clubSlug, preset: '25_5' })
+    const p = createPomodoro({
+      clubId: clubSlug,
+      preset: '25_5',
+      ...(syncClient ? { supabase: syncClient } : {}),
+    })
     p.on<number>('tick', (remainingMs) => setTimerMs(remainingMs))
     p.on('phase', () => setState(p.state()))
     p.on<number>('complete', async (cycle) => {

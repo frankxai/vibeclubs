@@ -17,9 +17,9 @@ import { Reveal } from '@/components/motion'
 import { VibeOrbDemo } from '@/components/three'
 
 export const metadata = {
-  title: 'Install the extension',
+  title: 'Extension source',
   description:
-    'Overlay the mixer and timer on Meet, Discord, YouTube, or any tab. The Vibeclubs Chrome extension.',
+    'Inspect and build the Vibeclubs Chrome extension source before public distribution.',
 }
 
 export default function ExtensionPage() {
@@ -33,29 +33,29 @@ export default function ExtensionPage() {
               <div>
                 <Eyebrow>Chrome extension</Eyebrow>
                 <h1 className="text-4xl md:text-6xl font-bold tracking-tight mt-4 mb-5 leading-[1.02]">
-                  Install the vibe.
+                  Build the extension.
                 </h1>
                 <p className="text-xl text-white/60 mb-10 leading-relaxed max-w-xl">
-                  Overlay the mixer and timer on Meet, Discord, YouTube, or any tab where
-                  you&apos;re locking in. This is where the vibeclub actually happens.
+                  The source is public and buildable now. Chrome Web Store distribution,
+                  account-backed timer sync, saved profiles, and hosted audio are not released yet.
                 </p>
                 <div className="flex flex-wrap gap-3 mb-12">
                   <LinkButton
-                    href="https://chrome.google.com/webstore/detail/vibeclubs/placeholder"
+                    href="https://github.com/frankxai/vibeclubs/blob/main/apps/extension/README.md"
                     variant="primary"
                     size="lg"
                     className="vc-shimmer-border"
                     external
                   >
-                    Install from Chrome Web Store
+                    Read the build steps
                   </LinkButton>
                   <LinkButton
-                    href="https://github.com/frankxai/vibeclubs/releases"
+                    href="https://github.com/frankxai/vibeclubs/tree/main/apps/extension"
                     variant="outline"
                     size="lg"
                     external
                   >
-                    Sideload latest
+                    Inspect the source
                   </LinkButton>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-white/50">
@@ -86,9 +86,9 @@ export default function ExtensionPage() {
                 Three layers. One sphere. Drag the faders.
               </h2>
               <p className="text-white/55 max-w-2xl mx-auto mt-5 text-lg leading-relaxed">
-                A custom WebGL shader paints each fader as a color band on the orb. This is the same
-                three-layer mix the extension runs — amber ambient, violet music, signal-green page
-                audio — previewed here so you can feel the knobs before you install.
+                A custom WebGL shader paints each fader as a color band on the orb. This page
+                previews the three mixer controls in the source; it does not prove public audio
+                delivery.
               </p>
             </div>
           </Reveal>
@@ -102,9 +102,9 @@ export default function ExtensionPage() {
         <Container width="xl">
           <Reveal>
             <div className="text-center mb-14">
-              <Eyebrow className="inline-flex">What it adds</Eyebrow>
+              <Eyebrow className="inline-flex">What is in source</Eyebrow>
               <h2 className="text-3xl md:text-5xl font-bold tracking-tight mt-4">
-                Four things. Nothing else.
+                Four inspectable parts.
               </h2>
             </div>
           </Reveal>
@@ -112,40 +112,41 @@ export default function ExtensionPage() {
             <Card pad="md" interactive>
               <CardEyebrow>Mixer</CardEyebrow>
               <CardTitle as="h3" className="mb-2">
-                Three faders.
+                Local faders.
               </CardTitle>
               <CardBody>
-                Ambient + AI music + your tab. Independently controlled. Lives in your ears, not
-                broadcast.
+                Web Audio controls for ambient, music, and page levels. The public audio files are
+                not live yet.
               </CardBody>
             </Card>
             <Card pad="md" interactive>
               <CardEyebrow>Rhythm</CardEyebrow>
               <CardTitle as="h3" className="mb-2">
-                Synced pomodoro.
+                Timer engine.
               </CardTitle>
               <CardBody>
-                Everyone on the extension in the same vibeclub hits the same block. Supabase
-                Realtime broadcast. No polling, no drift.
+                The timer runs locally. A build can add Supabase Realtime settings; the public
+                extension has no release receipt for cross-device sync.
               </CardBody>
             </Card>
             <Card pad="md" interactive>
               <CardEyebrow>Recap</CardEyebrow>
               <CardTitle as="h3" className="mb-2">
-                Auto-notes.
+                Optional recap.
               </CardTitle>
               <CardBody>
-                Session ends, Claude writes a two-liner, card lands on your profile. Shareable to X.
+                After the disclosure and opt-in, the source can request a short Claude recap. Saving
+                it to a profile is not wired.
               </CardBody>
             </Card>
             <Card pad="md" interactive>
               <CardEyebrow>Anywhere</CardEyebrow>
               <CardTitle as="h3" className="mb-2">
-                Any page, any time.
+                Content script.
               </CardTitle>
               <CardBody>
-                Meet, Discord, Zoom, Figma, GitHub, blank tab. Anywhere you&apos;re making
-                something.
+                The current source matches HTTP and HTTPS pages. A store-reviewed build is not
+                published.
               </CardBody>
             </Card>
           </div>
@@ -161,9 +162,9 @@ export default function ExtensionPage() {
                 Never reads page content. Ever.
               </h2>
               <p className="text-white/70 leading-relaxed mb-4">
-                Audio mixing is 100% local via Web Audio. The only data that leaves your browser:
-                the pomodoro broadcast (club slug + timer state) and a session summary (duration +
-                cycle count).
+                Audio mixing stays in Web Audio. The current extension stores its own settings
+                locally. A recap request leaves the browser only after the disclosure and opt-in.
+                Hosted timer sync and profile saving are not wired in the public build.
               </p>
               <p className="text-white/50 leading-relaxed">
                 Open source so you can verify —{' '}
@@ -214,8 +215,8 @@ export default function ExtensionPage() {
             MIT, Plasmo, zero lock-in.
           </h2>
           <p className="text-white/60 leading-relaxed mb-8 max-w-2xl">
-            The mixer, the pomodoro sync, the recap — all extracted into npm packages so you can
-            drop them into your own product. Or fork the whole extension.
+            The mixer, timer, recap prompt, and card renderer live as workspace packages in the
+            public repo. They are not published to npm yet.
           </p>
           <div className="grid md:grid-cols-2 gap-4 max-w-3xl">
             <CodeBlock
@@ -229,14 +230,16 @@ pnpm dev:extension`}
               caption="embed the mixer"
               lang="ts"
               code={`import { createMixer } from '@vibeclubs/vibe-mix'
-const mixer = createMixer()
+const mixer = createMixer({
+  ambientBaseUrl: yourAudioBaseUrl,
+})
 await mixer.loadAmbient('lofi')
 mixer.setLevel('ambient', 0.4)`}
             />
           </div>
           <div className="mt-8">
             <LinkButton href="/developers" variant="outline" size="md">
-              All five packages →
+              Inspect the workspace packages →
             </LinkButton>
           </div>
         </Container>

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { safeNextPath } from '@/lib/safe-next-path'
 
 /**
  * Supabase magic-link callback.
@@ -12,7 +13,7 @@ import { createSupabaseServerClient } from '@/lib/supabase/server'
 export async function GET(request: NextRequest) {
   const url = new URL(request.url)
   const code = url.searchParams.get('code')
-  const next = url.searchParams.get('next') ?? '/'
+  const next = safeNextPath(url.searchParams.get('next'))
 
   if (code) {
     try {

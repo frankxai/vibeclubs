@@ -2,7 +2,7 @@
 
 > **Claude Code + your crew + a soundtrack. Host a vibeclub.**
 >
-> Free. Open source. MIT. Lock in for 90 minutes. Ship the thing. Recap lands on your profile when you're done.
+> Free. Open source. MIT. The local proof works now; hosted accounts, public extension distribution, and registry packages are still closed.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black.svg)](https://nextjs.org)
@@ -14,12 +14,12 @@
 
 A vibeclub is what your crew does when you all have something to ship. It's a **format** — like hackathon or book club — that runs on whatever platform you already use (Meet, Discord, Zoom, IRL).
 
-The Vibeclubs Chrome extension adds:
+The extension source contains:
 
-- **Three-fader mixer** — ambient + AI music + your tab audio, on Web Audio faders
-- **Synced pomodoro** — everyone in the club on the extension hits the same block
-- **Auto-recap** — Claude writes a two-liner at session end; card lands on your profile
-- **Works anywhere** — Meet, Discord, YouTube, Figma, blank tab
+- **Three-fader mixer** — Web Audio controls; verified public audio files are still needed
+- **Timer engine** — local by default; Realtime sync needs a configured build
+- **Optional recap** — disclosed and opt-in; saved profile history is not wired
+- **Content script** — matches HTTP and HTTPS pages in a developer build
 
 Read [VISION.md](./VISION.md) for the why and the voice system. Read [ADR-002-FORMAT-NOT-PLATFORM.md](./ADR-002-FORMAT-NOT-PLATFORM.md) for the architectural call.
 
@@ -37,7 +37,7 @@ vibeclubs.ai/
 │   ├── pomodoro-sync/           Supabase Realtime pomodoro state machine
 │   ├── ai-witness/              Claude prompt builder for session recaps
 │   ├── session-card/            SVG session card generator
-│   └── suno-bridge/             Suno API wrapper (+ royalty-free fallback)
+│   └── suno-bridge/             Suno API wrapper (+ caller-supplied fallback)
 ├── supabase/
 │   └── migrations/              SQL schema
 ├── docs/                        Architecture, getting-started, extension dev guide
@@ -106,14 +106,14 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md):
 
 ---
 
-## Pricing
+## Proposed pricing — not for sale yet
 
 | Tier | Price | Who |
 |---|---|---|
 | Free | $0 | Everyone, forever. Unlimited vibeclubs, three ambient presets, basic recap. |
 | Pro | $12/mo (Sprint 2) | Suno AI music, full Claude recaps, custom mixer presets, featured club. |
 
-All commercial revenue goes toward maintenance of the OSS core.
+No paid plan is active on the public site.
 
 ---
 
@@ -123,7 +123,6 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 Good-first issues tagged `good-first-issue` on [GitHub](https://github.com/frankxai/vibeclubs/issues).
 
-- Discord — [discord.gg/vibeclubs](https://discord.gg/vibeclubs)
 - X — [@vibeclubsai](https://x.com/vibeclubsai)
 
 ---

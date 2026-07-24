@@ -21,8 +21,9 @@ export default function Terms() {
             </p>
             <h2>Your content</h2>
             <p>
-              You own the clubs you host, the sessions you log, and anything you post. We store it
-              so the format works — we don&apos;t claim rights beyond that.
+              You keep ownership of the club details and work you choose to save. Account-backed
+              storage is currently closed; if it opens, Vibeclubs will not claim rights beyond what
+              is needed to run the format.
             </p>
             <h2>Conduct</h2>
             <p>
@@ -32,17 +33,16 @@ export default function Terms() {
             </p>
             <h2>Music + audio</h2>
             <p>
-              Ambient loops on the hosted tier are royalty-free. Suno tracks generated via our
-              integration are yours to use per{' '}
-              <a href="https://suno.com/terms">Suno&apos;s terms</a>. Don&apos;t rebroadcast other
-              people&apos;s copyrighted music through Vibeclubs.
+              The public build does not ship an ambient catalog or Suno integration. Bring only
+              audio you have the right to use. Don&apos;t rebroadcast someone else&apos;s
+              copyrighted music through Vibeclubs.
             </p>
             <h2>Liability</h2>
             <p>
               Vibeclubs is a focus tool. If your session doesn&apos;t ship a feature, we&apos;re not
               liable. Use at your own risk — as with all MIT software.
             </p>
-            <p className="text-white/40 text-xs mt-8">Last updated 2026-04-21.</p>
+            <p className="text-white/40 text-xs mt-8">Last updated 2026-07-24.</p>
           </Prose>
         </Container>
       </Section>

@@ -47,7 +47,7 @@ apps/extension/
 | `@vibeclubs/pomodoro-sync` | Pomodoro state + Supabase Realtime broadcast |
 | `@vibeclubs/ai-witness` | Prompt builder for Claude witness events |
 | `@vibeclubs/session-card` | SVG session card generator |
-| `@vibeclubs/suno-bridge` | Suno API wrapper with royalty-free fallback |
+| `@vibeclubs/suno-bridge` | Suno API wrapper with a caller-supplied fallback |
 
 All five are workspace packages — edits flow through with no `pnpm build` step thanks to the `"main": "./src/index.ts"` entries.
 

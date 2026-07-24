@@ -6,7 +6,6 @@ type: music
 preset: music_jam
 ambient: space
 schedule: 'Fridays 20:00 CET'
-platform_url: 'https://discord.gg/vibeclubs'
 featured: true
 ---
 
