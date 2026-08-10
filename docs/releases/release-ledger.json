@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "repository": "frankxai/vibeclubs",
+  "defaultBranch": "main",
+  "source": {
+    "auditedAt": "2026-08-10",
+    "auditedHead": "417dc5185e7175e365323483808bf38032f2abaa",
+    "historyStart": "2026-04-21",
+    "historyEnd": "2026-07-24",
+    "commitCount": 24
+  },
+  "release": {
+    "version": "0.2.0",
+    "tag": "v0.2.0",
+    "status": "draft",
+    "published": false,
+    "targetSha": "417dc5185e7175e365323483808bf38032f2abaa",
+    "changelogSection": "Unreleased",
+    "notesPath": "docs/releases/v0.2.0.md"
+  },
+  "approvals": {
+    "changelogComplete": true,
+    "validationComplete": false,
+    "humanReleaseApproval": false,
+    "humanPackageApproval": false
+  },
+  "receipts": {
+    "pullRequests": [
+      {
+        "number": 3,
+        "url": "https://github.com/frankxai/vibeclubs/pull/3",
+        "commit": "9e0c78c"
+      },
+      {
+        "number": 4,
+        "url": "https://github.com/frankxai/vibeclubs/pull/4",
+        "commit": "2b23275"
+      },
+      {
+        "number": 5,
+        "url": "https://github.com/frankxai/vibeclubs/pull/5",
+        "commit": "417dc51"
+      }
+    ]
+  },
+  "production": {
+    "canonicalUrl": "https://vibeclubs.ai",
+    "vercelProject": "vibeclubs-web",
+    "deploymentId": "dpl_27f4GhPvQfomwoPE3gcUUPXU583u",
+    "deploymentStatus": "ready",
+    "deploymentSha": "417dc5185e7175e365323483808bf38032f2abaa",
+    "verifiedAt": "2026-08-10",
+    "robots": {
+      "url": "https://vibeclubs.ai/robots.txt",
+      "status": "ok-200"
+    },
+    "sitemap": {
+      "url": "https://vibeclubs.ai/sitemap.xml",
+      "status": "ok-200"
+    },
+    "changelogRoute": {
+      "url": "https://vibeclubs.ai/changelog",
+      "status": "missing-404",
+      "nextAction": "Add only through the Premium Intelligence Web OS and visual QA gate."
+    }
+  },
+  "packagePublishing": {
+    "status": "blocked",
+    "workflow": ".github/workflows/release-packages.yml",
+    "packages": [
+      "@frankx/design-core@0.1.0",
+      "@vibeclubs/ai-witness@0.1.0",
+      "@vibeclubs/pomodoro-sync@0.1.0",
+      "@vibeclubs/session-card@0.1.0",
+      "@vibeclubs/suno-bridge@0.1.0",
+      "@vibeclubs/vibe-mix@0.1.0"
+    ],
+    "requiredHumanSetup": [
+      "Configure npm trusted publishers for the exact workflow and npm-production environment.",
+      "Set ENABLE_NPM_PUBLISH=true only for an approved publication window.",
+      "Configure required reviewers on the npm-production GitHub environment."
+    ]
+  }
+}

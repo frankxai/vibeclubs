@@ -1,0 +1,36 @@
+name: Release contract
+
+on:
+  pull_request:
+    paths:
+      - '.github/release.yml'
+      - '.github/workflows/draft-github-release.yml'
+      - '.github/workflows/release-contract.yml'
+      - '.github/workflows/release-packages.yml'
+      - 'CHANGELOG.md'
+      - 'RELEASING.md'
+      - 'docs/releases/**'
+      - 'scripts/validate-release-ledger.mjs'
+      - 'package.json'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Verify release truth
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - run: node scripts/validate-release-ledger.mjs

@@ -25,6 +25,7 @@
     "audit:voice": "node scripts/voice-audit.mjs",
     "audit:clubs": "node scripts/validate-clubs.mjs",
     "audit:built-truth": "node scripts/audit-built-truth.mjs",
+    "audit:release": "node scripts/validate-release-ledger.mjs",
     "audit:all": "pnpm audit:voice && pnpm audit:clubs",
     "new:club": "node scripts/new-club.mjs"
   },
