@@ -5,6 +5,11 @@ Notable changes to Vibeclubs. Dates are YYYY-MM-DD. This project follows
 
 ## [Unreleased]
 
+> Release candidate: `v0.2.0` at
+> `417dc5185e7175e365323483808bf38032f2abaa`. This is not a published tag or
+> GitHub release. See [`docs/releases/release-ledger.json`](docs/releases/release-ledger.json)
+> for the machine-readable release state.
+
 ### Added
 
 - Full design system scaffolding in `apps/web/components/ui/*` — Button, Input, Card,

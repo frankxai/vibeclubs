@@ -10,21 +10,21 @@ on:
     inputs:
       dry-run:
         description: 'Dry run (no publish)'
-        required: false
-        default: 'true'
+        required: true
+        type: boolean
+        default: true
 
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  publish:
-    name: Publish @frankx/* and @vibeclubs/* to npm
+  validate:
+    name: Validate and pack packages
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
       contents: read
-      id-token: write
     steps:
       - uses: actions/checkout@v7
         with:
@@ -37,20 +37,48 @@ jobs:
           cache: pnpm
       - name: Install
         run: pnpm install --frozen-lockfile
+      - name: Validate release contract
+        run: pnpm audit:release
       - name: Build packages
         run: pnpm --filter './packages/**' build
-      - name: Dry-run publish
-        if: github.event.inputs.dry-run == 'true'
+      - name: Pack and inspect only
         run: pnpm --filter './packages/**' publish --dry-run --access public --no-git-checks
-      - name: Publish to npm
-        if: github.event.inputs.dry-run != 'true'
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: pnpm --filter './packages/**' publish --access public --no-git-checks
       - name: Summary
         run: |
           echo "## Release summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Packages in this workspace:" >> $GITHUB_STEP_SUMMARY
+          echo "Validation and npm dry-run completed. Tag events never publish." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Packages inspected:" >> $GITHUB_STEP_SUMMARY
           ls packages >> $GITHUB_STEP_SUMMARY
+
+  publish:
+    name: Publish packages with provenance
+    if: github.event_name == 'workflow_dispatch' && inputs.dry-run == false && vars.ENABLE_NPM_PUBLISH == 'true'
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: npm-production
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Revalidate release contract
+        env:
+          RELEASE_MODE: package-publish
+        run: pnpm audit:release
+      - name: Rebuild packages
+        run: pnpm --filter './packages/**' build
+      - name: Publish through npm trusted publishing
+        run: pnpm --filter './packages/**' publish --access public --no-git-checks --provenance

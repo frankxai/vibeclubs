@@ -1,0 +1,27 @@
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+      - internal-only
+  categories:
+    - title: Product and ritual
+      labels:
+        - feature
+        - enhancement
+        - product
+    - title: Reliability and security
+      labels:
+        - bug
+        - security
+        - reliability
+    - title: Documentation and community
+      labels:
+        - documentation
+        - community
+    - title: Maintenance
+      labels:
+        - dependencies
+        - chore
+    - title: Other changes
+      labels:
+        - '*'
