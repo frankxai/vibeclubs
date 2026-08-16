@@ -133,7 +133,7 @@ export default async function ClubPage({ params }: Params) {
                   <p className="mt-4 text-sm text-white/45 font-mono">Hosted by {club.host}</p>
                 )}
               </div>
-              <JoinButton club={club} platformLink={platformLink} />
+              <JoinButton platformLink={platformLink} />
             </div>
           </Reveal>
 
@@ -234,10 +234,8 @@ export default async function ClubPage({ params }: Params) {
 }
 
 function JoinButton({
-  club,
   platformLink,
 }: {
-  club: Club
   platformLink: ReturnType<typeof getSafePlatformLink>
 }) {
   if (!platformLink) {
