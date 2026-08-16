@@ -233,11 +233,7 @@ export default async function ClubPage({ params }: Params) {
   )
 }
 
-function JoinButton({
-  platformLink,
-}: {
-  platformLink: ReturnType<typeof getSafePlatformLink>
-}) {
+function JoinButton({ platformLink }: { platformLink: ReturnType<typeof getSafePlatformLink> }) {
   if (!platformLink) {
     return (
       <button
