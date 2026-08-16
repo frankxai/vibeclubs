@@ -13,11 +13,13 @@ interface ShareButtonProps {
 
 export function ShareButton({ clubName, clubUrl, schedule, platformUrl }: ShareButtonProps) {
   const [open, setOpen] = useState(false)
+  const safePlatformUrl = normalizePlatformUrl(platformUrl)
+  const platformLabel = safePlatformUrl ? new URL(safePlatformUrl).hostname : null
 
   const when = schedule?.toLowerCase() || 'tonight'
   const name = clubName.toLowerCase()
 
-  const variants = platformUrl
+  const variants = safePlatformUrl
     ? [
         `hosting a vibeclub ${when} — ${name}. drop in ↓\n${clubUrl}`,
         `${name} vibeclub. claude code + lofi + crew. ${when}.\n${clubUrl}`,
@@ -86,17 +88,28 @@ export function ShareButton({ clubName, clubUrl, schedule, platformUrl }: ShareB
         >
           Post on X →
         </a>
-        {platformUrl && (
+        {safePlatformUrl && (
           <a
-            href={platformUrl}
+            href={safePlatformUrl}
             target="_blank"
             rel="noreferrer noopener"
             className="flex-1 px-4 py-2.5 rounded-full border border-white/10 hover:bg-white/5 text-center text-sm transition"
           >
-            Open {platformUrl.includes('discord.com') ? 'Discord' : 'Platform'} →
+            Open {platformLabel} →
           </a>
         )}
       </div>
     </div>
   )
+}
+
+function normalizePlatformUrl(value: string | null | undefined): string | null {
+  if (!value) return null
+  try {
+    const url = new URL(value)
+    if (url.protocol !== 'https:' || url.username || url.password) return null
+    return url.toString()
+  } catch {
+    return null
+  }
 }
