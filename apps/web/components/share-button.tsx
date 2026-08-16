@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Button, toast } from '@/components/ui'
 import { cn } from '@/lib/cn'
+import { getSafePlatformLink } from '@/lib/platform-url'
 
 interface ShareButtonProps {
   clubName: string
@@ -13,8 +14,9 @@ interface ShareButtonProps {
 
 export function ShareButton({ clubName, clubUrl, schedule, platformUrl }: ShareButtonProps) {
   const [open, setOpen] = useState(false)
-  const safePlatformUrl = normalizePlatformUrl(platformUrl)
-  const platformLabel = safePlatformUrl ? new URL(safePlatformUrl).hostname : null
+  const platformLink = getSafePlatformLink(platformUrl)
+  const safePlatformUrl = platformLink?.href
+  const platformLabel = platformLink?.hostname
 
   const when = schedule?.toLowerCase() || 'tonight'
   const name = clubName.toLowerCase()
@@ -101,15 +103,4 @@ export function ShareButton({ clubName, clubUrl, schedule, platformUrl }: ShareB
       </div>
     </div>
   )
-}
-
-function normalizePlatformUrl(value: string | null | undefined): string | null {
-  if (!value) return null
-  try {
-    const url = new URL(value)
-    if (url.protocol !== 'https:' || url.username || url.password) return null
-    return url.toString()
-  } catch {
-    return null
-  }
 }
