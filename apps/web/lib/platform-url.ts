@@ -3,9 +3,7 @@ export interface SafePlatformLink {
   hostname: string
 }
 
-export function getSafePlatformLink(
-  value: string | null | undefined,
-): SafePlatformLink | null {
+export function getSafePlatformLink(value: string | null | undefined): SafePlatformLink | null {
   if (!value) return null
 
   try {
