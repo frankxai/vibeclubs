@@ -8,19 +8,26 @@ interface ShareButtonProps {
   clubName: string
   clubUrl: string
   schedule?: string | null
+  platformUrl?: string | null
 }
 
-export function ShareButton({ clubName, clubUrl, schedule }: ShareButtonProps) {
+export function ShareButton({ clubName, clubUrl, schedule, platformUrl }: ShareButtonProps) {
   const [open, setOpen] = useState(false)
 
   const when = schedule?.toLowerCase() || 'tonight'
   const name = clubName.toLowerCase()
 
-  const variants = [
-    `hosting a vibeclub ${when} — ${name}. drop in ↓\n${clubUrl}`,
-    `${name} vibeclub. claude code + lofi + crew. ${when}.\n${clubUrl}`,
-    `lock in with us ${when}. ${name}. bring what you're shipping.\n${clubUrl}`,
-  ]
+  const variants = platformUrl
+    ? [
+        `hosting a vibeclub ${when} — ${name}. drop in ↓\n${clubUrl}`,
+        `${name} vibeclub. claude code + lofi + crew. ${when}.\n${clubUrl}`,
+        `lock in with us ${when}. ${name}. bring what you're shipping.\n${clubUrl}`,
+      ]
+    : [
+        `${name} vibeclub — ${when}. listing ↓\n${clubUrl}`,
+        `${name}. vibeclub listing. the host is still wiring the invite.\n${clubUrl}`,
+        `check this vibeclub — ${name}. ${when}. no public link yet.\n${clubUrl}`,
+      ]
 
   function copy(text: string) {
     void navigator.clipboard.writeText(text)
@@ -79,14 +86,16 @@ export function ShareButton({ clubName, clubUrl, schedule }: ShareButtonProps) {
         >
           Post on X →
         </a>
-        <a
-          href={`https://discord.com/channels/@me`}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="flex-1 px-4 py-2.5 rounded-full border border-white/10 hover:bg-white/5 text-center text-sm transition"
-        >
-          Open Discord →
-        </a>
+        {platformUrl && (
+          <a
+            href={platformUrl}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="flex-1 px-4 py-2.5 rounded-full border border-white/10 hover:bg-white/5 text-center text-sm transition"
+          >
+            Open {platformUrl.includes('discord.com') ? 'Discord' : 'Platform'} →
+          </a>
+        )}
       </div>
     </div>
   )

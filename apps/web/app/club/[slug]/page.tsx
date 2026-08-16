@@ -143,7 +143,12 @@ export default async function ClubPage({ params }: Params) {
 
           <div className="mt-10">
             <Eyebrow className="mb-3">Tell your crew</Eyebrow>
-            <ShareButton clubName={club.name} clubUrl={clubUrl} schedule={club.schedule} />
+            <ShareButton
+              clubName={club.name}
+              clubUrl={clubUrl}
+              schedule={club.schedule}
+              platformUrl={club.platform_url}
+            />
           </div>
 
           {tools.length > 0 && (
