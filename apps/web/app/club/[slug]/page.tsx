@@ -20,6 +20,7 @@ import {
 import { bpmForPreset } from '@vibeclubs/pomodoro-sync'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { findStaticClub } from '@/lib/clubs/content'
+import { getSafePlatformLink } from '@/lib/platform-url'
 import type {
   ClubPlatform,
   ClubType,
@@ -74,7 +75,7 @@ export default async function ClubPage({ params }: Params) {
   const site = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://vibeclubs.ai'
   const clubUrl = `${site}/club/${club.slug}`
   const bpm = bpmForPreset(club.pomodoro_preset)
-  const platformUrl = normalizePlatformUrl(club.platform_url)
+  const platformLink = getSafePlatformLink(club.platform_url)
 
   // JSON-LD for rich results
   const jsonLd = {
@@ -132,7 +133,7 @@ export default async function ClubPage({ params }: Params) {
                   <p className="mt-4 text-sm text-white/45 font-mono">Hosted by {club.host}</p>
                 )}
               </div>
-              <JoinButton club={club} platformUrl={platformUrl} />
+              <JoinButton club={club} platformLink={platformLink} />
             </div>
           </Reveal>
 
@@ -148,7 +149,7 @@ export default async function ClubPage({ params }: Params) {
               clubName={club.name}
               clubUrl={clubUrl}
               schedule={club.schedule}
-              platformUrl={platformUrl}
+              platformUrl={platformLink?.href}
             />
           </div>
 
@@ -191,7 +192,7 @@ export default async function ClubPage({ params }: Params) {
             </section>
           )}
 
-          {platformUrl && (
+          {platformLink && (
             <Card pad="lg" className="mt-16">
               <CardEyebrow>Show up</CardEyebrow>
               <CardTitle className="mb-5">Three steps when the link goes live.</CardTitle>
@@ -232,8 +233,14 @@ export default async function ClubPage({ params }: Params) {
   )
 }
 
-function JoinButton({ club, platformUrl }: { club: Club; platformUrl: string | null }) {
-  if (!platformUrl) {
+function JoinButton({
+  club,
+  platformLink,
+}: {
+  club: Club
+  platformLink: ReturnType<typeof getSafePlatformLink>
+}) {
+  if (!platformLink) {
     return (
       <button
         type="button"
@@ -246,26 +253,15 @@ function JoinButton({ club, platformUrl }: { club: Club; platformUrl: string | n
   }
   return (
     <LinkButton
-      href={platformUrl}
+      href={platformLink.href}
       variant="primary"
       size="lg"
       className="vc-shimmer-border"
       external
     >
-      Join on {new URL(platformUrl).hostname} →
+      Join on {platformLink.hostname} →
     </LinkButton>
   )
-}
-
-function normalizePlatformUrl(value: string | null | undefined): string | null {
-  if (!value) return null
-  try {
-    const url = new URL(value)
-    if (url.protocol !== 'https:' || url.username || url.password) return null
-    return url.toString()
-  } catch {
-    return null
-  }
 }
 
 function prettyPreset(p: PomodoroPreset) {
