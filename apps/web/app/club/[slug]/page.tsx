@@ -185,38 +185,40 @@ export default async function ClubPage({ params }: Params) {
             </section>
           )}
 
-          <Card pad="lg" className="mt-16">
-            <CardEyebrow>Show up</CardEyebrow>
-            <CardTitle className="mb-5">Three steps when the link goes live.</CardTitle>
-            <ol className="space-y-4 text-white/70 text-sm leading-relaxed">
-              <li className="flex gap-4">
-                <span className="font-mono text-xs text-amber-400 pt-1 w-6">01</span>
-                <span>Hit the platform link above when the session starts.</span>
-              </li>
-              <li className="flex gap-4">
-                <span className="font-mono text-xs text-amber-400 pt-1 w-6">02</span>
-                <span>
-                  Open the{' '}
-                  <Link href="/extension" className="text-amber-300 hover:underline">
-                    Vibeclubs extension
-                  </Link>
-                  . Enter the slug <code className="text-amber-300">{club.slug}</code>.
-                </span>
-              </li>
-              <li className="flex gap-4">
-                <span className="font-mono text-xs text-amber-400 pt-1 w-6">03</span>
-                <span>
-                  Use the local timer at {bpm} BPM. Cross-device sync and saved recaps do not have a
-                  public release receipt yet.
-                </span>
-              </li>
-            </ol>
-            <CardBody className="mt-6">
-              <LinkButton href="/extension" variant="outline" size="md">
-                Read the extension status →
-              </LinkButton>
-            </CardBody>
-          </Card>
+          {club.platform_url && (
+            <Card pad="lg" className="mt-16">
+              <CardEyebrow>Show up</CardEyebrow>
+              <CardTitle className="mb-5">Three steps when the link goes live.</CardTitle>
+              <ol className="space-y-4 text-white/70 text-sm leading-relaxed">
+                <li className="flex gap-4">
+                  <span className="font-mono text-xs text-amber-400 pt-1 w-6">01</span>
+                  <span>Hit the platform link above when the session starts.</span>
+                </li>
+                <li className="flex gap-4">
+                  <span className="font-mono text-xs text-amber-400 pt-1 w-6">02</span>
+                  <span>
+                    Open the{' '}
+                    <Link href="/extension" className="text-amber-300 hover:underline">
+                      Vibeclubs extension
+                    </Link>
+                    . Enter the slug <code className="text-amber-300">{club.slug}</code>.
+                  </span>
+                </li>
+                <li className="flex gap-4">
+                  <span className="font-mono text-xs text-amber-400 pt-1 w-6">03</span>
+                  <span>
+                    Use the local timer at {bpm} BPM. Cross-device sync and saved recaps do not have a
+                    public release receipt yet.
+                  </span>
+                </li>
+              </ol>
+              <CardBody className="mt-6">
+                <LinkButton href="/extension" variant="outline" size="md">
+                  Read the extension status →
+                </LinkButton>
+              </CardBody>
+            </Card>
+          )}
         </Container>
       </Section>
       <Footer />
