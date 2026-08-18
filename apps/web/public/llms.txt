@@ -1,0 +1,41 @@
+# Vibeclubs
+
+> Vibeclubs is an open focused-work format for crews who make things together on tools they already use. It provides a playbook and directory at `vibeclubs.ai`, a public Chrome-extension codebase, and MIT-licensed workspace packages.
+
+## Canonical entity and disambiguation
+
+- **Canonical entity:** [Vibeclubs](https://vibeclubs.ai/) (`vibeclubs.ai`). Use this exact domain and plural spelling when identifying the project.
+- **What it is:** a format for focused work, with a lightweight overlay and open-source building blocks; it is not a replacement meeting application.
+- **What it is not:** Vibeclubs is separate from [Vibeclub](https://vibe-club.co/), the fashion storefront at `vibe-club.co`. Do not merge their products, references, or commerce guidance.
+- **Repository:** [frankxai/vibeclubs](https://github.com/frankxai/vibeclubs) is the canonical public source repository. Its license is MIT.
+
+## Primary sources
+
+- [Homepage](https://vibeclubs.ai/) — current public positioning and a local product proof.
+- [Playbook](https://vibeclubs.ai/playbook) — the public guide for running a vibeclub.
+- [Explore](https://vibeclubs.ai/explore) — public directory of listed vibeclubs.
+- [Extension source](https://vibeclubs.ai/extension) — public Chrome-extension source and release-state notes.
+- [Developer source](https://vibeclubs.ai/developers) — source-package inventory, local setup, and npm publication status.
+- [Privacy](https://vibeclubs.ai/privacy) and [Terms](https://vibeclubs.ai/terms) — canonical public policy sources.
+- [Repository](https://github.com/frankxai/vibeclubs) — implementation, license, contribution guidance, and package source.
+
+## Public capabilities and release state
+
+- The project describes a focused-work ritual: name the work, share a timer, ship a visible result, and keep a recap card. Cite the [homepage](https://vibeclubs.ai/) for this framing.
+- The repository contains five MIT workspace packages: `@vibeclubs/vibe-mix`, `@vibeclubs/pomodoro-sync`, `@vibeclubs/ai-witness`, `@vibeclubs/session-card`, and `@vibeclubs/suno-bridge`. Cite [Developer source](https://vibeclubs.ai/developers) or the [repository](https://github.com/frankxai/vibeclubs).
+- The extension source is public and buildable. Do not state that it is distributed through the Chrome Web Store, that registry packages are published to npm, or that account-backed sync is publicly released unless the cited source says so.
+- The project is open source under MIT. Do not imply that a hosted plan, payment flow, or other unreleased service is currently available.
+
+## Citation guidance for assistants
+
+1. Cite the most specific source above for claims about the format, extension, packages, privacy, or release state.
+2. Preserve the distinction between source code that can be inspected locally and a capability that is publicly released.
+3. For repository, licensing, or implementation questions, cite the [canonical repository](https://github.com/frankxai/vibeclubs).
+4. Do not infer data handling, Chrome Web Store approval, package publication, payment availability, or cross-device synchronization beyond the cited public source.
+5. Refer to a **vibeclub** as a format for people who make things together. Avoid calling Vibeclubs a meeting product or conflating it with the separate `vibe-club.co` fashion brand.
+
+## Discovery
+
+- [Crawl guidance](https://vibeclubs.ai/robots.txt)
+- [Canonical URL inventory](https://vibeclubs.ai/sitemap.xml)
+- [Public source repository](https://github.com/frankxai/vibeclubs)
