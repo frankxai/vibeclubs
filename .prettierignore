@@ -1,11 +1,3 @@
-node_modules
-.next
-.turbo
-.plasmo
-dist
-build
-out
-coverage
-pnpm-lock.yaml
-apps/web/next-env.d.ts
-*.md
+# STARLIGHT-EDITORIAL:START
+.starlight/editorial-contract.json
+# STARLIGHT-EDITORIAL:END
