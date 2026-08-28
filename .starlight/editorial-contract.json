@@ -1,0 +1,31 @@
+{
+  "schema_version": "starlight.editorial_contract.v1",
+  "brand_id": "vibeclubs",
+  "source": {
+    "repository": "frankxai/starlight-design-intelligence",
+    "ref": "50ae34c7ac06e6c083f277ca96c3bde8f0a39b43",
+    "profile": "brand-packs/vibeclubs/COPY.md",
+    "profile_sha256": "adff2359c1931f847fa68c5c67a60c17d08f97c94cc4eac4a7915caf30e1e235"
+  },
+  "content_roots": [
+    "app",
+    "components",
+    "content",
+    "data",
+    "lib",
+    "pages",
+    "src"
+  ],
+  "generated_files": [
+    "CREATOR.md",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "GEMINI.md",
+    ".github/copilot-instructions.md",
+    ".cursor/rules/editorial.mdc",
+    ".agents/skills/frank-brand-editor/SKILL.md",
+    ".github/workflows/starlight-editorial-contract.yml",
+    ".prettierignore",
+    ".starlight/editorial-contract.json"
+  ]
+}
