@@ -25,6 +25,7 @@
     ".cursor/rules/editorial.mdc",
     ".agents/skills/frank-brand-editor/SKILL.md",
     ".github/workflows/starlight-editorial-contract.yml",
+    ".prettierignore",
     ".starlight/editorial-contract.json"
   ]
 }
