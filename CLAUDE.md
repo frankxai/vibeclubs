@@ -206,3 +206,17 @@ All scaffold code is written. Sprint 1 (VBC-21 → VBC-40) is tracked in Linear 
 | VBC-35 | ARC-157 | /u/[user] profile |
 | VBC-36 | ARC-156 | Tool recommendations |
 | VBC-37 | ARC-158 | OSS npm packages |
+
+<!-- STARLIGHT-EDITORIAL:START -->
+## Editorial contract
+
+Brand: **VibeClubs** (`vibeclubs`)
+
+- Read `CREATOR.md` before changing public or customer-facing copy.
+- Apply the registered brand voice and the shared editorial gate.
+- Reject generated prestige language, rhetorical contrast formulas, invented claims, and abstract labels that hide simple facts.
+- Keep public labels in sentence case.
+- Run the changed-copy editorial audit before release.
+
+Pinned source: https://github.com/frankxai/starlight-design-intelligence/blob/50ae34c7ac06e6c083f277ca96c3bde8f0a39b43/brand-packs/vibeclubs/COPY.md
+<!-- STARLIGHT-EDITORIAL:END -->
