@@ -262,8 +262,8 @@ export function StartForm() {
         </Button>
 
         <p className="text-xs text-white/40 text-center">
-          Magic link to your email on submit. Your vibeclub goes public on the directory so your
-          crew can find it.
+          Magic link to your email on submit. Your session stays between you and the crew you
+          send the invite to; listing it publicly is a separate, optional step.
         </p>
       </form>
     </div>

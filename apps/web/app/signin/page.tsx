@@ -34,15 +34,15 @@ export default function SigninPage() {
           ) : (
             <div className="rounded-3xl border border-amber-300/20 bg-amber-300/[0.04] p-6">
               <p className="leading-7 text-white/65">
-                Magic-link sign-in is not live. Use the local proof, browse the public clubs, or
-                inspect the source while the hosted path is closed.
+                Magic-link sign-in is not live. Run the format locally with the extension, or
+                inspect the source, while the hosted path is closed.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <LinkButton href="/#try-it" size="md">
                   Run the local proof
                 </LinkButton>
                 <LinkButton href="/explore" variant="outline" size="md">
-                  Browse public clubs
+                  See listed sessions
                 </LinkButton>
               </div>
             </div>
