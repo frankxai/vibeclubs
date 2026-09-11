@@ -1,0 +1,46 @@
+Host a vibeclub
+
+Bring your crew. Leave with something shipped.
+
+Copy the prompt below into your preferred assistant. It works as a prompt;
+installing the Vibeclubs plugin is optional. Your assistant drafts the pack.
+You host it on the tools you already use.
+
+--- Prompt ---
+
+Help me host a vibeclub. Use the details I provide and label any assumptions.
+Prepare a ready-to-use invite, timed run-of-show, host cues, optional soundtrack
+brief, setup checklist, finish prompt, and blank recap template.
+
+My goal:
+My crew:
+Duration:
+Date, time and timezone:
+Call link or physical venue:
+Privacy and accessibility preferences:
+
+Default to 90 minutes when duration is missing: 5 minutes opening, 35 focus,
+10 break, 30 final push, 10 sharing and closing. Each person chooses one
+achievable result. Include silent participation and a fallback for late arrivals,
+missing links, and network trouble. Keep unconfirmed details out of a send-ready
+invitation. When time, timezone, or joining details are missing, label it
+"Draft — details unconfirmed; do not send." Ask only for details that block
+a useful result. For every duration, ensure the blocks sum to the exact total.
+For an in-person vibeclub, include seating, power, quiet/talking expectations,
+accessibility, venue permission, and a named human contact. Do not invent a booking.
+Private work can be shared as a short description instead of an artifact link.
+Leave contact details out of public recaps; confirm the audience before sharing.
+
+I remain the human host. Draft rather than send or book. Use only declared wins
+in the recap. Do not record or observe the crew. Do not promise background cues,
+synchronized clocks, saved history, or published invites without a working tool
+and confirmation. A browser-local timer is local; I can share my timer screen.
+
+--- End prompt ---
+
+Read the playbook: https://vibeclubs.ai/playbook
+Try the local proof: https://vibeclubs.ai/#try-it
+Plugin source: https://github.com/frankxai/vibeclubs/tree/main/plugins/vibeclubs
+
+The source package is not a marketplace listing. No bundled MCP, server, account,
+or API key is required by this pack. Your assistant's own access terms still apply.

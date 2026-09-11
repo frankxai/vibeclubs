@@ -11,6 +11,8 @@
 
 ## Primary sources
 
+- [Host pack](https://vibeclubs.ai/host-pack.txt) — copyable prompt for planning a vibeclub on existing tools. The source plugin is at https://github.com/frankxai/vibeclubs/tree/main/plugins/vibeclubs; source availability is not marketplace approval or installation.
+
 - [Homepage](https://vibeclubs.ai/) — current public positioning and a local product proof.
 - [Playbook](https://vibeclubs.ai/playbook) — the public guide for running a vibeclub.
 - [Explore](https://vibeclubs.ai/explore) — public directory of listed vibeclubs.

@@ -12,6 +12,15 @@
 
 ## What this is
 
+### Plan one with your assistant
+
+Use the [host pack](https://vibeclubs.ai/host-pack.txt) to draft your invite,
+timed run-of-show, host cues, soundtrack brief, and recap template.
+The [Vibeclubs plugin source](./plugins/vibeclubs) contains the reusable
+`host-a-vibeclub` skill. It has no bundled server or account requirement.
+Marketplace availability and installation are separate from this source release.
+See [ADR-004](./ADR-004-SKILL-FIRST-HOST-PACK.md) for the skill-first boundary.
+
 A vibeclub is what your crew does when you all have something to ship. It's a **format** — like hackathon or book club — that runs on whatever platform you already use (Meet, Discord, Zoom, IRL).
 
 The extension source contains:

@@ -1,0 +1,22 @@
+{
+  "name": "vibeclubs",
+  "version": "0.1.0",
+  "description": "Plan a vibeclub, prepare the host, and turn declared wins into a recap.",
+  "author": {
+    "name": "Vibeclubs"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Vibeclubs",
+    "shortDescription": "Bring your crew. Leave with something shipped.",
+    "longDescription": "Create a complete host pack for focused work on the tools your crew already uses. Includes timed rituals, invitation drafts, host cues, soundtrack briefs, and evidence-based recaps. No bundled server or account required.",
+    "developerName": "Vibeclubs",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Plan a 90-minute vibeclub for five builders on Discord.",
+      "Prepare my first in-person writing vibeclub.",
+      "Turn our declared wins into a recap and next invite."
+    ]
+  }
+}
