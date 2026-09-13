@@ -161,6 +161,7 @@ export interface Database {
     }
     Views: Record<string, never>
     Functions: {
+      claim_build_brief: { Args: Record<string, never>; Returns: boolean }
       create_club_with_owner: {
         Args: {
           p_name: string

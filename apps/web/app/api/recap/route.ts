@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     model: anthropic('claude-haiku-4-5-20251001'),
     system,
     prompt: user,
-    maxTokens: 200,
+    maxOutputTokens: 200,
     // Cache the witness system prompt across every session — it's identical per deploy.
     providerOptions: {
       anthropic: {
