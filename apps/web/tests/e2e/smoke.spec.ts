@@ -33,7 +33,8 @@ test.describe('landing smoke', () => {
   test('start page renders the template picker', async ({ page }) => {
     await page.goto('/start', { waitUntil: 'domcontentloaded' })
     await expect(page.getByRole('heading', { level: 1 })).toContainText(/Host a vibeclub/)
-    await expect(page.getByText('Claude Code vibeclub')).toBeVisible()
+    await expect(page.getByRole('button', { name: /Vibe coding/ })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Download host pack' })).toBeEnabled()
   })
 
   test('signin renders magic-link form', async ({ page }) => {

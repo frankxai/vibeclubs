@@ -12,6 +12,14 @@ Notable changes to Vibeclubs. Dates are YYYY-MM-DD. This project follows
 
 ### Added
 
+- `/start` host-pack studio: six craft paths, editable finishes, timed agendas,
+  device-local drafts, private crew invites, v0 prompts, agent briefs, and Markdown export.
+- Optional structured AI brief refinement with authenticated daily quotas and bounded
+  requests. Disabled until its database migration and production configuration are verified.
+- Product and Vercel/v0/agent engineering roadmap in
+  `docs/strategy/start-studio-engineering.md`.
+- 41 tests for host-pack invariants and the optional AI route.
+
 - Full design system scaffolding in `apps/web/components/ui/*` — Button, Input, Card,
   Badge, Fader, TimerDisplay, PlatformPill, TypePill, CodeBlock, Dialog,
   Tooltip, Toast, Skeleton, Avatar, Kbd.
@@ -35,6 +43,10 @@ Notable changes to Vibeclubs. Dates are YYYY-MM-DD. This project follows
   `.vscode/extensions.json`.
 
 ### Changed
+
+- `/start` now works without an account or hosted database. Public listings remain
+  a separate action. Template links preserve saved drafts across reloads.
+- Upgraded web AI SDK from 4 to 6 and Anthropic provider from 1 to 3.
 
 - Entire web app rewritten against the five-word voice system
   (vibeclub / host / crew / lock in / ship) — see `VISION.md`.

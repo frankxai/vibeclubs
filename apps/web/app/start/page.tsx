@@ -1,100 +1,117 @@
 import { Suspense } from 'react'
 import { Nav } from '@/components/nav'
 import { Footer } from '@/components/footer'
-import { Container, Eyebrow, Section } from '@/components/layout/container'
-import { Reveal } from '@/components/motion'
-import { TimerRingCycling } from '@/components/three'
+import { Container } from '@/components/layout/container'
 import { LinkButton } from '@/components/ui'
 import { hasHostedConfig } from '@/lib/hosted-config'
 import { StartForm } from './start-form'
+import { BuildStudio } from './build-studio'
 
 export const metadata = {
-  title: 'Host a vibeclub',
-  description: 'Pick what you are shipping, the platform, the rhythm. 60 seconds.',
+  title: 'Host a vibeclub — make something together',
+  description:
+    'A small crew, a shared clock, and something real to show. Build your own vibeclub with a crew invite, a timed agenda, and a ready-to-use build brief.',
+  alternates: { canonical: 'https://vibeclubs.ai/start' },
 }
 
 export default function StartPage() {
   const hostedReady = hasHostedConfig()
-
   return (
     <main className="min-h-screen">
       <Nav />
-      <Section pad="md" className="pt-28">
-        <Container width="xl">
-          <div className="grid lg:grid-cols-[1.4fr_1fr] gap-16 items-start">
-            <Reveal direction="up">
-              <div>
-                <Eyebrow>Host</Eyebrow>
-                <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-5 mt-4">
-                  Host a vibeclub.
-                </h1>
-                <p className="text-lg text-white/60 mb-12 leading-relaxed max-w-xl">
-                  Pick a template or build your own. Share the link. Your crew shows up. That&apos;s
-                  the whole thing.
-                </p>
-                {hostedReady ? (
-                  <Suspense fallback={null}>
-                    <StartForm />
-                  </Suspense>
-                ) : (
-                  <div className="rounded-3xl border border-amber-300/20 bg-amber-300/[0.04] p-6">
-                    <p className="font-mono text-xs uppercase tracking-[0.18em] text-amber-300">
-                      Hosted path closed
-                    </p>
-                    <h2 className="mt-3 text-2xl font-semibold">
-                      Account-backed hosting is not live yet.
-                    </h2>
-                    <p className="mt-3 max-w-xl leading-7 text-white/60">
-                      The local proof and public club files work now. Magic links and saved
-                      vibeclubs stay closed until the production database has a release receipt.
-                    </p>
-                    <div className="mt-6 flex flex-wrap gap-3">
-                      <LinkButton href="/#try-it" size="md">
-                        Run the local proof
-                      </LinkButton>
-                      <LinkButton
-                        href="https://github.com/frankxai/vibeclubs/tree/main/content/clubs"
-                        external
-                        variant="outline"
-                        size="md"
-                      >
-                        List a public club via PR ↗
-                      </LinkButton>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </Reveal>
-            <Reveal direction="left" delay={0.15} className="hidden lg:block">
-              <div className="sticky top-32">
-                <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#0e0e16] to-[#0a0a0f] p-6">
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="live-dot signal" />
-                    <span className="text-[10px] uppercase tracking-[0.22em] font-mono text-white/50">
-                      timer states · source preview
-                    </span>
-                  </div>
-                  <TimerRingCycling />
-                  <div className="mt-5 space-y-1.5 text-xs text-white/50 leading-relaxed">
-                    <p>
-                      <span className="text-amber-300">Idle</span> — the club is lined up, waiting
-                      for the host to start.
-                    </p>
-                    <p>
-                      <span className="text-[#4fd18c]">Focus</span> — the local timer runs the
-                      selected block in this browser.
-                    </p>
-                    <p>
-                      <span className="text-[#a78bfa]">Break</span> — stand up, stretch, drop a
-                      screenshot in chat.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
+      <Container width="xl" className="pb-20 pt-28 sm:pt-32">
+        <header className="mb-10 grid gap-6 border-b border-border pb-8 lg:grid-cols-[1.05fr_1fr] lg:items-end lg:gap-12">
+          <div>
+            <p className="mb-4 font-mono text-xs uppercase tracking-widest text-vibe-amber-soft">
+              Your people. Your tools. Your next finish.
+            </p>
+            <h1 className="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+              Host a vibeclub.
+              <br />
+              <span className="text-text-secondary">Make the thing real.</span>
+            </h1>
           </div>
-        </Container>
-      </Section>
+          <div>
+            <p className="max-w-lg text-lg leading-8 text-text-secondary">
+              A small crew, a shared clock, and something real to show. Choose what you&apos;re
+              making. Leave with a plan you can run tonight.
+            </p>
+            <p className="mt-3 text-sm text-vibe-amber-soft">
+              Free to use · no account needed · bring your own tools
+            </p>
+          </div>
+        </header>
+        <Suspense
+          fallback={
+            <p className="py-12 text-text-secondary" role="status">
+              Opening your host pack…
+            </p>
+          }
+        >
+          <BuildStudio
+            aiAvailable={
+              hostedReady &&
+              process.env.AI_BRIEF_ENABLED === 'true' &&
+              Boolean(process.env.ANTHROPIC_API_KEY)
+            }
+          />
+        </Suspense>
+        <section className="mt-16 border-t border-border pt-10" aria-labelledby="format-heading">
+          <div className="grid gap-8 md:grid-cols-3">
+            <div>
+              <p className="mb-3 text-sm text-vibe-amber-soft">The format</p>
+              <h2 id="format-heading" className="text-2xl font-semibold">
+                Good company.
+                <br />
+                Visible progress.
+              </h2>
+            </div>
+            <p className="leading-7 text-text-secondary">
+              The host holds the rhythm. The crew brings the craft. Code, music, words, or a mix:
+              each person chooses something small enough to finish.
+            </p>
+            <p className="leading-7 text-text-secondary">
+              AI can help make the work and draft the recap. You decide what is good enough to
+              share. Keep the proof, name what remains, then come back for the next one.
+            </p>
+          </div>
+        </section>
+        <section
+          className="mt-10 rounded-2xl border border-border p-6 sm:p-8"
+          aria-labelledby="listing-heading"
+        >
+          <h2 id="listing-heading" className="text-xl font-semibold">
+            Make it a regular thing.
+          </h2>
+          {hostedReady ? (
+            <details className="mt-4">
+              <summary className="cursor-pointer text-vibe-amber-soft">
+                Publish a public club listing
+              </summary>
+              <p className="my-5 text-sm leading-6 text-text-secondary">
+                This is separate from your private host pack. Review the details before publishing.
+              </p>
+              <Suspense fallback={<p>Loading listing form…</p>}>
+                <StartForm />
+              </Suspense>
+            </details>
+          ) : (
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-5">
+              <p className="max-w-xl leading-7 text-text-secondary">
+                Run your first vibeclub with the pack above. When you want others to find it, submit
+                a public listing on GitHub.
+              </p>
+              <LinkButton
+                href="https://github.com/frankxai/vibeclubs/tree/main/content/clubs"
+                external
+                variant="outline"
+              >
+                Submit a club listing ↗
+              </LinkButton>
+            </div>
+          )}
+        </section>
+      </Container>
       <Footer />
     </main>
   )

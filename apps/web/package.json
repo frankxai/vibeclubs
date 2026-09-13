@@ -14,7 +14,8 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^1.0.0",
+    "@ai-sdk/anthropic": "^3.0.118",
+    "@frankx/design-core": "workspace:*",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
@@ -23,7 +24,6 @@
     "@radix-ui/react-visually-hidden": "^1.1.0",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.0",
-    "@frankx/design-core": "workspace:*",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.110.2",
     "@vibeclubs/ai-witness": "workspace:*",
@@ -31,7 +31,7 @@
     "@vibeclubs/session-card": "workspace:*",
     "@vibeclubs/suno-bridge": "workspace:*",
     "@vibeclubs/vibe-mix": "workspace:*",
-    "ai": "^4.0.0",
+    "ai": "^6.0.282",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "framer-motion": "^11.5.0",

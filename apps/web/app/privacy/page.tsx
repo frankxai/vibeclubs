@@ -21,6 +21,19 @@ export default function Privacy() {
               invite, timer, ship note, recap text, and SVG card stay in your browser tab. Reloading
               clears them.
             </p>
+            <h2>Your host pack</h2>
+            <p>
+              The /start builder saves the name, intended finish, and format choices in this browser
+              until you reset the draft or clear site data. Copying and downloading happen locally.
+              Nothing is published by creating a pack.
+            </p>
+            <p>
+              When optional brief refinement is available, clicking “Refine with Claude” sends the
+              craft, intended finish, and time budget to Anthropic. It does not send your club name,
+              crew size, meeting choice, or date. Vibeclubs does not save the prompt or response to
+              its database. A signed-in account has a daily request counter; previous-day counters
+              are removed on that account’s next request.
+            </p>
             <h2>Hosted accounts and live timing</h2>
             <p>
               Account-backed hosting is currently closed on the public site. When a reviewed build
