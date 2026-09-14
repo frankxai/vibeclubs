@@ -10,9 +10,9 @@ import { loadStaticClubs } from '@/lib/clubs/content'
 import type { ClubRow } from '@/lib/supabase/types'
 
 export const metadata = {
-  title: 'Find a vibeclub',
+  title: 'Listed sessions',
   description:
-    'Public vibeclubs hosting in the next week. Find a crew that matches your rhythm and stack.',
+    'Sessions hosts have chosen to list. Vibeclubs is a format you run with your own crew — this page is optional.',
 }
 
 export default async function ExplorePage() {
@@ -23,13 +23,13 @@ export default async function ExplorePage() {
       <Section pad="md" className="pt-28">
         <Container width="2xl">
           <PageHeader
-            eyebrow={<Eyebrow>Find</Eyebrow>}
-            title={<>Find a vibeclub.</>}
+            eyebrow={<Eyebrow>Listed</Eyebrow>}
+            title={<>Sessions hosts chose to list.</>}
             subtitle={
               <>
-                Clubs hosting in the next week. Pick what matches your rhythm, your stack, your
-                timezone. No account to browse — sign in only when you&apos;re ready to host, or
-                drop a markdown file to list an OSS club.
+                Vibeclubs is a format: a crew, a timer, a soundtrack, shipped proof. You run it
+                with people you already know, on tools you already use. Listing here is optional and
+                nothing depends on it.
               </>
             }
             actions={
@@ -51,12 +51,13 @@ export default async function ExplorePage() {
           <div className="mt-14">
             {clubs.length === 0 ? (
               <EmptyState
-                title="Directory's warming up."
+                title="Nothing listed yet."
                 description={
                   <>
-                    Either you&apos;re the first, or `content/clubs/` is empty. Fork the repo and
-                    drop a <code className="text-amber-300">.md</code> file — your club lands on
-                    this page within a deploy.
+                    No host has listed a session here. That changes nothing about running one — the
+                    format works with a link to your own crew. To list yours, drop a{' '}
+                    <code className="text-amber-300">.md</code> file in{' '}
+                    <code className="text-amber-300">content/clubs/</code>.
                   </>
                 }
                 cta={
