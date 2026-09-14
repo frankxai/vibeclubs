@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { BuildDraftSchema } from '@/lib/build-pack'
 import { hasHostedConfig } from '@/lib/hosted-config'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { BriefReadError, readBrief } from '@/lib/read-brief'
 
 export const runtime = 'nodejs'
 export const maxDuration = 30
@@ -30,26 +31,17 @@ export async function POST(request: NextRequest) {
   if (request.headers.get('origin') !== request.nextUrl.origin) {
     return NextResponse.json({ error: 'Request origin not allowed.' }, { status: 403 })
   }
-  // Read incrementally: do not trust Content-Length to bound an untrusted request.
-  const reader = request.body?.getReader()
-  if (!reader) return NextResponse.json({ error: 'A brief is required.' }, { status: 400 })
-  const chunks: Uint8Array[] = []
-  let size = 0
-  while (true) {
-    const { done, value } = await reader.read()
-    if (done) break
-    size += value.byteLength
-    if (size > 8192) {
-      await reader.cancel()
-      return NextResponse.json({ error: 'Brief is too long.' }, { status: 413 })
-    }
-    chunks.push(value)
+  let body: unknown
+  try {
+    body = await readBrief(request)
+  } catch (error) {
+    const failure =
+      error instanceof BriefReadError
+        ? error
+        : new BriefReadError('Could not read the brief. Try again.', 400)
+    return NextResponse.json({ error: failure.message }, { status: failure.status })
   }
-  const input = BuildDraftSchema.safeParse(
-    await Promise.resolve()
-      .then(() => JSON.parse(Buffer.concat(chunks).toString('utf8')))
-      .catch(() => null),
-  )
+  const input = BuildDraftSchema.safeParse(body)
   if (!input.success)
     return NextResponse.json({ error: 'Check the name and intended finish.' }, { status: 400 })
   const supabase = await createSupabaseServerClient()
