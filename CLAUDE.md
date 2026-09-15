@@ -94,3 +94,7 @@ Read the applicable definition before dispatch. Old role text cannot restore a s
 - Use current local design tokens; read `DESIGN.md` and `TASTE.md` before visual work.
 - Keep conventional commits and the existing contribution protocol. Preserve unrelated dirty work and use an isolated branch.
 - Validate inputs, authorization, bounded requests, failure states and recovery at the relevant boundary. Optional AI failure must not erase the local pack.
+
+## Product outcome handoff
+
+Read the Product outcome acceptance section of `AGENTS.md` for issue ownership, current policy/source revision, five independent quality verdicts and adoption evidence. Preserve local product scope and release gates.

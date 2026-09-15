@@ -34,3 +34,20 @@ For targeted work, use `pnpm --filter @vibeclubs/web <cmd>` or the relevant work
 - Consumer copy changes should route through the voice-auditor pattern.
 - UI/token/motion/3D/design-core changes should use the design-keeper pattern.
 - Club content changes should run the club validation path.
+
+
+<!-- PRODUCT-OUTCOME-CONTRACT:START -->
+## Product outcome acceptance
+
+Before substantial product work, name the intended user's job, current local product decision, owning issue, exact base revision, relevant skills, budget, acceptance and stop condition. Reuse an existing implementation candidate before creating a competing one.
+
+Use the local product, brand, canon, licensing and release rules above. Portfolio work also resolves reviewed `frankxai/agentic-ops` strategy, Registry and quality at one recorded commit through the authorized connection; do not copy private records into this repository or treat proposal branches as accepted policy. An inaccessible source is an explicit limitation, never permission to invent it.
+
+Review availability, function, customer usefulness, design/editorial quality and economics separately. Unsupported claims, lost work, broken authorization or missing required evidence cannot be offset by style scores. Apply only relevant gates and explain non-applicability.
+
+For production-intent work, bind checks and independent review to the exact candidate revision; bind the stable domain to the accepted deployment/source revision. Record recovery/export behavior, failures, all attempts and human intervention. A preview, merge, or READY deployment does not establish customer success.
+
+At handoff distinguish policy proposed, merged, loaded in this agent session and verified in execution. Include the owning issue, policy/source SHA, artifact, verifier, highest evidenced environment and next action. Dates and goals remain targets until measured.
+<!-- PRODUCT-OUTCOME-CONTRACT:END -->
+
+Current implementation and measurement: https://github.com/frankxai/vibeclubs/issues/2.
