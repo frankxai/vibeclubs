@@ -1,13 +1,13 @@
 # vibeclubs.ai — Agent Instructions
 
-Read `CLAUDE.md` first, then `VISION.md`, then `docs/ops/README.md`. Those files define the durable north star and the ops harness.
+Read `CLAUDE.md` first, then `VISION.md`, `ADR-004-SKILL-FIRST-HOST-PACK.md`, `docs/strategy/start-studio-engineering.md`, and `docs/ops/README.md`. The September host-pack decision and implementation record resolve older extension-first and credential-blocked assumptions; VISION.md retains the format boundary.
 
 For the skill-first host-pack work, also read `ADR-004-SKILL-FIRST-HOST-PACK.md`.
 The plugin lives in `plugins/vibeclubs`; it adds no server or billing dependency.
 
 ## Repo Role
 
-`vibeclubs.ai` is a pnpm/Turborepo workspace for Vibeclubs: a Next.js web directory/API, Plasmo browser extension, and shared OSS primitives. The extension is the runtime; the web app is the directory and content layer.
+`vibeclubs.ai` is a pnpm/Turborepo workspace for Vibeclubs: a Next.js web directory/API, Plasmo browser extension, and shared OSS primitives. A human hosts on existing tools. The extension is optional; the web app includes an account-free `/start` host-pack authoring tool as well as the directory and content layer. Hosted APIs and optional AI have separate activation gates.
 
 ## Work Pattern
 
