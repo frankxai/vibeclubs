@@ -27,9 +27,8 @@ export default async function ExplorePage() {
             title={<>Find a vibeclub.</>}
             subtitle={
               <>
-                Clubs hosting in the next week. Pick what matches your rhythm, your stack, your
-                timezone. No account to browse — sign in only when you&apos;re ready to host, or
-                drop a markdown file to list an OSS club.
+                Listed clubs. A public room only when the host has a link. Otherwise start the
+                local track.
               </>
             }
             actions={
@@ -100,6 +99,7 @@ async function loadAllClubs(): Promise<DirectoryClub[]> {
       pomodoro_preset: c.preset,
       featured: c.featured,
       source: 'static' as const,
+      hasPublicRoom: !!c.platform_url,
     })),
     ...supabaseClubs
       .filter((c) => !seenSlugs.has(c.slug))
@@ -112,6 +112,7 @@ async function loadAllClubs(): Promise<DirectoryClub[]> {
         pomodoro_preset: c.pomodoro_preset,
         featured: c.tier === 'featured',
         source: 'supabase' as const,
+        hasPublicRoom: !!c.platform_url,
       })),
   ]
 
