@@ -37,14 +37,22 @@ export async function generateMusic(opts: SunoGenerateOptions): Promise<SunoTrac
   if (!opts.authorizedJobRef?.trim()) {
     throw new Error('A host-authorized job reference is required before generation')
   }
-  if (!opts.prompt.trim() || opts.prompt.length > 2000 || !Number.isInteger(duration) || duration < 3 || duration > 600) {
+  if (
+    !opts.prompt.trim() ||
+    opts.prompt.length > 2000 ||
+    !Number.isInteger(duration) ||
+    duration < 3 ||
+    duration > 600
+  ) {
     throw new Error('Invalid music job request')
   }
   // An adapter failure may follow a charged submission. Surface it for host
   // reconciliation; never hide it behind fallback or repeat the paid operation.
   const track = await opts.generationAdapter({
-    prompt: opts.prompt, durationSeconds: duration,
-    instrumental: opts.instrumental ?? true, authorizedJobRef: opts.authorizedJobRef,
+    prompt: opts.prompt,
+    durationSeconds: duration,
+    instrumental: opts.instrumental ?? true,
+    authorizedJobRef: opts.authorizedJobRef,
   })
   if (!track.url || new URL(track.url).protocol !== 'https:') {
     throw new Error('Adapter must report an HTTPS audio asset')
@@ -54,7 +62,8 @@ export async function generateMusic(opts: SunoGenerateOptions): Promise<SunoTrac
 
 function fallback(overrideUrl?: string): SunoTrack {
   if (overrideUrl) {
-    if (new URL(overrideUrl).protocol !== 'https:') throw new Error('Fallback must be an HTTPS asset')
+    if (new URL(overrideUrl).protocol !== 'https:')
+      throw new Error('Fallback must be an HTTPS asset')
     return { url: overrideUrl, source: 'fallback', evidence_kind: 'caller_supplied_asset' }
   }
   throw new Error('Music generation is unavailable and no fallbackUrl was provided')
