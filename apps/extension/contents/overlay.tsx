@@ -26,7 +26,7 @@ interface Settings {
 const DEFAULT_SETTINGS: Settings = {
   ambientPreset: 'lofi',
   duckOnVoice: true,
-  recapEnabled: true,
+  recapEnabled: false,
 }
 
 export default function VibeOverlay() {
@@ -100,6 +100,7 @@ export default function VibeOverlay() {
             type: 'pomodoro_complete',
             club_id: clubSlug,
             cycle_number: cycle,
+            consent: { recap: true },
           },
         })
         .catch(() => null)
@@ -173,7 +174,8 @@ export default function VibeOverlay() {
         <section className="vc-section">
           <div className={`vc-timer vc-timer-${state?.phase ?? 'idle'}`}>{mmss || '25:00'}</div>
           <div className="vc-phase">
-            {state?.phase ?? 'idle'} {state && <span className="vc-cycle">· cycle {state.cycle + 1}</span>}
+            {state?.phase ?? 'idle'}{' '}
+            {state && <span className="vc-cycle">· cycle {state.cycle + 1}</span>}
           </div>
           <div className="vc-primary-controls">
             <button onClick={() => pomo?.start()}>Start</button>
@@ -229,7 +231,7 @@ export default function VibeOverlay() {
               checked={settings.recapEnabled}
               onChange={(e) => setSettings((s) => ({ ...s, recapEnabled: e.target.checked }))}
             />
-            <span>AI recap at session end</span>
+            <span>Claude writes a recap when a block ends</span>
           </label>
           <a
             href={`https://vibeclubs.ai/club/${clubSlug}`}

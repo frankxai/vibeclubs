@@ -31,7 +31,10 @@ export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => null)
   const parsed = ClubInput.safeParse(body)
   if (!parsed.success) {
-    return NextResponse.json({ error: 'Invalid input', issues: parsed.error.flatten() }, { status: 400 })
+    return NextResponse.json(
+      { error: 'Invalid input', issues: parsed.error.flatten() },
+      { status: 400 },
+    )
   }
 
   const supabase = await createSupabaseServerClient()
@@ -53,11 +56,7 @@ export async function POST(request: NextRequest) {
     opener_id: user.id,
   }
 
-  const { data, error } = await supabase
-    .from('clubs')
-    .insert(payload)
-    .select('slug')
-    .single()
+  const { data, error } = await supabase.from('clubs').insert(payload).select('id, slug').single()
 
   if (error) {
     const status = error.code === '23505' ? 409 : 500
@@ -65,9 +64,18 @@ export async function POST(request: NextRequest) {
   }
 
   // Ensure the opener is also a member with the owner role.
-  await supabase
-    .from('club_members')
-    .insert({ club_id: (data as { id?: string }).id ?? '', user_id: user.id, role: 'owner' })
+  const { error: memberError } = await supabase.from('club_members').upsert(
+    {
+      club_id: data.id,
+      user_id: user.id,
+      role: 'owner',
+    },
+    { onConflict: 'club_id,user_id' },
+  )
+
+  if (memberError) {
+    return NextResponse.json({ error: memberError.message }, { status: 500 })
+  }
 
   return NextResponse.json({ slug: data.slug })
 }

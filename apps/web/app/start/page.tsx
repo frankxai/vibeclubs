@@ -1,9 +1,11 @@
 import { Suspense } from 'react'
+import type { Route } from 'next'
 import { Nav } from '@/components/nav'
 import { Footer } from '@/components/footer'
 import { Container, Eyebrow, Section } from '@/components/layout/container'
 import { Reveal } from '@/components/motion'
 import { TimerRingCycling } from '@/components/three'
+import { LinkButton } from '@/components/ui'
 import { StartForm } from './start-form'
 
 export const metadata = {
@@ -25,12 +27,20 @@ export default function StartPage() {
                   Host a vibeclub.
                 </h1>
                 <p className="text-lg text-white/60 mb-12 leading-relaxed max-w-xl">
-                  Pick a template or build your own. Share the link. Your crew shows up.
-                  That&apos;s the whole thing.
+                  Pick a template or build your own. Share the link. Your crew shows up. That&apos;s
+                  the whole thing.
                 </p>
                 <Suspense fallback={null}>
                   <StartForm />
                 </Suspense>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <LinkButton href={'/host' as Route} variant="ghost" size="md">
+                    Already hosting? Open cockpit
+                  </LinkButton>
+                  <LinkButton href={'/lock-in' as Route} variant="outline" size="md">
+                    Lock in from web
+                  </LinkButton>
+                </div>
               </div>
             </Reveal>
             <Reveal direction="left" delay={0.15} className="hidden lg:block">

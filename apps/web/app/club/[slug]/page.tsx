@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import type { Route } from 'next'
 import { notFound } from 'next/navigation'
 import { Nav } from '@/components/nav'
 import { Footer } from '@/components/footer'
@@ -124,7 +125,9 @@ export default async function ClubPage({ params }: Params) {
                 <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-5 leading-[1.02]">
                   {club.name}
                 </h1>
-                <p className="text-lg text-white/70 max-w-2xl leading-relaxed">{club.description}</p>
+                <p className="text-lg text-white/70 max-w-2xl leading-relaxed">
+                  {club.description}
+                </p>
                 {club.host && (
                   <p className="mt-4 text-sm text-white/45 font-mono">Hosted by {club.host}</p>
                 )}
@@ -189,7 +192,7 @@ export default async function ClubPage({ params }: Params) {
             <ol className="space-y-4 text-white/70 text-sm leading-relaxed">
               <li className="flex gap-4">
                 <span className="font-mono text-xs text-amber-400 pt-1 w-6">01</span>
-                <span>Hit the platform link above when the session starts.</span>
+                <span>Hit the link above when the session starts.</span>
               </li>
               <li className="flex gap-4">
                 <span className="font-mono text-xs text-amber-400 pt-1 w-6">02</span>
@@ -198,20 +201,24 @@ export default async function ClubPage({ params }: Params) {
                   <Link href="/extension" className="text-amber-300 hover:underline">
                     Vibeclubs extension
                   </Link>
-                  . Enter the slug <code className="text-amber-300">{club.slug}</code>.
+                  . Enter the slug <code className="text-amber-300">{club.slug}</code>. No extension
+                  yet? Use the web lock-in path.
                 </span>
               </li>
               <li className="flex gap-4">
                 <span className="font-mono text-xs text-amber-400 pt-1 w-6">03</span>
                 <span>
-                  Click start. Everyone in the club on the extension hits the same pomodoro at{' '}
-                  {bpm} BPM. Recap lands on your profile when you&apos;re done.
+                  Click start. Everyone in the club on the extension hits the same pomodoro at {bpm}{' '}
+                  BPM. Claude can write the recap when you turn that on.
                 </span>
               </li>
             </ol>
-            <CardBody className="mt-6">
+            <CardBody className="mt-6 flex flex-wrap gap-2">
               <LinkButton href="/extension" variant="outline" size="md">
                 Install the extension →
+              </LinkButton>
+              <LinkButton href={'/lock-in' as Route} variant="secondary" size="md">
+                Lock in from web
               </LinkButton>
             </CardBody>
           </Card>
@@ -319,11 +326,7 @@ async function loadClub(slug: string): Promise<{
         .eq('club_id', row.id)
         .order('started_at', { ascending: false })
         .limit(10),
-      supabase
-        .from('tool_recommendations')
-        .select('*')
-        .eq('club_type', row.type)
-        .limit(6),
+      supabase.from('tool_recommendations').select('*').eq('club_type', row.type).limit(6),
     ])
     return {
       club: {

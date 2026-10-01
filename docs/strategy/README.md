@@ -6,6 +6,8 @@ Vibeclubs-specific strategy docs. These describe how this repo fits into the wid
 |---|---|
 | [`ecosystem-role.md`](./ecosystem-role.md) | How vibeclubs sits inside the GenCreator OS and the 5-brand constellation. Reconciles with `gencreator.ai/strategy_v3.md`. |
 | [`design-evolution.md`](./design-evolution.md) | Motion design, 3D, and 21st.dev integration plan for vibeclubs.ai. Performance budgets. Phased rollout. |
+| [`starlight-communities-v1.md`](./starlight-communities-v1.md) | Current Starlight Communities operating model inside Vibeclubs. |
+| [`sovereign-intelligence-system-roadmap.md`](./sovereign-intelligence-system-roadmap.md) | Web2/Web3/Web4 connector, plugin, workflow, and agent runtime roadmap. |
 
 Cross-repo canonical docs live outside this repo:
 

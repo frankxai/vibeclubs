@@ -41,9 +41,7 @@ export function Section({
     xl: 'py-32',
   }
   return (
-    <section
-      className={cn(padMap[pad], border && 'border-t border-white/5', className)}
-    >
+    <section className={cn(padMap[pad], border && 'border-t border-white/5', className)}>
       {children}
     </section>
   )
@@ -65,11 +63,7 @@ export function Eyebrow({
   }
   return (
     <div
-      className={cn(
-        'text-[11px] uppercase tracking-[0.22em] font-mono',
-        tones[tone],
-        className,
-      )}
+      className={cn('text-[11px] uppercase tracking-[0.22em] font-mono', tones[tone], className)}
     >
       {children}
     </div>
@@ -98,7 +92,7 @@ export function PageHeader({
           <p className="text-lg text-white/60 mt-5 max-w-2xl leading-relaxed">{subtitle}</p>
         )}
       </div>
-      {actions && <div className="flex gap-2 shrink-0">{actions}</div>}
+      {actions && <div className="flex w-full max-w-full flex-wrap gap-2 sm:w-auto">{actions}</div>}
     </header>
   )
 }

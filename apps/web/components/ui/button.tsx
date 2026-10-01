@@ -1,5 +1,6 @@
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react'
 import Link from 'next/link'
+import type { Route } from 'next'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/cn'
@@ -79,14 +80,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   )
 })
 
-interface LinkButtonProps extends ButtonVariantProps {
-  href: string
-  external?: boolean
+type LinkButtonProps = ButtonVariantProps & {
   children: ReactNode
   className?: string
   leading?: ReactNode
   trailing?: ReactNode
-}
+} & ({ href: Route; external?: false } | { href: string; external: true })
 
 /** Link-style Button. Preserves Next.js prefetch while sharing variants. */
 export function LinkButton({

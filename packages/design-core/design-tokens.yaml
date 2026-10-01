@@ -1,0 +1,69 @@
+# FrankX Ultra-Premium Design System Tokens
+# 
+# This file serves as the definitive source of truth for AI agent generators.
+# Agents must adhere strictly to these constraints when generating UI/UX.
+
+brand:
+  name: "FrankX Digital Factory"
+  vibe: "Premium, Glassmorphic, Chill but Professional, Tech-Forward"
+
+colors:
+  primary:
+    DEFAULT: "#0F172A" # Slate 900
+    foreground: "#FFFFFF"
+  secondary:
+    DEFAULT: "#334155" # Slate 700
+    foreground: "#F8FAFC"
+  accent:
+    DEFAULT: "#3B82F6" # Blue 500
+    foreground: "#FFFFFF"
+  background: "#020617" # Slate 950 (Dark mode default)
+  surface: "rgba(15, 23, 42, 0.6)" # Translucent for glassmorphism
+  border: "rgba(255, 255, 255, 0.1)"
+
+typography:
+  fontFamily:
+    sans: ["Inter", "sans-serif"]
+    display: ["Outfit", "sans-serif"]
+    mono: ["JetBrains Mono", "monospace"]
+  
+  weights:
+    normal: 400
+    medium: 500
+    semibold: 600
+    bold: 700
+
+components:
+  glass_card:
+    background: "rgba(15, 23, 42, 0.6)"
+    backdrop_blur: "12px"
+    border: "1px solid rgba(255, 255, 255, 0.1)"
+    border_radius: "16px"
+    box_shadow: "0 4px 30px rgba(0, 0, 0, 0.1)"
+  
+  primary_button:
+    background: "linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)"
+    border_radius: "8px"
+    padding: "12px 24px"
+    font_weight: 600
+    transition: "all 0.2s ease-in-out"
+    hover_transform: "translateY(-1px)"
+    hover_shadow: "0 10px 15px -3px rgba(59, 130, 246, 0.4)"
+
+layout:
+  max_width: "1200px"
+  container_padding: "2rem"
+  gap:
+    sm: "0.5rem"
+    md: "1rem"
+    lg: "2rem"
+    xl: "4rem"
+
+motion:
+  default_transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+  spring: "spring(1, 80, 10, 0)"
+
+rules:
+  - "NEVER use pure black (#000000) or pure white (#FFFFFF) for large background areas. Use tinted shades (e.g. Slate 950)."
+  - "ALWAYS wrap primary content areas in a `glass_card` variant when layered over a dynamic or gradient background."
+  - "Text contrast MUST meet WCAG AA standards minimum."

@@ -3,7 +3,6 @@ import { Nav } from '@/components/nav'
 import { Footer } from '@/components/footer'
 import {
   Badge,
-  Button,
   LinkButton,
   Card,
   CardEyebrow,
@@ -66,11 +65,7 @@ export default function Page() {
       {/* HERO */}
       <div className="relative overflow-hidden">
         <AnimatedAurora />
-        <SparkOrb
-          size={760}
-          hue="dual"
-          className="left-[-12%] top-[6%] opacity-70 md:opacity-90"
-        />
+        <SparkOrb size={760} hue="dual" className="left-[-12%] top-[6%] opacity-70 md:opacity-90" />
         <SparkOrb
           size={420}
           hue="violet"
@@ -89,8 +84,7 @@ export default function Page() {
               </StaggerItem>
               <StaggerItem>
                 <h1 className="text-6xl md:text-8xl font-bold tracking-tight leading-[0.92] mb-8">
-                  Host a
-                  <br />
+                  Host a <br />
                   <GradientText tone="warm">vibeclub.</GradientText>
                 </h1>
               </StaggerItem>
@@ -442,12 +436,7 @@ export default function Page() {
               crew is already at their desks.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
-              <LinkButton
-                href="/start"
-                variant="primary"
-                size="xl"
-                className="vc-shimmer-border"
-              >
+              <LinkButton href="/start" variant="primary" size="xl" className="vc-shimmer-border">
                 Host a vibeclub →
               </LinkButton>
               <LinkButton

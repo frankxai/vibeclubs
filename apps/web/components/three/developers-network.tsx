@@ -35,8 +35,7 @@ function Scene() {
   useFrame((state, delta) => {
     if (groupRef.current) {
       groupRef.current.rotation.y += delta * 0.15
-      groupRef.current.rotation.x =
-        Math.sin(state.clock.elapsedTime * 0.2) * 0.08 - 0.05
+      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.2) * 0.08 - 0.05
     }
   })
 
@@ -81,12 +80,28 @@ function Scene() {
       ))}
 
       {edgeGeometries.map((geom, i) => (
-        <line key={i} geometry={geom}>
-          <lineBasicMaterial color="#ffffff" transparent opacity={0.18} toneMapped={false} />
-        </line>
+        <Edge key={i} geometry={geom} />
       ))}
     </group>
   )
+}
+
+function Edge({ geometry }: { geometry: THREE.BufferGeometry }) {
+  const line = useMemo(
+    () =>
+      new THREE.Line(
+        geometry,
+        new THREE.LineBasicMaterial({
+          color: '#ffffff',
+          transparent: true,
+          opacity: 0.18,
+          toneMapped: false,
+        }),
+      ),
+    [geometry],
+  )
+
+  return <primitive object={line} />
 }
 
 export default function DevelopersNetwork({ className }: { className?: string }) {

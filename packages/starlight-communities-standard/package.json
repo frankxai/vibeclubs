@@ -1,0 +1,22 @@
+{
+  "name": "@starlight/communities-standard",
+  "version": "0.1.0",
+  "description": "Executable conformance helpers for the Starlight Communities Standard.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "lint": "eslint src",
+    "test": "pnpm --dir ../.. test",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  }
+}

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import type { Route } from 'next'
 
 export function Footer() {
   return (
@@ -15,6 +16,8 @@ export function Footer() {
         </div>
         <Col title="Product">
           <A href="/explore">Find a vibeclub</A>
+          <A href={'/lock-in' as Route}>Lock in from web</A>
+          <A href={'/host' as Route}>Host cockpit</A>
           <A href="/start">Host one</A>
           <A href="/extension">Chrome extension</A>
           <A href="/playbook">How it works</A>
@@ -54,7 +57,22 @@ function Col({ title, children }: { title: string; children: React.ReactNode }) 
   )
 }
 
-function A({ href, children }: { href: string; children: React.ReactNode }) {
+function A({ href, children }: { href: Route | `http${string}`; children: React.ReactNode }) {
+  if (isExternalHref(href)) {
+    return (
+      <li>
+        <a
+          href={href}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="hover:text-white/80 transition"
+        >
+          {children}
+        </a>
+      </li>
+    )
+  }
+
   return (
     <li>
       <Link href={href} className="hover:text-white/80 transition">
@@ -62,4 +80,8 @@ function A({ href, children }: { href: string; children: React.ReactNode }) {
       </Link>
     </li>
   )
+}
+
+function isExternalHref(href: string): href is `http${string}` {
+  return href.startsWith('http')
 }

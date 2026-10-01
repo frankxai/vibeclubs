@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { streamText } from 'ai'
 import { anthropic } from '@ai-sdk/anthropic'
 import { witnessPrompt } from '@vibeclubs/ai-witness'
+import { buildConsentSnapshot, canStreamRecap } from '@/lib/agents/policy'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -35,12 +36,25 @@ const Event = z.object({
   participant_count: z.number().int().optional(),
   time_of_day: z.string().optional(),
   participant_handle: z.string().optional(),
+  consent: z
+    .object({
+      recap: z.boolean(),
+    })
+    .optional(),
 })
 
 export async function POST(request: NextRequest) {
   const parsed = Event.safeParse(await request.json().catch(() => null))
   if (!parsed.success) {
     return NextResponse.json({ error: 'Invalid recap event' }, { status: 400 })
+  }
+
+  const consent = buildConsentSnapshot({
+    recap: parsed.data.consent?.recap ?? false,
+    source: parsed.data.consent ? 'explicit' : 'default',
+  })
+  if (!canStreamRecap(consent)) {
+    return NextResponse.json({ error: 'Recap consent required' }, { status: 403 })
   }
 
   if (!process.env.ANTHROPIC_API_KEY) {

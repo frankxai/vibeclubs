@@ -1,16 +1,19 @@
 'use client'
 
 import Link from 'next/link'
+import type { Route } from 'next'
 import { usePathname } from 'next/navigation'
 import { LinkButton } from '@/components/ui'
 import { cn } from '@/lib/cn'
 
 const LINKS = [
   { href: '/explore', label: 'Find' },
+  { href: '/lock-in' as Route, label: 'Lock in' },
+  { href: '/host' as Route, label: 'Host' },
   { href: '/extension', label: 'Extension' },
   { href: '/developers', label: 'Developers' },
   { href: '/playbook', label: 'How it works' },
-]
+] satisfies Array<{ href: Route; label: string }>
 
 export function Nav() {
   const pathname = usePathname()
