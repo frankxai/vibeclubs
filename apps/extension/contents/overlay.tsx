@@ -6,6 +6,24 @@ import { createMixer, type Layer, type Mixer } from '@vibeclubs/vibe-mix'
 import { createPomodoro, type Pomodoro, type PomodoroState } from '@vibeclubs/pomodoro-sync'
 import { canRequestAiRecap, normalizeAiRecapChoice } from '@vibeclubs/ai-witness'
 import { readExtensionSupabaseConfig } from '../lib/public-config'
+import {
+  buildProof,
+  checkProof,
+  clearSnapshot,
+  exportRecap,
+  formatRemaining,
+  loadSnapshot,
+  opaqueRef,
+  recapToMarkdown,
+  saveSnapshot,
+  templateById,
+  timelineFromTemplate,
+  timerStateAt,
+  type Artifact,
+  type Commitment,
+  type SessionSnapshot,
+  type TimerState,
+} from '../lib/session'
 
 export const config: PlasmoCSConfig = {
   matches: ['https://*/*', 'http://*/*'],
@@ -18,7 +36,7 @@ export const getStyle: PlasmoGetStyle = () => {
   return style
 }
 
-type View = 'timer' | 'mix' | 'settings'
+type View = 'timer' | 'ship' | 'mix' | 'settings'
 
 interface Settings {
   ambientPreset: string
@@ -62,6 +80,96 @@ export default function VibeOverlay() {
   const [timerMs, setTimerMs] = useState(0)
   const [state, setState] = useState<PomodoroState | null>(null)
   const [recap, setRecap] = useState<string>('')
+
+  // Session.v1 — when an invite has been accepted, the timer is a pure
+  // function of the shared start epoch and needs no host, no socket, no server.
+  const [snapshot, setSnapshot] = useState<SessionSnapshot | null>(null)
+  const [now, setNow] = useState(() => Date.now())
+  const [draft, setDraft] = useState('')
+  const [proofNote, setProofNote] = useState('')
+
+  useEffect(() => {
+    void loadSnapshot().then(setSnapshot)
+  }, [])
+
+  useEffect(() => {
+    if (!snapshot) return undefined
+    const id = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(id)
+  }, [snapshot])
+
+  const sessionTimer = useMemo<TimerState | null>(() => {
+    if (!snapshot) return null
+    const template = templateById(snapshot.session.templateId)
+    if (!template) return null
+    return timerStateAt(
+      timelineFromTemplate(template, snapshot.session.startEpochMs, snapshot.pauses),
+      now,
+    )
+  }, [snapshot, now])
+
+  function updateSnapshot(next: SessionSnapshot) {
+    setSnapshot(next)
+    void saveSnapshot(next)
+  }
+
+  function addCommitment(text: string) {
+    if (!snapshot || !text.trim()) return
+    const me = snapshot.participants[0]
+    if (!me) return
+    const commitment: Commitment = {
+      id: opaqueRef(),
+      participantRef: me.ref,
+      text: text.trim(),
+      state: 'open',
+      createdAtMs: Date.now(),
+    }
+    updateSnapshot({ ...snapshot, commitments: [...snapshot.commitments, commitment] })
+    setDraft('')
+  }
+
+  function shipCommitment(id: string) {
+    if (!snapshot) return
+    const target = snapshot.commitments.find((c) => c.id === id)
+    if (!target) return
+    const artifact: Artifact = {
+      id: opaqueRef(),
+      participantRef: target.participantRef,
+      kind: 'note',
+      value: target.text,
+      createdAtMs: Date.now(),
+    }
+    updateSnapshot({
+      ...snapshot,
+      commitments: snapshot.commitments.map((c) =>
+        c.id === id ? { ...c, state: 'shipped', shippedAtMs: Date.now() } : c,
+      ),
+      artifacts: [...snapshot.artifacts, artifact],
+    })
+  }
+
+  async function endSession() {
+    if (!snapshot) return
+    const proof = buildProof(snapshot, Date.now())
+    const check = checkProof(proof)
+    if (!check.ok) {
+      setProofNote(`Not proven yet — ${check.reason}.`)
+      return
+    }
+    const markdown = recapToMarkdown(exportRecap(snapshot, Date.now()), snapshot.format.name)
+    try {
+      await navigator.clipboard.writeText(markdown)
+      setProofNote(`Recap copied — ${proof.focusMinutes} focus minutes, ${proof.artifactCount} shipped.`)
+    } catch {
+      setProofNote('Recap ready, but this page blocked the clipboard. Open the popup to copy it.')
+    }
+  }
+
+  function leaveSession() {
+    setSnapshot(null)
+    setProofNote('')
+    void clearSnapshot()
+  }
 
   // Load config from extension storage
   useEffect(() => {
@@ -154,9 +262,13 @@ export default function VibeOverlay() {
     [mixer, pomo],
   )
 
-  const mmss = useMemo(() => formatTime(timerMs), [timerMs])
+  const mmss = useMemo(
+    () => (sessionTimer ? formatRemaining(sessionTimer.remainingMs) : formatTime(timerMs)),
+    [sessionTimer, timerMs],
+  )
+  const phaseLabel = sessionTimer ? sessionTimer.phase ?? sessionTimer.status : state?.phase ?? 'idle'
 
-  if (!clubSlug) {
+  if (!clubSlug && !snapshot) {
     return (
       <div className="vc-overlay vc-unconfigured">
         <div className="live-dot" />
@@ -172,7 +284,7 @@ export default function VibeOverlay() {
       <button className="vc-overlay vc-collapsed" onClick={() => setCollapsed(false)}>
         <span className="live-dot" />
         <span className="vc-col-time">{mmss || '--:--'}</span>
-        <span className="vc-col-slug">#{clubSlug}</span>
+        <span className="vc-col-slug">#{clubSlug ?? snapshot?.format.id}</span>
       </button>
     )
   }
@@ -181,7 +293,7 @@ export default function VibeOverlay() {
     <div className="vc-overlay" onClick={boot}>
       <header className="vc-header">
         <div className="live-dot" />
-        <span className="vc-club">#{clubSlug}</span>
+        <span className="vc-club">#{clubSlug ?? snapshot?.format.id}</span>
         <div className="vc-controls-mini">
           <button
             aria-label="Collapse"
@@ -199,6 +311,9 @@ export default function VibeOverlay() {
         <button className={view === 'timer' ? 'active' : ''} onClick={() => setView('timer')}>
           Timer
         </button>
+        <button className={view === 'ship' ? 'active' : ''} onClick={() => setView('ship')}>
+          Ship
+        </button>
         <button className={view === 'mix' ? 'active' : ''} onClick={() => setView('mix')}>
           Mixer
         </button>
@@ -209,21 +324,81 @@ export default function VibeOverlay() {
 
       {view === 'timer' && (
         <section className="vc-section">
-          <div className={`vc-timer vc-timer-${state?.phase ?? 'idle'}`}>{mmss || '25:00'}</div>
+          <div className={`vc-timer vc-timer-${phaseLabel}`}>{mmss || '25:00'}</div>
           <div className="vc-phase">
-            {state?.phase ?? 'idle'}{' '}
-            {state && <span className="vc-cycle">· cycle {state.cycle + 1}</span>}
+            {phaseLabel}{' '}
+            {sessionTimer ? (
+              <span className="vc-cycle">· cycle {sessionTimer.cycle + 1}</span>
+            ) : (
+              state && <span className="vc-cycle">· cycle {state.cycle + 1}</span>
+            )}
           </div>
-          <div className="vc-primary-controls">
-            <button onClick={() => pomo?.start()}>Start</button>
-            <button onClick={() => pomo?.pause()}>Pause</button>
-            <button onClick={() => pomo?.reset()}>End</button>
-          </div>
+          {sessionTimer ? (
+            <p className="vc-hint">
+              Everyone in this session sees the same clock. It is computed from the invite, so it
+              survives a reload, a reconnect, or a laptop that slept through a phase.
+            </p>
+          ) : (
+            <div className="vc-primary-controls">
+              <button onClick={() => pomo?.start()}>Start</button>
+              <button onClick={() => pomo?.pause()}>Pause</button>
+              <button onClick={() => pomo?.reset()}>End</button>
+            </div>
+          )}
           {recap && (
             <div className="vc-recap">
               <div className="vc-recap-label">Recap</div>
               <div className="vc-recap-text">{recap}</div>
             </div>
+          )}
+        </section>
+      )}
+
+      {view === 'ship' && (
+        <section className="vc-section">
+          {!snapshot ? (
+            <p className="vc-hint">
+              Paste an invite in the Vibeclubs popup to start a session. Commitments and proof live
+              in this browser until you export them.
+            </p>
+          ) : (
+            <>
+              <form
+                className="vc-field"
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  addCommitment(draft)
+                }}
+              >
+                <span>What are you shipping this block?</span>
+                <input
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
+                  placeholder="Land the parser"
+                />
+              </form>
+              <ul className="vc-commitments">
+                {snapshot.commitments.length === 0 && (
+                  <li className="vc-hint">Nothing committed yet.</li>
+                )}
+                {snapshot.commitments.map((c) => (
+                  <li key={c.id} className={`vc-commitment vc-commitment-${c.state}`}>
+                    <span>{c.text}</span>
+                    {c.state === 'open' && (
+                      <button onClick={() => shipCommitment(c.id)}>Mark shipped</button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+              <div className="vc-primary-controls">
+                <button onClick={() => void endSession()}>End and copy recap</button>
+                <button onClick={leaveSession}>Leave</button>
+              </div>
+              {proofNote && <p className="vc-hint">{proofNote}</p>}
+              <p className="vc-hint">
+                The recap names only people who opted in. Everyone else is counted, never quoted.
+              </p>
+            </>
           )}
         </section>
       )}
