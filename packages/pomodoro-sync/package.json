@@ -15,10 +15,10 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "@supabase/supabase-js": "^2.110.2"
+    "@supabase/supabase-js": "^2.117.2"
   },
   "devDependencies": {
-    "@supabase/supabase-js": "^2.110.2",
+    "@supabase/supabase-js": "^2.117.2",
     "typescript": "^5.5.0"
   }
 }
