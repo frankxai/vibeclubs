@@ -31,7 +31,7 @@
     "@vibeclubs/session-card": "workspace:*",
     "@vibeclubs/suno-bridge": "workspace:*",
     "@vibeclubs/vibe-mix": "workspace:*",
-    "ai": "^6.0.282",
+    "ai": "^7.0.130",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "framer-motion": "^11.5.0",
