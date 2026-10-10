@@ -101,8 +101,8 @@ importers:
   apps/web:
     dependencies:
       '@ai-sdk/anthropic':
-        specifier: ^3.0.118
-        version: 3.0.118(zod@3.25.76)
+        specifier: ^4.0.73
+        version: 4.0.73(zod@3.25.76)
       '@frankx/design-core':
         specifier: workspace:*
         version: link:../../packages/design-core
@@ -266,9 +266,9 @@ importers:
 
 packages:
 
-  '@ai-sdk/anthropic@3.0.118':
-    resolution: {integrity: sha512-5j8Cc9owORxhhZxFtpznXPTdLxeWm6bPCVbndM0e+NdvGVxe9GDgNqQq1V0KqOV54hZ6hyQVEXHkgTRPyXzcQg==}
-    engines: {node: '>=18'}
+  '@ai-sdk/anthropic@4.0.73':
+    resolution: {integrity: sha512-tmUbc0vzBiVhaHWqLd8uC7ORHfP+UqplQAzAzDolrPrav1///zYRZh7rVqUL1/RJaZtXKnaBQRtlr9xBf+FeVg==}
+    engines: {node: '>=22'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
 
@@ -284,9 +284,19 @@ packages:
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
 
+  '@ai-sdk/provider-utils@5.0.55':
+    resolution: {integrity: sha512-VeY9IqwJGcHSmezQTZknaYUT3sRcaXpuIt5VWyGOlJtoc5wkpDPstXZtfa41bGUsbQwCijvN6ASbggUCeTcMkw==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
   '@ai-sdk/provider@3.0.16':
     resolution: {integrity: sha512-9Av6kg0t/IN/dcYAAmEJ4B9OPhcEJqwSR+GfHEA8olRkindXpUHadc3p3cyvgFUQFTVm1G5thtsmgZ9yVb2w3A==}
     engines: {node: '>=18'}
+
+  '@ai-sdk/provider@4.0.23':
+    resolution: {integrity: sha512-TdEzgE1ndBGhDDwZcg/WZG3IeUj8Yz7/DkUG4ctMyK5HdNXTEKpjkCdwX8ayvkgluTv7yjnqCdOkB8/q1nfaNQ==}
+    engines: {node: '>=22'}
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -3335,6 +3345,9 @@ packages:
   '@vue/shared@3.3.4':
     resolution: {integrity: sha512-7OjdcV8vQ74eiz1TZLzZP4JwqM5fA94K6yntPS5Z25r9HDuGNzaGdgvwKYq6S+MxwF0TFRwe50fIR/MYnakdkQ==}
 
+  '@workflow/serde@4.1.0':
+    resolution: {integrity: sha512-pav4F2BoirECWR7Nf1TKt+2eETcBj7jj4cBefQ8VXQCA6NPkaKeLfj/zMgi+3zYV5ZIBT4GuUiphsj0/b9hPQQ==}
+
   abortcontroller-polyfill@1.7.8:
     resolution: {integrity: sha512-9f1iZ2uWh92VcrU9Y8x+LdM4DLj75VE0MJB8zuF1iUnroEptStw+DQ8EQPMUdfe5k+PkB1uUfDQfWbhstH8LrQ==}
 
@@ -5720,6 +5733,10 @@ packages:
     resolution: {integrity: sha512-zWpdTVD54H48CIybL0rWQ3ukpb9d23wM7eH5RtfdmeP70cWHNjtfo7P4vZX+5CoDcO53J4Pu5uXp7lNfjc6DRA==}
     engines: {node: '>=18.17'}
 
+  undici@7.30.0:
+    resolution: {integrity: sha512-dkrQXeHSaoamnItlYbmzG0wFYrM0ZwDxCIg0A7aKjTyyhh9svRzCNFEzV+Vm05/yehjCzjDZ31KXfGEjYSztDQ==}
+    engines: {node: '>=20.18.1'}
+
   unified@11.0.5:
     resolution: {integrity: sha512-xKvGhPWw3k84Qjh8bI3ZeJjqnyadK+GEFtazSfZv/rKeTkTjOJho6mFqh2SM96iIcZokxiOpg78GazTSg8+KHA==}
 
@@ -6015,10 +6032,10 @@ packages:
 
 snapshots:
 
-  '@ai-sdk/anthropic@3.0.118(zod@3.25.76)':
+  '@ai-sdk/anthropic@4.0.73(zod@3.25.76)':
     dependencies:
-      '@ai-sdk/provider': 3.0.16
-      '@ai-sdk/provider-utils': 4.0.51(zod@3.25.76)
+      '@ai-sdk/provider': 4.0.23
+      '@ai-sdk/provider-utils': 5.0.55(zod@3.25.76)
       zod: 3.25.76
 
   '@ai-sdk/gateway@3.0.193(zod@3.25.76)':
@@ -6036,7 +6053,20 @@ snapshots:
       undici: 6.28.1
       zod: 3.25.76
 
+  '@ai-sdk/provider-utils@5.0.55(zod@3.25.76)':
+    dependencies:
+      '@ai-sdk/provider': 4.0.23
+      '@standard-schema/spec': 1.1.0
+      '@workflow/serde': 4.1.0
+      eventsource-parser: 3.1.1
+      undici: 7.30.0
+      zod: 3.25.76
+
   '@ai-sdk/provider@3.0.16':
+    dependencies:
+      json-schema: 0.4.0
+
+  '@ai-sdk/provider@4.0.23':
     dependencies:
       json-schema: 0.4.0
 
@@ -9134,6 +9164,8 @@ snapshots:
 
   '@vue/shared@3.3.4': {}
 
+  '@workflow/serde@4.1.0': {}
+
   abortcontroller-polyfill@1.7.8: {}
 
   acorn-jsx@5.3.2(acorn@8.16.0):
@@ -11816,6 +11848,8 @@ snapshots:
   undici-types@6.21.0: {}
 
   undici@6.28.1: {}
+
+  undici@7.30.0: {}
 
   unified@11.0.5:
     dependencies:
