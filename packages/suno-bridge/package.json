@@ -1,7 +1,7 @@
 {
   "name": "@vibeclubs/suno-bridge",
-  "version": "0.1.0",
-  "description": "Suno API wrapper with a caller-supplied fallback for Vibeclubs music.",
+  "version": "0.2.0",
+  "description": "Per-listener music handoff to a host-authorized provider adapter, with explicit asset fallback.",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.ts",
