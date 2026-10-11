@@ -60,7 +60,7 @@ export function RitualProof() {
   function finishFocus() {
     timerRef.current?.dispose()
     timerRef.current = null
-    setStage('ship')
+    setStage((prev) => (prev === 'focus' ? 'ship' : prev))
   }
 
   function startProof() {
@@ -96,6 +96,7 @@ export function RitualProof() {
         {stageOrder.map((item, index) => (
           <div
             key={item}
+            aria-current={item === stage ? 'step' : undefined}
             className={`border-white/8 px-5 py-4 md:border-r md:last:border-0 ${
               index <= stageIndex ? 'bg-amber-300/[0.06] text-amber-200' : 'text-white/32'
             }`}

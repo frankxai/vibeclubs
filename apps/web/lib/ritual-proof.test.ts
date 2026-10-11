@@ -19,4 +19,28 @@ describe('local ritual proof', () => {
       'Ship Night: 2 people locked in to finish the landing page. Shipped: responsive first viewport.',
     )
   })
+
+  it('handles single person crew count correctly', () => {
+    expect(
+      buildDeterministicRecap({
+        clubName: 'Solo Club',
+        crewCount: 1,
+        shipTarget: 'write tests',
+        shipped: 'unit tests',
+      }),
+    ).toBe('Solo Club: 1 person locked in to write tests. Shipped: unit tests.')
+  })
+
+  it('falls back gracefully when given whitespace inputs', () => {
+    expect(
+      buildDeterministicRecap({
+        clubName: '   ',
+        crewCount: 2,
+        shipTarget: '   ',
+        shipped: '   ',
+      }),
+    ).toBe(
+      'New Vibeclub: 2 people locked in to move one piece of work. Shipped: one visible artifact.',
+    )
+  })
 })
