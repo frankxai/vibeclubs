@@ -17,6 +17,9 @@ export function slugifyVibeclub(value: string): string {
 }
 
 export function buildDeterministicRecap(input: RitualRecapInput): string {
+  const clubName = input.clubName.trim() || 'New Vibeclub'
+  const shipTarget = input.shipTarget.trim() || 'move one piece of work'
+  const shipped = input.shipped.trim() || 'one visible artifact'
   const crew = input.crewCount === 1 ? '1 person' : `${input.crewCount} people`
-  return `${input.clubName}: ${crew} locked in to ${input.shipTarget}. Shipped: ${input.shipped}.`
+  return `${clubName}: ${crew} locked in to ${shipTarget}. Shipped: ${shipped}.`
 }
