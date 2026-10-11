@@ -11,19 +11,19 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.110.2",
+    "@supabase/supabase-js": "^2.117.3",
     "@vibeclubs/ai-witness": "workspace:*",
     "@vibeclubs/pomodoro-sync": "workspace:*",
     "@vibeclubs/session-card": "workspace:*",
     "@vibeclubs/suno-bridge": "workspace:*",
     "@vibeclubs/vibe-mix": "workspace:*",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.270",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
+    "@types/chrome": "^0.3.4",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "plasmo": "0.90.5",
     "typescript": "^5.5.0"
   },
