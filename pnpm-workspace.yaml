@@ -16,3 +16,4 @@ allowBuilds:
   lmdb: true
   msgpackr-extract: true
   sharp: true
+  unrs-resolver@1.12.2: true
