@@ -15,7 +15,7 @@ export function Footer() {
           </p>
         </div>
         <Col title="Product">
-          <A href="/explore">Find a vibeclub</A>
+          <A href="/explore">Listed sessions</A>
           <A href="/start">Host one</A>
           <A href="/extension">Chrome extension</A>
           <A href="/playbook">How it works</A>

@@ -20,7 +20,7 @@ export default function NotFound() {
               Home
             </LinkButton>
             <LinkButton href="/explore" variant="outline" size="lg">
-              Find a vibeclub
+              Listed sessions
             </LinkButton>
           </div>
         </Container>
