@@ -1,16 +1,7 @@
 /**
- * @vibeclubs/suno-bridge
- *
- * Thin Suno API wrapper with an explicit caller-supplied fallback.
- *
- * This package is deliberately minimal: it exposes a single `generateMusic`
- * function that takes a prompt and returns a playable URL. If the Suno API is
- * unavailable (no key, rate limit, 5xx), it uses `fallbackUrl` when the caller
- * supplies one. It never returns an unverified asset URL.
- *
- * NOTE: Suno's public API is still evolving. Exact endpoint + auth shape may
- * need adjustment when Frank secures API access — see ENVIRONMENT.md §3.
- * The interface below is stable; implementation details (endpoints) are not.
+ * Per-listener music handoff. No guessed Suno endpoint or implicit paid request.
+ * A host-supplied adapter owns authenticated budget/job/archive/rights handling.
+ * Legacy key/base/fetch fields are accepted for compatibility but never invoked.
  */
 
 export interface SunoGenerateOptions {
@@ -21,56 +12,60 @@ export interface SunoGenerateOptions {
   apiBase?: string
   fallbackUrl?: string
   fetchImpl?: typeof fetch
+  authorizedJobRef?: string
+  generationAdapter?: (request: MusicJobRequest) => Promise<SunoTrack>
 }
 
 export interface SunoTrack {
   url: string
-  source: 'suno' | 'fallback'
+  source: 'suno' | 'provider' | 'fallback'
+  evidence_kind?: 'adapter_reported_asset' | 'caller_supplied_asset'
   title?: string
   duration_seconds?: number
 }
 
+export interface MusicJobRequest {
+  prompt: string
+  durationSeconds: number
+  instrumental: boolean
+  authorizedJobRef: string
+}
+
 export async function generateMusic(opts: SunoGenerateOptions): Promise<SunoTrack> {
-  const apiKey =
-    opts.apiKey ?? (typeof process !== 'undefined' ? process.env.SUNO_API_KEY : undefined)
-  const apiBase = opts.apiBase ?? 'https://api.suno.com/v1'
-  const fetchImpl = opts.fetchImpl ?? fetch
-
-  if (!apiKey) return fallback(opts.fallbackUrl)
-
-  try {
-    const res = await fetchImpl(`${apiBase}/generate`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        prompt: opts.prompt,
-        duration_seconds: opts.durationSeconds ?? 180,
-        instrumental: opts.instrumental ?? true,
-        model: 'chirp-v4',
-      }),
-    })
-    if (!res.ok) throw new Error(`Suno ${res.status}`)
-    const body = (await res.json()) as {
-      audio_url: string
-      title?: string
-      duration_seconds?: number
-    }
-    return {
-      url: body.audio_url,
-      source: 'suno',
-      title: body.title,
-      duration_seconds: body.duration_seconds,
-    }
-  } catch {
-    return fallback(opts.fallbackUrl)
+  if (!opts.generationAdapter) return fallback(opts.fallbackUrl)
+  const duration = opts.durationSeconds ?? 180
+  if (!opts.authorizedJobRef?.trim()) {
+    throw new Error('A host-authorized job reference is required before generation')
   }
+  if (
+    !opts.prompt.trim() ||
+    opts.prompt.length > 2000 ||
+    !Number.isInteger(duration) ||
+    duration < 3 ||
+    duration > 600
+  ) {
+    throw new Error('Invalid music job request')
+  }
+  // An adapter failure may follow a charged submission. Surface it for host
+  // reconciliation; never hide it behind fallback or repeat the paid operation.
+  const track = await opts.generationAdapter({
+    prompt: opts.prompt,
+    durationSeconds: duration,
+    instrumental: opts.instrumental ?? true,
+    authorizedJobRef: opts.authorizedJobRef,
+  })
+  if (!track.url || new URL(track.url).protocol !== 'https:') {
+    throw new Error('Adapter must report an HTTPS audio asset')
+  }
+  return { ...track, evidence_kind: 'adapter_reported_asset' }
 }
 
 function fallback(overrideUrl?: string): SunoTrack {
-  if (overrideUrl) return { url: overrideUrl, source: 'fallback' }
+  if (overrideUrl) {
+    if (new URL(overrideUrl).protocol !== 'https:')
+      throw new Error('Fallback must be an HTTPS asset')
+    return { url: overrideUrl, source: 'fallback', evidence_kind: 'caller_supplied_asset' }
+  }
   throw new Error('Music generation is unavailable and no fallbackUrl was provided')
 }
 
