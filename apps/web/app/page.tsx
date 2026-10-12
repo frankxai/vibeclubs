@@ -170,19 +170,18 @@ export default function Page() {
             Bring the work. Invite the crew.
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-white/58">
-            Run the local proof first. Host a persistent vibeclub when your team is ready for the
-            live workflow.
+            Run the local proof first. Then prepare your pack and invite the crew.
           </p>
           <div className="mt-9 flex flex-wrap justify-center gap-3">
             <LinkButton href="#try-it" size="xl">
               Try the proof
             </LinkButton>
             <LinkButton href="/start" variant="outline" size="xl">
-              Host a live vibeclub
+              Prepare your host pack
             </LinkButton>
           </div>
           <p className="mt-5 text-xs text-white/38">
-            Live hosting requires sign-in and configured service credentials.
+            Free to prepare. No account needed. Host with your own tools.
           </p>
         </div>
       </section>
