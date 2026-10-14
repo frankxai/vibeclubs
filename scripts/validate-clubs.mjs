@@ -36,7 +36,9 @@ const clubsDir = join(root, 'content', 'clubs')
 const args = argv.slice(2)
 const asJson = args.includes('--json')
 
-function parseFrontmatter(raw) {
+function parseFrontmatter(input) {
+  // Windows checkouts may carry CRLF; normalize so the delimiters match.
+  const raw = input.replace(/\r\n/g, '\n')
   if (!raw.startsWith('---\n')) return null
   const end = raw.indexOf('\n---\n', 4)
   if (end === -1) return null
