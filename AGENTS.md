@@ -5,6 +5,16 @@ Read `CLAUDE.md` first, then `VISION.md`, `ADR-004-SKILL-FIRST-HOST-PACK.md`, `d
 For the skill-first host-pack work, also read `ADR-004-SKILL-FIRST-HOST-PACK.md`.
 The plugin lives in `plugins/vibeclubs`; it adds no server or billing dependency.
 
+## Architecture Stack (canonical)
+
+Before recommending or choosing technology, hosting, AI gateways, agent runtimes, databases, or storage:
+
+1. Fetch and follow the living document:  
+   https://github.com/frankxai/frankx-starlight-command/blob/main/ARCHITECTURE-STACK.md
+2. Use the Architectural Checker prompt inside that file for any new surface.
+3. Record repo-specific exceptions as short ADRs and link them back to the canonical file.
+4. Do not invent a parallel stack doctrine in this repo.
+
 ## Repo Role
 
 `vibeclubs.ai` is a pnpm/Turborepo workspace for Vibeclubs: a Next.js web directory/API, Plasmo browser extension, and shared OSS primitives. A human hosts on existing tools. The extension is optional; the web app includes an account-free `/start` host-pack authoring tool as well as the directory and content layer. Hosted APIs and optional AI have separate activation gates.
