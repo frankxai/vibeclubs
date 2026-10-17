@@ -16,6 +16,7 @@ export interface DirectoryClub {
   pomodoro_preset: PomodoroPreset
   featured?: boolean
   source?: 'static' | 'supabase'
+  hasPublicRoom?: boolean
 }
 
 function prettyPreset(p: PomodoroPreset) {
@@ -84,6 +85,7 @@ export function ClubCard({
           <span className="font-mono">{prettyPreset(club.pomodoro_preset)}</span>
         </div>
         {memberCount != null && <span>{memberCount} in the crew</span>}
+        {!club.hasPublicRoom && <span className="text-white/30">No public room</span>}
       </div>
     </Link>
   )
