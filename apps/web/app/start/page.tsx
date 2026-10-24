@@ -12,6 +12,13 @@ export const metadata = {
   description:
     'A small crew, a shared clock, and something real to show. Build your own vibeclub with a crew invite, a timed agenda, and a ready-to-use build brief.',
   alternates: { canonical: 'https://vibeclubs.ai/start' },
+  openGraph: {
+    title: 'Host a vibeclub — make something together',
+    description:
+      'A small crew, a shared clock, and something real to show. Build your own vibeclub with a crew invite, a timed agenda, and a ready-to-use build brief.',
+    url: 'https://vibeclubs.ai/start',
+    type: 'website',
+  },
 }
 
 export default function StartPage() {

@@ -8,6 +8,14 @@ export const metadata = {
   title: 'How it works',
   description:
     'Host, show up, ship. Short reads on running your first vibeclub, tuning the mixer, the recap, and turning a GenCreator stack into weekly output.',
+  alternates: { canonical: 'https://vibeclubs.ai/playbook' },
+  openGraph: {
+    title: 'How it works',
+    description:
+      'Host, show up, ship. Short reads on running your first vibeclub, tuning the mixer, the recap, and turning a GenCreator stack into weekly output.',
+    url: 'https://vibeclubs.ai/playbook',
+    type: 'website',
+  },
 }
 
 export default function PlaybookIndex() {
