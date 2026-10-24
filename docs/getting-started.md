@@ -49,7 +49,8 @@ pnpm dev:all          # Both in parallel
 pnpm build            # Build everything via Turbo
 pnpm lint             # Lint all workspaces
 pnpm typecheck        # tsc --noEmit everywhere
-pnpm test             # Not wired yet
+pnpm test             # Vitest run
+pnpm test:e2e         # Playwright test
 pnpm format           # Prettier write
 pnpm format:check     # Prettier check (CI)
 ```
