@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { Nav } from '@/components/nav'
 import { Footer } from '@/components/footer'
 import { ShareButton } from '@/components/share-button'
+import { LocalTrack } from '@/components/local-track'
 import { Container, Eyebrow, Section } from '@/components/layout/container'
 import { Fact } from '@/components/patterns/stat-block'
 import { PulseBeat } from '@/components/motion'
@@ -152,6 +153,10 @@ export default async function ClubPage({ params }: Params) {
               platformUrl={platformLink?.href}
             />
           </div>
+
+          {!platformLink && (
+            <LocalTrack clubSlug={club.slug} preset={club.pomodoro_preset} />
+          )}
 
           {tools.length > 0 && (
             <section className="mt-16">
