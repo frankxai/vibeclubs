@@ -102,7 +102,7 @@ importers:
     dependencies:
       '@ai-sdk/anthropic':
         specifier: ^4.0.87
-        version: 4.0.87(zod@3.25.76)
+        version: 4.0.87(zod@4.6.6)
       '@frankx/design-core':
         specifier: workspace:*
         version: link:../../packages/design-core
@@ -153,7 +153,7 @@ importers:
         version: link:../../packages/vibe-mix
       ai:
         specifier: ^7.0.150
-        version: 7.0.150(zod@3.25.76)
+        version: 7.0.150(zod@4.6.6)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.1
@@ -188,8 +188,8 @@ importers:
         specifier: ^0.186.1
         version: 0.186.1
       zod:
-        specifier: ^3.23.0
-        version: 3.25.76
+        specifier: ^4.6.6
+        version: 4.6.6
     devDependencies:
       '@playwright/test':
         specifier: ^1.64.1
@@ -6835,8 +6835,8 @@ packages:
     peerDependencies:
       zod: ^3.25.0 || ^4.0.0
 
-  zod@3.25.76:
-    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+  zod@4.6.6:
+    resolution: {integrity: sha512-4UmzQUF5fxvfcYHlbjBmejU+w+hbDnWFx4aS8kBx7nPBHcO2SqPbpAG8snbdg+Xse4pRefR98hgjFgIMCI/UhA==}
 
   zustand@4.5.7:
     resolution: {integrity: sha512-CHOUy7mu3lbD6o6LJLfllpjkzhHXSBlX8B9+qPddUsIfeF5S/UZ5q0kmCsnRqT1UHFQZchNFDDzMbQsuesHWlw==}
@@ -6894,27 +6894,27 @@ packages:
 
 snapshots:
 
-  '@ai-sdk/anthropic@4.0.87(zod@3.25.76)':
+  '@ai-sdk/anthropic@4.0.87(zod@4.6.6)':
     dependencies:
       '@ai-sdk/provider': 4.0.33
-      '@ai-sdk/provider-utils': 5.0.67(zod@3.25.76)
-      zod: 3.25.76
+      '@ai-sdk/provider-utils': 5.0.67(zod@4.6.6)
+      zod: 4.6.6
 
-  '@ai-sdk/gateway@4.0.123(zod@3.25.76)':
+  '@ai-sdk/gateway@4.0.123(zod@4.6.6)':
     dependencies:
       '@ai-sdk/provider': 4.0.33
-      '@ai-sdk/provider-utils': 5.0.67(zod@3.25.76)
+      '@ai-sdk/provider-utils': 5.0.67(zod@4.6.6)
       '@vercel/oidc': 3.2.0
-      zod: 3.25.76
+      zod: 4.6.6
 
-  '@ai-sdk/provider-utils@5.0.67(zod@3.25.76)':
+  '@ai-sdk/provider-utils@5.0.67(zod@4.6.6)':
     dependencies:
       '@ai-sdk/provider': 4.0.33
       '@standard-schema/spec': 1.1.0
       '@workflow/serde': 4.1.0
       eventsource-parser: 3.1.1
       undici: 7.30.1
-      zod: 3.25.76
+      zod: 4.6.6
 
   '@ai-sdk/provider@4.0.33':
     dependencies:
@@ -10214,12 +10214,12 @@ snapshots:
 
   agent-base@7.1.4: {}
 
-  ai@7.0.150(zod@3.25.76):
+  ai@7.0.150(zod@4.6.6):
     dependencies:
-      '@ai-sdk/gateway': 4.0.123(zod@3.25.76)
+      '@ai-sdk/gateway': 4.0.123(zod@4.6.6)
       '@ai-sdk/provider': 4.0.33
-      '@ai-sdk/provider-utils': 5.0.67(zod@3.25.76)
-      zod: 3.25.76
+      '@ai-sdk/provider-utils': 5.0.67(zod@4.6.6)
+      zod: 4.6.6
 
   ajv@6.15.0:
     dependencies:
@@ -11103,8 +11103,8 @@ snapshots:
       '@babel/parser': 7.29.9
       eslint: 10.13.0(jiti@2.7.0)
       hermes-parser: 0.25.1
-      zod: 3.25.76
-      zod-validation-error: 4.0.2(zod@3.25.76)
+      zod: 4.6.6
+      zod-validation-error: 4.0.2(zod@4.6.6)
     transitivePeerDependencies:
       - supports-color
 
@@ -14151,11 +14151,11 @@ snapshots:
 
   yoctocolors-cjs@2.1.3: {}
 
-  zod-validation-error@4.0.2(zod@3.25.76):
+  zod-validation-error@4.0.2(zod@4.6.6):
     dependencies:
-      zod: 3.25.76
+      zod: 4.6.6
 
-  zod@3.25.76: {}
+  zod@4.6.6: {}
 
   zustand@4.5.7(@types/react@19.3.0)(react@19.3.1):
     dependencies:
