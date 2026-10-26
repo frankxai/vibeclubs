@@ -25,7 +25,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "plasmo": "0.90.5",
-    "typescript": "^5.5.0"
+    "typescript": "^6.0.3"
   },
   "manifest": {
     "name": "Vibeclubs",
