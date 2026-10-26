@@ -11,17 +11,17 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.117.3",
+    "@supabase/supabase-js": "^2.118.0",
     "@vibeclubs/ai-witness": "workspace:*",
     "@vibeclubs/pomodoro-sync": "workspace:*",
     "@vibeclubs/session-card": "workspace:*",
     "@vibeclubs/suno-bridge": "workspace:*",
     "@vibeclubs/vibe-mix": "workspace:*",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "devDependencies": {
-    "@types/chrome": "^0.3.5",
+    "@types/chrome": "^0.3.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "plasmo": "0.90.5",
