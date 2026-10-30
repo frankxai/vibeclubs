@@ -2,42 +2,53 @@ import { Nav } from '@/components/nav'
 import { Footer } from '@/components/footer'
 import { Container, Eyebrow, Section } from '@/components/layout/container'
 import {
-  Badge,
   Card,
   CardBody,
   CardEyebrow,
   CardTitle,
   CodeBlock,
-  Fader,
-  Kbd,
   LinkButton,
-  TimerDisplay,
+  Badge,
+  Kbd,
 } from '@/components/ui'
 import { Reveal } from '@/components/motion'
+import { TimerDisplay } from '@/components/ui/timer-display'
+import { Fader } from '@/components/ui/fader'
 import { VibeOrbDemo } from '@/components/three'
 
 export const metadata = {
   title: 'Extension source',
   description:
     'Inspect and build the Vibeclubs Chrome extension source before public distribution.',
+  alternates: { canonical: 'https://vibeclubs.ai/extension' },
+  openGraph: {
+    title: 'Extension source',
+    description:
+      'Inspect and build the Vibeclubs Chrome extension source before public distribution.',
+    url: 'https://vibeclubs.ai/extension',
+    type: 'website',
+  },
 }
 
 export default function ExtensionPage() {
   return (
     <main className="min-h-screen">
       <Nav />
+
+      {/* HERO */}
       <Section pad="md" className="pt-28">
         <Container width="xl">
-          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-16 items-start">
+          <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 items-center">
             <Reveal direction="up">
               <div>
-                <Eyebrow>Chrome extension</Eyebrow>
+                <Eyebrow>Chrome Extension</Eyebrow>
                 <h1 className="text-4xl md:text-6xl font-bold tracking-tight mt-4 mb-5 leading-[1.02]">
-                  Build the extension.
+                  The overlay.
                 </h1>
-                <p className="text-xl text-white/60 mb-10 leading-relaxed max-w-xl">
-                  The source is public and buildable now. Chrome Web Store distribution,
-                  account-backed timer sync, saved profiles, and hosted audio are not released yet.
+                <p className="text-lg text-white/60 mb-6 leading-relaxed max-w-xl">
+                  The extension source contains the mixer, timer, and optional recap prompt. It is
+                  public and buildable now. Chrome Web Store distribution, account-backed timer
+                  sync, saved profiles, and hosted audio are not released yet.
                 </p>
                 <div className="flex flex-wrap gap-3 mb-12">
                   <LinkButton
