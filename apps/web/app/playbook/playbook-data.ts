@@ -9,200 +9,143 @@ export const PLAYBOOK: PlaybookEntry[] = [
   {
     slug: 'what-is-a-vibeclub',
     title: "What's a vibeclub?",
-    summary: 'The one-screen explainer. Format, not platform. Why it works.',
-    body: `A vibeclub is what your crew does when you all have something to ship.
+    summary: 'A small crew, a shared clock, and something useful to show. A human hosts.',
+    body: `A vibeclub is a small crew making things together, using tools they already have. You can work on the same project or bring different projects.
 
-It's a format — like hackathon, book club, or run club. A repeatable ritual. You don't need permission, software, or a platform. You need three things: a rhythm, a soundtrack, and at least one other person who's also locking in.
+### What you need
 
-### The three ingredients
-
-1. **A rhythm.** Pomodoro. 25/5, 50/10, 90/20 — pick one, everyone hits the same block.
-2. **A soundtrack.** Ambient + music. Usually lofi. Sometimes Suno-generated. Background, never foreground.
-3. **A crew.** Not a community. A crew. 2-8 people who've all agreed to show up when the link goes live.
-
-### What it isn't
-
-- Not a meeting. No agenda. No host talking.
-- Not a class. No teacher.
-- Not a networking event. Connection is a byproduct.
-
-### Why it works
-
-Presence + rhythm = focus. The ADHD body-doubling research points at 30-50% reduction in procrastination when someone else is in the same focused state. Vibeclubs just make that rhythmic and shareable.
+- **A crew.** Two to eight people who agree to lock in together.
+- **A reachable finish.** A draft, a working change, a track, or an honest next step.
+- **A shared clock.** Agree when to focus, take a break, and show what changed.
 
 ### Who hosts
 
-Anyone. Hosts just opened the door. They aren't teachers, moderators, or facilitators. The vibeclub runs itself — the extension handles the timer, the soundtrack, the recap. Host just ships like everyone else.
+A person hosts. Choose Meet, Discord, Zoom, or an in-person spot. The host shares the plan and keeps the clock. Each person chooses what to share.
+
+### Prepare the pack
+
+[Build a host pack](/start) with an invite, agenda, build brief, and recap prompt. It works without an account or extension. Copy the parts you need or download the Markdown pack.
+
+The draft restores on the same device and browser. Keep a downloaded copy if you want to move it elsewhere. Private meeting details belong in the invite you choose to send.
+
+[Read the hosting guide](/playbook/how-to-host) before your first vibeclub.
 `,
   },
   {
     slug: 'how-to-host',
-    title: 'How to host one',
-    summary: '5 minutes. Pick a platform, a rhythm, a soundtrack. Share the link.',
-    body: `### 1. Pick ONE thing to ship
+    title: 'How to host a vibeclub',
+    summary: 'Prepare an invite and a 60-, 90-, or 120-minute plan on your existing tools.',
+    body: `### 1. Pick one thing to ship
 
-Narrower is better. "Lofi coders" beats "general tech." "Thursday morning writers" beats "writing club." The more specific you are, the more the right people feel called.
+Make the finish small enough to inspect. "Draft the opening scene" or "fix the broken export" gives the crew something clear to work toward.
 
-### 2. Pick a platform you already love
+### 2. Choose where to meet
 
-Meet, Discord, Zoom, or IRL. **Don't pick a new tool.** The whole point is the vibeclub runs on what you already have. The extension overlays anywhere.
+Use Meet, Discord, Zoom, or an in-person spot. Check that everyone can use it. No Vibeclubs extension is required.
 
-### 3. Pick a rhythm
+### 3. Build the host pack
 
-- **25/5** — classic pomodoro. Task-switching work, code reviews, triage.
-- **50/10** — deep work. Programming, writing, design, music production.
-- **90/20** — ultradian cycle. Research, long creative flows.
+[Open the host-pack builder](/start). Choose your craft, name the finish, and select 60, 90, or 120 minutes. Add the meeting choice, crew size, and optional timing. The builder prepares the invite, agenda, build brief, and recap prompt.
 
-### 4. Pick a soundtrack
+### 4. Keep a copy
 
-Lofi, rain, café, nature, or space. If in doubt: lofi. It's lofi for a reason.
+Copy the invite and agenda, or download the Markdown pack. The draft can restore on this device and browser; it is not a shared crew document. Hosted publishing is a separate action.
 
-### 5. Host it
+### 5. Invite the crew
 
-[Host a vibeclub](/start). 60 seconds. You get a link like \`vibeclubs.ai/club/your-slug\`.
+Send the invite yourself to people you want to work with. Confirm the time and meeting link. Creating a pack does not send invitations or create a public club listing.
 
-### 6. Send it
+### 6. Host the clock
 
-Post the link. Don't broadcast to strangers. Send it to 2-5 people who already know each other — the first session should feel like friends, not a public event. Gravity grows from there.
+Read the plan together, agree what each person hopes to finish, and start the focus block. Keep music optional and low enough to hear the crew. Use the breaks in the agenda.
 
-### 7. Show up and ship
+### 7. Show what changed
 
-You're not running a business. You're running a Thursday evening ritual that your friends happen to show up for.
+Ask each person what shipped and what comes next. Private work can stay private. Use the [recap guide](/playbook/the-recap) to record only what people choose to share.
 `,
   },
   {
     slug: 'the-mixer',
-    title: 'How to tune the mixer',
-    summary: 'Three faders: ambient, music, voice. The 30/25/85 starting point.',
-    body: `The extension ships a three-layer Web Audio mixer. Most co-working tools give you one volume slider — focus audio isn't one thing.
+    title: 'Choose a soundtrack for a vibeclub',
+    summary: 'Keep music optional, voice clear, and each person in control of their own audio.',
+    body: `You can host with the audio tools you already use. A soundtrack is optional; a quiet lock-in works too.
 
-### Ambient
+### Start with voice
 
-Shared loops — lofi, rain, café, nature, space. Default: **30-40%**. If you notice the ambient, it's too loud.
+Check that the crew can hear the host on the chosen call tool. If music masks speech, lower it or turn it off. There is no single volume setting that fits every device.
 
-### Music
+### Let each person choose
 
-Per-listener. Two sources:
+Each person can play their own music or ambient sound. Agree on a shared playlist only if the crew wants one. Use audio you have permission to play.
 
-- **Suno-generated** (Pro) — AI tracks matched to the club's genre, fresh per session.
-- **Royalty-free fallback** (free) — curated lofi on the Vibeclubs CDN.
+### Keep the first setup simple
 
-Music is never broadcast — each person streams their own. Default: **20-30%**.
+Try one focus block before adding another audio tool. Avoid broadcasting music into the call unless everyone agrees and the tool supports it.
 
-### Voice / page audio
+### What the host pack does
 
-Your call audio or tab audio — whichever platform you're on. Default: **70-90%**. Voice is always loudest. The humans are the point.
+[The host-pack builder](/start) records your soundtrack choice in the plan. It does not stream music, change anyone's volume, synchronize playback, or install the optional extension.
 
-### The rule
-
-**Ambient < Music < Voice.** If voice is drowning in music, you've lost the vibe. If ambient = music, the mix feels muddy.
-
-### Duck on voice
-
-Turn on "duck ambient when someone speaks" — ambient drops 6dB on WebRTC voice activity, then rides back up. Open audio space that still breathes for conversation.
+Choose a setup the crew can repeat next time. [The hosting guide](/playbook/how-to-host) covers the rest of the plan.
 `,
   },
   {
     slug: 'the-recap',
-    title: 'The recap',
-    summary: 'Claude watches. Never interrupts. Writes you a two-liner at the end.',
-    body: `The recap is a Claude agent that lives quietly in your session. It has exactly three jobs:
+    title: 'Write a recap after a vibeclub',
+    summary:
+      'Record what the crew chooses to share. Keep unfinished work and the next step visible.',
+    body: `The recap starts with what people tell you. The host pack includes a prompt you can copy; it does not watch a call, read private work, or send a recap for you.
 
-1. **Notice.** Track pomodoro starts, completions, breaks, session end.
-2. **Log.** Write a short recap when the timer stops.
-3. **Celebrate.** At milestones (first session, cycle 5, streak), post a warm one-liner.
+### Ask for the finish
 
-### The one rule
+At the end of the lock-in, ask what changed. A draft, a repaired bug, or a clear next action can be worth keeping. Let each person choose whether to share a link.
 
-**Claude never interrupts.** It doesn't:
+### Keep it short
 
-- Ask you questions during focus
-- Prompt you to set goals
-- Check in during breaks
-- Join voice
-- Respond to chat
+- **Planned:** the finish you agreed at the start.
+- **Made:** what actually changed, with a link only when sharing is allowed.
+- **Next:** what needs another pass.
 
-If you want it to "help more," you want a different product.
+### A worked example
 
-### Why so restrained
+Planned: repair the Markdown export. Made: the file now downloads with the right title; the crew checked it on one browser. Next: check the downloaded file on a phone.
 
-The whole point is that nobody's in charge. An AI that runs the vibeclub breaks the format. The recap works because it models the ideal participant: present, aware, quiet.
+This is an example, not a report of a real gathering. Do not invent attendance, time saved, or finished work.
 
-### When it speaks
+### Use an assistant only when you choose
 
-- Session start: 1 line ("Session open. I'm here.")
-- Cycle complete: optional, only on meaningful counts ("Cycle 3 down. 75 minutes shipped today.")
-- Session end: 1-2 line recap ("90 minutes, 3 cycles, Discord. Shipped the landing page rewrite.")
+You can paste volunteered notes into an assistant and ask for a shorter draft. Review it before sharing. Leave out private meeting links and anything the crew has not agreed to send to that tool.
 
-That's it. Everything else is off by default.
-
-### Turning it off
-
-Host → club settings → recap: off. No degradation. No nagging.
+[Build a host pack](/start) to get the recap prompt alongside the invite and agenda.
 `,
   },
   {
     slug: 'build-your-gencreator-stack',
-    title: 'Build your GenCreator stack (via vibeclubs)',
+    title: 'Bring a creator project to a vibeclub',
     summary:
-      'Cross-post from gencreator.ai/research. How a stack becomes a vibeclub ritual that actually ships weekly.',
-    body: `*Cross-post summary. The full applied-research report lives on [gencreator.ai/research](https://gencreator.ai/research). This playbook entry is the format-specific take: how a stack becomes a vibeclub ritual.*
+      'Choose one creator task, prepare the files, and give the crew a finish they can inspect.',
+    body: `Bring the tools and project you already use. A vibeclub gives the crew a shared clock and a chance to show what changed.
 
-### The problem most creators have
+### Choose one move
 
-You've read the stack posts. You've forked the templates. You have Notion, Cursor, Claude Code, Framer, a newsletter, an agent orchestrator. The stack is there. You still can't ship weekly.
+- **Writing:** revise an opening and keep the earlier draft for comparison.
+- **Design:** finish one screen and inspect it at a narrow width.
+- **Music:** make one arrangement decision and export a listening copy.
+- **Building:** repair one behavior and show the check that passes.
 
-The gap isn't the stack. It's **the ritual that renders the stack into output**.
+### Prepare the files
 
-### The GenCreator stack — skeleton
+Check that you can open, edit, and save the project before the crew arrives. Keep a copy you can return to if the change goes wrong.
 
-Per the applied-research lab reports on gencreator.ai/research, a high-shipping creator stack has six layers:
+If you are using [GenCreator's creator studio](https://gencreator.ai/creator-studio), bring the draft you want to work on. Vibeclubs does not generate, publish, or distribute that project for you.
 
-1. **Capture** — voice memos, scratch pad (Apple Notes / Obsidian).
-2. **Draft** — Claude Code or Cursor for writing + building, or an Arcanea Guardian.
-3. **Orchestrate** — ACOS or an agent-flow for the pipeline (source → multiply → distribute).
-4. **Ship** — Next.js / Framer / direct repo → Vercel.
-5. **Distribute** — X, LinkedIn, newsletter, Discord drops. Eight outputs per source.
-6. **Witness** — the stats layer (Plausible, Sentry, Linear).
+### Plan the lock-in
 
-Each layer is **one opinionated tool**. Not three. Not "best of."
+[Build a host pack](/start) around that one finish. Copy the build brief into your own tool if it helps. You choose what leaves your device and what the crew sees.
 
-### The ritual that renders it
+### Show the result
 
-This is where vibeclubs earn their keep. You install the extension, list or join a vibeclub matched to your stack's weekly move:
-
-| Your week's move | Preset to use | Who it's for |
-|---|---|---|
-| Write the week's source piece | \`50_10\` or \`morning-writers\` | Draft layer → output |
-| Build a new feature or page | \`vibe-coding-sprint\` | Ship layer with deadlines |
-| Ship a track or release | \`music_jam\` | Distribute layer (music) |
-| Fast outputs — headlines, thumbs, cuts | \`lightning\` | Capture/distribute switch |
-
-The vibeclub doesn't replace your stack. It replaces the hour where you'd otherwise sit alone wondering which tab to open first.
-
-### The weekly cadence that compounds
-
-One creator running the gencreator.ai research flywheel ships:
-
-- **1 source piece** per week (research, essay, lab report, or new stack entry)
-- **8 downstream outputs** per source (amplified by ACOS — post, YouTube, clips, X, LI, newsletter, crew drop, library entry)
-- **3 vibeclubs a week** minimum — one for writing, one for shipping, one for making
-
-The vibeclubs are the metronome. The stack is the instrument. The output is what compounds.
-
-### How to apply this starting tonight
-
-1. Pick **one** stack move you've been stuck on.
-2. Match it to a preset in the table above.
-3. Find a vibeclub at [/explore](/explore) running that preset tonight — or [host one](/start).
-4. Ship one thing inside that session.
-5. Drop the link in the ship moment so the crew sees it land.
-
-One week of this produces more output than a month of reading more stack posts. The stack wants a witness. The vibeclub gives it one.
-
-### Read the full research
-
-The weekly applied-research reports on gencreator.ai/research benchmark specific stack recipes — which models for which tasks, what orchestration patterns actually save time, how past cohort grads built theirs. [gencreator.ai/research](https://gencreator.ai/research).
+Compare the result with the finish you named. If it is unfinished, say what remains and keep the files. A useful [recap](/playbook/the-recap) records the work without promising a weekly output count.
 `,
   },
 ]
