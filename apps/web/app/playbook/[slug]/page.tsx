@@ -16,7 +16,11 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Params) {
   const { slug } = await params
   const entry = findEntry(slug)
-  return { title: entry?.title ?? 'Playbook' }
+  if (!entry) return { title: 'Playbook' }
+  return {
+    title: entry.title,
+    alternates: { canonical: `https://vibeclubs.ai/playbook/${entry.slug}` },
+  }
 }
 
 export default async function PlaybookEntryPage({ params }: Params) {
