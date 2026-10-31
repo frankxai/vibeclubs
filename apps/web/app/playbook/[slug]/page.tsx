@@ -19,6 +19,7 @@ export async function generateMetadata({ params }: Params) {
   if (!entry) return { title: 'Playbook' }
   return {
     title: entry.title,
+    description: entry.summary,
     alternates: { canonical: `https://vibeclubs.ai/playbook/${entry.slug}` },
   }
 }

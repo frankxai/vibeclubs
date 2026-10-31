@@ -5,10 +5,10 @@ import { Container, Eyebrow, Section } from '@/components/layout/container'
 import { PLAYBOOK } from './playbook-data'
 
 export const metadata = {
-  title: 'How it works',
+  title: 'Host a vibeclub: guides for your crew',
   alternates: { canonical: 'https://vibeclubs.ai/playbook' },
   description:
-    'Host, show up, ship. Short reads on running your first vibeclub, tuning the mixer, the recap, and turning a GenCreator stack into weekly output.',
+    'Prepare a host pack, choose your existing tools, and lock in with your crew. Guides to hosting, soundtracks, creator projects, and honest recaps.',
 }
 
 export default function PlaybookIndex() {
@@ -22,9 +22,9 @@ export default function PlaybookIndex() {
             Host, show up, ship.
           </h1>
           <p className="text-lg text-white/60 mb-14 leading-relaxed">
-            Short reads. Everything you need to host a vibeclub, tune the mixer, read the recap, and
-            turn a GenCreator stack into weekly output. Free to read, free to fork, free to remix
-            into your own scene.
+            Prepare a host pack, choose a soundtrack, and bring one thing to ship. A human hosts
+            on tools the crew already uses. Start with the hosting guide and keep a recap of what
+            changed.
           </p>
           <ol className="space-y-2">
             {PLAYBOOK.map((p, i) => (
