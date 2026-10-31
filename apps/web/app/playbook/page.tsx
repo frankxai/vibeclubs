@@ -6,6 +6,7 @@ import { PLAYBOOK } from './playbook-data'
 
 export const metadata = {
   title: 'How it works',
+  alternates: { canonical: 'https://vibeclubs.ai/playbook' },
   description:
     'Host, show up, ship. Short reads on running your first vibeclub, tuning the mixer, the recap, and turning a GenCreator stack into weekly output.',
 }
