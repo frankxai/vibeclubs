@@ -92,7 +92,8 @@ Choose a setup the crew can repeat next time. [The hosting guide](/playbook/how-
   {
     slug: 'the-recap',
     title: 'Write a recap after a vibeclub',
-    summary: 'Record what the crew chooses to share. Keep unfinished work and the next step visible.',
+    summary:
+      'Record what the crew chooses to share. Keep unfinished work and the next step visible.',
     body: `The recap starts with what people tell you. The host pack includes a prompt you can copy; it does not watch a call, read private work, or send a recap for you.
 
 ### Ask for the finish
@@ -121,7 +122,8 @@ You can paste volunteered notes into an assistant and ask for a shorter draft. R
   {
     slug: 'build-your-gencreator-stack',
     title: 'Bring a creator project to a vibeclub',
-    summary: 'Choose one creator task, prepare the files, and give the crew a finish they can inspect.',
+    summary:
+      'Choose one creator task, prepare the files, and give the crew a finish they can inspect.',
     body: `Bring the tools and project you already use. A vibeclub gives the crew a shared clock and a chance to show what changed.
 
 ### Choose one move

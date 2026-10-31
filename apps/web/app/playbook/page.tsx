@@ -22,8 +22,8 @@ export default function PlaybookIndex() {
             Host, show up, ship.
           </h1>
           <p className="text-lg text-white/60 mb-14 leading-relaxed">
-            Prepare a host pack, choose a soundtrack, and bring one thing to ship. A human hosts
-            on tools the crew already uses. Start with the hosting guide and keep a recap of what
+            Prepare a host pack, choose a soundtrack, and bring one thing to ship. A human hosts on
+            tools the crew already uses. Start with the hosting guide and keep a recap of what
             changed.
           </p>
           <ol className="space-y-2">
