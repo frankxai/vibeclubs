@@ -1,0 +1,23 @@
+Class: seo-geo
+
+What changed:
+- Added unique title, description, canonical URL, and Open Graph tags to all public routes (`/`, `/explore`, `/start`, `/extension`, `/developers`, `/playbook`).
+- Added JSON-LD schema to `/explore` (WebSite). The home page (`/`) and club detail pages (`/club/[slug]`) already had JSON-LD (`SoftwareApplication` and `Event` respectively).
+- Updated `robots.ts` to explicitly allow normal crawlers and AI search crawlers (`GPTBot`, `ChatGPT-User`, `Google-Extended`, `Anthropic-ai`, `Claude-Web`, `PerplexityBot`).
+- Created `/llms.txt` route via Next.js App Router which lists and links to all existing public routes and playbook entries.
+- Added a node test (`apps/web/tests/seo.test.ts`) that verifies the metadata is defined for the static routes.
+
+Verification:
+- `pnpm test` passes `apps/web/tests/seo.test.ts`.
+- `pnpm build` completes successfully.
+
+Left alone:
+- Vercel, pricing, and secret configurations are unmodified.
+- Page copy, lore, and visual styling remained entirely untouched.
+
+Risks:
+- Changes to `robots.ts` affect crawler visibility; if some should be blocked, the explicit allows could be overly permissive (though they only allow root path `/` explicitly).
+
+Pre-existing failures:
+- E2E Playwright tests (`pnpm test:e2e`) fail due to timeouts trying to reach localhost. This appears to be a systemic issue in the e2e harness and is preexisting.
+- `pnpm audit:release` fails because `417dc5185e7175e365323483808bf38032f2abaa` is not an ancestor of `HEAD`.
