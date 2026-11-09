@@ -6,9 +6,16 @@ import { PLAYBOOK } from './playbook-data'
 
 export const metadata = {
   title: 'Host a vibeclub: guides for your crew',
-  alternates: { canonical: 'https://vibeclubs.ai/playbook' },
   description:
     'Prepare a host pack, choose your existing tools, and lock in with your crew. Guides to hosting, soundtracks, creator projects, and honest recaps.',
+  alternates: { canonical: 'https://vibeclubs.ai/playbook' },
+  openGraph: {
+    title: 'Host a vibeclub: guides for your crew',
+    description:
+      'Prepare a host pack, choose your existing tools, and lock in with your crew. Guides to hosting, soundtracks, creator projects, and honest recaps.',
+    url: 'https://vibeclubs.ai/playbook',
+    type: 'website',
+  },
 }
 
 export default function PlaybookIndex() {
