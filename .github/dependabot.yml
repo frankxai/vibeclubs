@@ -1,24 +1,24 @@
+# Grouped monthly 2026-10-19 (Week 43 inflow throttle).
 version: 2
 updates:
-  - package-ecosystem: 'npm'
-    directory: '/'
+  - package-ecosystem: npm
+    directory: /
     schedule:
-      interval: 'weekly'
-      day: 'monday'
+      interval: monthly
       time: '06:00'
-      timezone: 'Europe/Berlin'
-    open-pull-requests-limit: 5
+      timezone: Europe/Berlin
+    open-pull-requests-limit: 3
     groups:
       minor-and-patch:
         update-types:
-          - 'minor'
-          - 'patch'
-
-  - package-ecosystem: 'github-actions'
-    directory: '/'
+          - minor
+          - patch
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: 'weekly'
+      interval: monthly
     groups:
       github-actions:
         patterns:
           - '*'
+    open-pull-requests-limit: 3
