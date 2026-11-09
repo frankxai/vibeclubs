@@ -15,7 +15,9 @@ export async function GET() {
       const supabase = await createSupabaseServerClient()
       const { data } = await supabase.from('clubs').select('slug').eq('is_active', true).limit(100)
       if (data) supabaseClubs = data
-    } catch {}
+    } catch {
+      // Fallback to static clubs if Supabase client errors
+    }
   }
 
   const allClubSlugs = new Set([
