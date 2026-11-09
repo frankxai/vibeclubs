@@ -9,6 +9,14 @@ import { DevelopersNetworkLazy } from '@/components/three'
 export const metadata = {
   title: 'Developer source',
   description: 'Five MIT-licensed workspace packages in source. npm publication is still pending.',
+  alternates: { canonical: 'https://vibeclubs.ai/developers' },
+  openGraph: {
+    title: 'Developer source',
+    description:
+      'Five MIT-licensed workspace packages in source. npm publication is still pending.',
+    url: 'https://vibeclubs.ai/developers',
+    type: 'website',
+  },
 }
 
 const PACKAGES: { name: string; path: string; desc: string; entry: string }[] = [

@@ -13,6 +13,22 @@ export const metadata = {
   title: 'Find a vibeclub',
   description:
     'Public vibeclubs hosting in the next week. Find a crew that matches your rhythm and stack.',
+  alternates: { canonical: 'https://vibeclubs.ai/explore' },
+  openGraph: {
+    title: 'Find a vibeclub',
+    description:
+      'Public vibeclubs hosting in the next week. Find a crew that matches your rhythm and stack.',
+    url: 'https://vibeclubs.ai/explore',
+    type: 'website',
+  },
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Vibeclubs Directory',
+  url: 'https://vibeclubs.ai/explore',
+  description: 'Public vibeclubs hosting in the next week.',
 }
 
 export default async function ExplorePage() {
@@ -20,6 +36,10 @@ export default async function ExplorePage() {
   return (
     <main className="min-h-screen">
       <Nav />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Section pad="md" className="pt-28">
         <Container width="2xl">
           <PageHeader
