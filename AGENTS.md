@@ -61,3 +61,7 @@ At handoff distinguish policy proposed, merged, loaded in this agent session and
 <!-- PRODUCT-OUTCOME-CONTRACT:END -->
 
 Current implementation and measurement: https://github.com/frankxai/vibeclubs/issues/2.
+
+## Portfolio experience review
+
+For interface, editorial and media changes, load the [Frontier Experience Constitution](https://github.com/Starlight-Intelligence/starlight-design-intelligence/blob/e25fab4c5a0dac2ea8c7b91e9397972f5af4b454/portfolio/frontier-experience-constitution.md) and the [vibeclubs pack](https://github.com/Starlight-Intelligence/starlight-design-intelligence/blob/e25fab4c5a0dac2ea8c7b91e9397972f5af4b454/brand-packs/vibeclubs/DESIGN.md). Exercise a complete lock-in through delivery of its useful artifact, and record the successful handoff. Attach the tested route, candidate revision and responsive evidence to the owning review. Keep scoped asset and release decisions with their existing owners.

@@ -98,3 +98,5 @@ Read the applicable definition before dispatch. Old role text cannot restore a s
 ## Product outcome handoff
 
 Read the Product outcome acceptance section of `AGENTS.md` for issue ownership, current policy/source revision, five independent quality verdicts and adoption evidence. Preserve local product scope and release gates.
+
+For portfolio UI, editorial and media work, read the **Portfolio experience review** section of the root `AGENTS.md` before making or reviewing the change. Use its pinned constitution and brand pack.
