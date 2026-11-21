@@ -98,3 +98,5 @@ Read the applicable definition before dispatch. Old role text cannot restore a s
 ## Product outcome handoff
 
 Read the Product outcome acceptance section of `AGENTS.md` for issue ownership, current policy/source revision, five independent quality verdicts and adoption evidence. Preserve local product scope and release gates.
+
+@./AGENTS.md
