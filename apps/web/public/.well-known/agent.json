@@ -1,0 +1,28 @@
+{
+  "schema": "starlight.agent.v1",
+  "name": "Vibeclubs",
+  "domain": "vibeclubs.ai",
+  "canonical": "https://vibeclubs.ai",
+  "description": "Lock in with your crew. Ship the thing. Open MIT format, club directory, Chrome extension, and focused session playbook.",
+  "license": "MIT",
+  "repository": "https://github.com/frankxai/vibeclubs",
+  "discovery": {
+    "agentsMd": "https://vibeclubs.ai/agents.md",
+    "llmsTxt": "https://vibeclubs.ai/llms.txt",
+    "sitemap": "https://vibeclubs.ai/sitemap.xml"
+  },
+  "surfaces": {
+    "home": "https://vibeclubs.ai/",
+    "explore": "https://vibeclubs.ai/explore",
+    "start": "https://vibeclubs.ai/start",
+    "playbook": "https://vibeclubs.ai/playbook",
+    "extension": "https://vibeclubs.ai/extension",
+    "developers": "https://vibeclubs.ai/developers",
+    "privacy": "https://vibeclubs.ai/privacy",
+    "terms": "https://vibeclubs.ai/terms"
+  },
+  "disclosures": [
+    "Open MIT format and source code available at https://github.com/frankxai/vibeclubs.",
+    "Local ritual timers and recap cards operate without server storage unless optional Supabase hosting is configured."
+  ]
+}
